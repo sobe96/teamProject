@@ -1,6 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using CrazyFour.Core;
+using CrazyFour.Core.Actors.Hero;
+using CrazyFour.Core.Factories;
+using CrazyFour.Core.Helpers;
+using CrazyFour.Core.Actors;
+using System;
 
 namespace CrazyFour
 {
@@ -8,45 +14,83 @@ namespace CrazyFour
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private ActorFactory factory;
+
+        MouseState mState;
+
+        IActor player;
+        IActor boss;
+
 
         public Main()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+
+            _graphics.PreferredBackBufferWidth = 1280;
+            _graphics.PreferredBackBufferHeight = 720;
         }
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            // moved these two lines from top of LoadContent(), keep an eye out.  Might break later
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            factory = new ActorFactory(_graphics, _spriteBatch, Content);
+
+            
 
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            player = factory.GetActor(ActorTypes.Player);
+            boss = factory.GetActor(ActorTypes.Boss);
 
-            // TODO: use this.Content to load your game content here
         }
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            try
+            {
+                if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                    Exit();
 
-            // TODO: Add your update logic here
+                // TODO: Add your update logic here
+                mState = Mouse.GetState();
 
-            base.Update(gameTime);
+                player.Update(gameTime);
+
+                base.Update(gameTime);
+            }
+            catch (Exception ex) {
+                var colorTask = MessageBox.Show("Error Occurred", ex.Message, new[] { "OK" });
+            }
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            try
+            { 
+                GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+                // TODO: Add your drawing code here
 
-            base.Draw(gameTime);
+                _spriteBatch.Begin();
+
+                player.Draw(gameTime);
+                boss.Draw(gameTime);
+
+                _spriteBatch.End();
+
+                base.Draw(gameTime);
+            }
+            catch (Exception ex)
+            {
+                _spriteBatch.End();
+                var colorTask = MessageBox.Show("Error Occurred", ex.Message, new[] { "OK" });
+            }
         }
     }
 }
