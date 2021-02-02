@@ -20,6 +20,9 @@ namespace CrazyFour
 
         IActor player;
         IActor boss;
+        IActor underboss;
+        IActor capo;
+        IActor soldier;
 
 
         public Main()
@@ -38,8 +41,6 @@ namespace CrazyFour
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             factory = new ActorFactory(_graphics, _spriteBatch, Content);
 
-            
-
             base.Initialize();
         }
 
@@ -47,6 +48,9 @@ namespace CrazyFour
         {
             player = factory.GetActor(ActorTypes.Player);
             boss = factory.GetActor(ActorTypes.Boss);
+            underboss = factory.GetActor(ActorTypes.Underboss);
+            capo = factory.GetActor(ActorTypes.Capo);
+            soldier = factory.GetActor(ActorTypes.Soldier);
 
         }
 
@@ -54,15 +58,18 @@ namespace CrazyFour
         {
             try
             {
-                if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                    Exit();
+                if (player.inGame)
+                {
+                    if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                        Exit();
 
-                // TODO: Add your update logic here
-                mState = Mouse.GetState();
+                    // TODO: Add your update logic here
+                    mState = Mouse.GetState();
 
-                player.Update(gameTime);
+                    player.Update(gameTime);
 
-                base.Update(gameTime);
+                    base.Update(gameTime);
+                }
             }
             catch (Exception ex) {
                 var colorTask = MessageBox.Show("Error Occurred", ex.Message, new[] { "OK" });
@@ -81,6 +88,9 @@ namespace CrazyFour
 
                 player.Draw(gameTime);
                 boss.Draw(gameTime);
+                underboss.Draw(gameTime);
+                capo.Draw(gameTime);
+                soldier.Draw(gameTime);
 
                 _spriteBatch.End();
 

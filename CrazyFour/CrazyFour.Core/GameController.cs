@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using CrazyFour.Core.Actors.Enemy;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,6 +10,9 @@ namespace CrazyFour.Core
     {
         private static readonly object padlock = new object();
         private static GameController instance = null;
+
+        public List<Capo> capos = new List<Capo>();
+        public List<Soldier> soldiers = new List<Soldier>();
 
         public static GameController Instance
         {

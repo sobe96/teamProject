@@ -9,7 +9,7 @@ namespace CrazyFour.Core.Actors.Enemy
 {
     public class Boss : IActor
     {
-        private const string SPRITE_IMAGE = "Images/Players/boss3";
+        private const string SPRITE_IMAGE = "Images/Players/boss";
 
         public Boss(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
         {

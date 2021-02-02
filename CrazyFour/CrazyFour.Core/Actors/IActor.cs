@@ -15,7 +15,7 @@ namespace CrazyFour.Core.Actors
         protected ContentManager content;
 
         protected Vector2 position;
-        protected bool inGame = false;
+        public bool inGame = false;
         protected int speed = 3 * 60;
         protected bool isSpriteLoaded = false;
         protected Vector2 defaultPosition;
