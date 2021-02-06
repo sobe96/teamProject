@@ -1,5 +1,6 @@
 ﻿using CrazyFour.Core.Actors.Enemy;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,6 +14,15 @@ namespace CrazyFour.Core
 
         public List<Capo> capos = new List<Capo>();
         public List<Soldier> soldiers = new List<Soldier>();
+
+        public double timer = 2D;
+        public double maxTime = 2D;
+        public int nextSpeed = 240;
+
+        public bool inGame = false;
+        public float totalTime = 0f;
+
+
 
         public static GameController Instance
         {
@@ -47,7 +57,35 @@ namespace CrazyFour.Core
 
         public void Update(GameTime gameTime)
         {
+            if (inGame)
+            {
+                timer -= gameTime.ElapsedGameTime.TotalSeconds;
+                totalTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            else
+            {
+                KeyboardState kState = Keyboard.GetState();
+                if (kState.IsKeyDown(Keys.Enter))
+                {
+                    inGame = true;
+                    totalTime = 0;
+                    timer = 2D;
+                    maxTime = 2D;
+                    nextSpeed = 240;
+                }
+            }
 
+            if (timer <= 0)
+            {
+                //asteroids.Add(new Asteroid(nextSpeed));
+                timer = maxTime;
+
+                if (maxTime > 0.5)
+                    maxTime -= 0.1D;
+
+                if (nextSpeed < 720)
+                    nextSpeed += 4;
+            }
         }
 
         public void Draw(GameTime gameTime) 
