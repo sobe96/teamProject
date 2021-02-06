@@ -1,0 +1,36 @@
+Features:
+1) Player has 3 lives by default.
+
+2) After player's death:
+	a) Player disappears - 0 sec;
+	b) All the enemies freeze - ~0 sec;
+	c) All the projectiles disappear - ~0 sec;
+	d) The player is spawned in a default position - 2 sec;
+	e) The enemies start moving and shooting - 2.5 sec.
+
+3) "Slow mode": when a "Slow mode" hotkey is pressed, the time slows down. What does it mean:
+	a) "Normal speed" is 100%;
+	b) "Slow mode" makes the player's speed 75%;
+	c) "Slow mode" makes the enemies' and the projectiles' speed 50%;
+	d) To enable "Slow mode", press and hold the hotkey for the desired time.
+
+4) Mini-timer to track phases of a stage
+
+5) Additional lives are coming soon
+6) Configuration change is coming soon
+7) Storyline is coming soon
+8) Upgrades and ultimates are coming soon
+
+
+Stage description:
+1) The player is spawned - 5 sec
+2) 6 A-type enemies are coming from the edge of a screen, make one circle and leave - 5 sec
+3) Repeat phase 2 from a different edge - 5 sec
+4) Phase 2 and 3 combined but the enemies make 2 circles instead of one - 8-9 sec
+5) One B-type enemy comes from the top of the screen on the right side + phase 4 but the A-type enemies make circles until they all die, the B-type enemy dies or the time on a mini-timer runs out - 20 sec
+6) One B-type enemy comes from the top of the screen on the left side + phase 4 but the A-type enemies make circles until they all die, the B-type enemy dies or the time on a mini-timer runs out - 20 sec
+7) Two B-type enemies come from the top of the screen from both sides - 25 sec
+8) Mid-boss comes from the center of the top of the screen - 30 sec
+9) Boss entrance scene. Either some talk or special animation - 5-10 sec
+10) Boss's first phase - 45 sec
+11) Boss's second phase - 45 sec
