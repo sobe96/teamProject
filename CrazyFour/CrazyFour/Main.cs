@@ -16,14 +16,15 @@ namespace CrazyFour
         private SpriteBatch _spriteBatch;
         private ActorFactory factory;
 
-        MouseState mState;
+        private MouseState mState;
 
-        IActor player;
-        IActor boss;
-        IActor underboss;
-        IActor capo;
-        IActor soldier;
+        private IActor player;
+        private IActor boss;
+        private IActor underboss;
+        private IActor capo;
+        private IActor soldier;
 
+        private Texture2D spaceBackground;
 
         public Main()
         {
@@ -52,6 +53,7 @@ namespace CrazyFour
             capo = factory.GetActor(ActorTypes.Capo);
             soldier = factory.GetActor(ActorTypes.Soldier);
 
+            spaceBackground = Content.Load<Texture2D>("Images/space");
         }
 
         protected override void Update(GameTime gameTime)
@@ -85,6 +87,9 @@ namespace CrazyFour
                 // TODO: Add your drawing code here
 
                 _spriteBatch.Begin();
+
+                // Loading the background first
+                _spriteBatch.Draw(spaceBackground, new Vector2(0, 0), Color.White);
 
                 player.Draw(gameTime);
                 boss.Draw(gameTime);
