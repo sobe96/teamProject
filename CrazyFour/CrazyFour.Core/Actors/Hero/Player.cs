@@ -46,7 +46,7 @@ namespace CrazyFour.Core.Actors.Hero
 
             // use controlling the speed of the game by pressing the S key
             if (kState.IsKeyDown(Keys.S))
-                speed = (int)Speed.Slow * hz;
+                speed = (int)Speed.QuarterSpeed * hz;
             else 
                 speed = (int)Speed.Normal * hz;
 

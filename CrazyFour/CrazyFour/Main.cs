@@ -16,6 +16,9 @@ namespace CrazyFour
         private SpriteBatch _spriteBatch;
         private ActorFactory factory;
 
+        private const int windowWidth = 1280;
+        private const int windowHeight = 720;
+
         private MouseState mState;
 
         private IActor player;
@@ -25,6 +28,9 @@ namespace CrazyFour
         private IActor soldier;
 
         private Texture2D spaceBackground;
+        private double timer;
+        private SpriteFont defaultFont;
+        private bool inGame = false;
 
         public Main()
         {
@@ -32,8 +38,10 @@ namespace CrazyFour
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
 
-            _graphics.PreferredBackBufferWidth = 1280;
-            _graphics.PreferredBackBufferHeight = 720;
+            _graphics.PreferredBackBufferWidth = windowWidth;
+            _graphics.PreferredBackBufferHeight = windowHeight;
+
+            timer = 0D;
         }
 
         protected override void Initialize()
@@ -54,18 +62,27 @@ namespace CrazyFour
             soldier = factory.GetActor(ActorTypes.Soldier);
 
             spaceBackground = Content.Load<Texture2D>("Images/space");
+            defaultFont = Content.Load<SpriteFont>("DefaultFont");
         }
 
         protected override void Update(GameTime gameTime)
         {
             try
             {
-                if (player.inGame)
+                // Making sure we start the game when the enter button is pressed
+                KeyboardState kState = Keyboard.GetState();
+                if (kState.IsKeyDown(Keys.Enter))
+                {
+                    inGame = true;
+                }
+
+                if (inGame)
                 {
                     if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                         Exit();
 
                     // TODO: Add your update logic here
+                    timer += gameTime.ElapsedGameTime.TotalSeconds;
                     mState = Mouse.GetState();
 
                     player.Update(gameTime);
@@ -88,8 +105,25 @@ namespace CrazyFour
 
                 _spriteBatch.Begin();
 
-                // Loading the background first
+                // Loading the defaults
                 _spriteBatch.Draw(spaceBackground, new Vector2(0, 0), Color.White);
+
+                if(!inGame)
+                {
+                    String msg = "Press Enter to Start Game.";
+                    Vector2 sizeOfText = defaultFont.MeasureString(msg);
+                    _spriteBatch.DrawString(defaultFont, msg, new Vector2(windowWidth / 2 - sizeOfText.X / 2, windowHeight / 2), Color.White);
+
+                    msg = "Use the 'S' key to slow the game down";
+                    sizeOfText = defaultFont.MeasureString(msg);
+                    _spriteBatch.DrawString(defaultFont, msg, new Vector2(windowWidth / 2 - sizeOfText.X / 2, windowHeight / 2 + 50), Color.White);
+
+                    _spriteBatch.End();
+                    base.Draw(gameTime);
+                    return;
+                }
+
+                _spriteBatch.DrawString(defaultFont, "Timer: " + Utilities.TicksToTime(Math.Ceiling(timer)), new Vector2(0, 0), Color.White);
 
                 player.Draw(gameTime);
                 boss.Draw(gameTime);

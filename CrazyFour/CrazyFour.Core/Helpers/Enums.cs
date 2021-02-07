@@ -16,7 +16,8 @@ namespace CrazyFour.Core.Helpers
     public enum Speed
     {
         Normal = 4,
-        Slow = 3,
-        Slowest = 2
+        ThreeQuarterSpeed = 3,
+        HalfSpeed = 2,
+        QuarterSpeed = 1
     }
 }
