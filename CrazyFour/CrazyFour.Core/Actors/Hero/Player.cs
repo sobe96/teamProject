@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using CrazyFour.Core.Helpers;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -11,12 +12,16 @@ namespace CrazyFour.Core.Actors.Hero
     public class Player : IActor
     {
         private const string SPRITE_IMAGE = "Images/Players/hero";
+        private int speed;
 
         public Player(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
         {
             graphics = g;
             spriteBatch = s;
             content = c;
+
+            // defining the default speed
+            speed = 4 * hz;
 
             LoadSprite(SPRITE_IMAGE);
         }
@@ -38,6 +43,12 @@ namespace CrazyFour.Core.Actors.Hero
         {
             KeyboardState kState = Keyboard.GetState();
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            // use controlling the speed of the game by pressing the S key
+            if (kState.IsKeyDown(Keys.S))
+                speed = (int)Speed.Slow * hz;
+            else 
+                speed = (int)Speed.Normal * hz;
 
             if (kState.IsKeyDown(Keys.Right) && position.X < graphics.PreferredBackBufferWidth + 1 - GetSprite().Width)
                 position.X += speed * dt;

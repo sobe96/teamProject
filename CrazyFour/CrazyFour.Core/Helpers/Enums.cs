@@ -12,4 +12,11 @@ namespace CrazyFour.Core.Helpers
         Capo,
         Soldier
     }
+
+    public enum Speed
+    {
+        Normal = 4,
+        Slow = 3,
+        Slowest = 2
+    }
 }

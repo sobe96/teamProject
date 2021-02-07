@@ -10,12 +10,16 @@ namespace CrazyFour.Core.Actors.Enemy
     public class Boss : IActor
     {
         private const string SPRITE_IMAGE = "Images/Players/boss";
+        private int speed;
 
         public Boss(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
         {
             graphics = g;
             spriteBatch = s;
             content = c;
+
+            // defining the default speed
+            speed = 4 * hz;
 
             LoadSprite(SPRITE_IMAGE);
         }

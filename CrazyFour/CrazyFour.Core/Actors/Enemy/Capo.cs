@@ -10,12 +10,16 @@ namespace CrazyFour.Core.Actors.Enemy
     public class Capo : IActor
     {
         private const string SPRITE_IMAGE = "Images/Players/capo";
+        private int speed;
 
         public Capo(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
         {
             graphics = g;
             spriteBatch = s;
             content = c;
+
+            // defining the default speed
+            speed = 4 * hz;
 
             defaultPosition.X = 250;
             defaultPosition.Y = 424;

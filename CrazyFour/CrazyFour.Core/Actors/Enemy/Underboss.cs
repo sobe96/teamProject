@@ -10,12 +10,16 @@ namespace CrazyFour.Core.Actors.Enemy
     public class Underboss : IActor
     {
         private const string SPRITE_IMAGE = "Images/Players/underboss";
+        private int speed;
 
         public Underboss(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
         {
             graphics = g;
             spriteBatch = s;
             content = c;
+
+            // defining the default speed
+            speed = 4 * hz;
 
             defaultPosition.X = 125;
             defaultPosition.Y = 424;
