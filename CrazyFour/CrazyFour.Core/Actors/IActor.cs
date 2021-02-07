@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using CrazyFour.Core.Helpers;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -10,6 +11,7 @@ namespace CrazyFour.Core.Actors
     public abstract class IActor
     {
         protected Texture2D spriteImage;
+        protected Texture2D lazerImage;
         protected SpriteBatch spriteBatch;
         protected GraphicsDeviceManager graphics;
         protected ContentManager content;
@@ -27,10 +29,19 @@ namespace CrazyFour.Core.Actors
             content = c;
         }
 
-        public virtual bool LoadSprite(String img)
+        public virtual bool LoadSprite(LoadType type, String img)
         {
-            spriteImage = content.Load<Texture2D>(img);
-            isSpriteLoaded = true;
+            switch(type)
+            {
+                case LoadType.Ship:
+                    spriteImage = content.Load<Texture2D>(img);
+                    isSpriteLoaded = true;
+                    break;
+                case LoadType.Lazer:
+                    lazerImage = content.Load<Texture2D>(img);
+                    break;
+            }
+            
             return true;
         }
 

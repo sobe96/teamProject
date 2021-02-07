@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using CrazyFour.Core.Helpers;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -10,6 +11,7 @@ namespace CrazyFour.Core.Actors.Enemy
     public class Soldier : IActor
     {
         private const string SPRITE_IMAGE = "Images/Players/soldier";
+        private const string LAZER_IMAGE = "Images/Lazers/GreenLazer";
         private int speed;
 
         public Soldier(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
@@ -24,7 +26,8 @@ namespace CrazyFour.Core.Actors.Enemy
             defaultPosition.X = 375;
             defaultPosition.Y = 424;
 
-            LoadSprite(SPRITE_IMAGE);
+            LoadSprite(LoadType.Ship, SPRITE_IMAGE);
+            LoadSprite(LoadType.Lazer, LAZER_IMAGE);
         }
 
         public override void Draw(GameTime gameTime)

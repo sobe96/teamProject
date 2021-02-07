@@ -20,4 +20,10 @@ namespace CrazyFour.Core.Helpers
         HalfSpeed = 2,
         QuarterSpeed = 1
     }
+
+    public enum LoadType
+    {
+        Ship,
+        Lazer
+    }
 }

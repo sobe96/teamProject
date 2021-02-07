@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using CrazyFour.Core.Helpers;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -10,6 +11,7 @@ namespace CrazyFour.Core.Actors.Enemy
     public class Boss : IActor
     {
         private const string SPRITE_IMAGE = "Images/Players/boss";
+        private const string LAZER_IMAGE = "Images/Lazers/RedLazer";
         private int speed;
 
         public Boss(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
@@ -21,7 +23,8 @@ namespace CrazyFour.Core.Actors.Enemy
             // defining the default speed
             speed = 4 * hz;
 
-            LoadSprite(SPRITE_IMAGE);
+            LoadSprite(LoadType.Ship, SPRITE_IMAGE);
+            LoadSprite(LoadType.Lazer, LAZER_IMAGE);
         }
 
         public override void Draw(GameTime gameTime)

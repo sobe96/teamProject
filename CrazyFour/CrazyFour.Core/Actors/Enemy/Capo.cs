@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using CrazyFour.Core.Helpers;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -10,6 +11,7 @@ namespace CrazyFour.Core.Actors.Enemy
     public class Capo : IActor
     {
         private const string SPRITE_IMAGE = "Images/Players/capo";
+        private const string LAZER_IMAGE = "Images/Lazers/YellowLazer";
         private int speed;
 
         public Capo(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
@@ -24,7 +26,8 @@ namespace CrazyFour.Core.Actors.Enemy
             defaultPosition.X = 250;
             defaultPosition.Y = 424;
 
-            LoadSprite(SPRITE_IMAGE);
+            LoadSprite(LoadType.Ship, SPRITE_IMAGE);
+            LoadSprite(LoadType.Lazer, LAZER_IMAGE);
         }
 
         public override void Draw(GameTime gameTime)

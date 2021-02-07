@@ -12,6 +12,7 @@ namespace CrazyFour.Core.Actors.Hero
     public class Player : IActor
     {
         private const string SPRITE_IMAGE = "Images/Players/hero";
+        private const string LAZER_IMAGE = "Images/Lazers/AguaLazer";
         private int speed;
 
         public Player(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
@@ -23,7 +24,8 @@ namespace CrazyFour.Core.Actors.Hero
             // defining the default speed
             speed = 4 * hz;
 
-            LoadSprite(SPRITE_IMAGE);
+            LoadSprite(LoadType.Ship, SPRITE_IMAGE);
+            LoadSprite(LoadType.Lazer, LAZER_IMAGE);
         }
 
         public override void Draw(GameTime gameTime)
