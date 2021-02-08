@@ -18,7 +18,6 @@ namespace CrazyFour.Core.Actors
 
         protected Vector2 position;
         public bool inGame = false;
-        protected int hz = 60;
         protected bool isSpriteLoaded = false;
         protected Vector2 defaultPosition;
 

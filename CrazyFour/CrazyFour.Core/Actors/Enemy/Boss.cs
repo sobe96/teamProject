@@ -21,7 +21,7 @@ namespace CrazyFour.Core.Actors.Enemy
             content = c;
 
             // defining the default speed
-            speed = 4 * hz;
+            speed = 4 * GameController.hz;
 
             LoadSprite(LoadType.Ship, SPRITE_IMAGE);
             LoadSprite(LoadType.Lazer, LAZER_IMAGE);

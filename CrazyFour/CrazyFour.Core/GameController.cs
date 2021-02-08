@@ -1,4 +1,6 @@
 ﻿using CrazyFour.Core.Actors.Enemy;
+using CrazyFour.Core.Helpers;
+using CrazyFour.Core.Lazers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -15,8 +17,12 @@ namespace CrazyFour.Core
         public List<Capo> capos = new List<Capo>();
         public List<Soldier> soldiers = new List<Soldier>();
 
+        public static List<EnemyLazer> enemyLazers = new List<EnemyLazer>();
+        public static List<PlayerLazer> playerLazers = new List<PlayerLazer>();
+
         public double timer = 2D;
         public double maxTime = 2D;
+        public static int hz = 60;
         public int nextSpeed = 240;
 
         public bool inGame = false;
@@ -45,9 +51,14 @@ namespace CrazyFour.Core
 
         private GameController() { }
 
-        public void Initialize()
-        { 
+        public static void AddLazer(ILazer lazer)
+        {
+            Type type = lazer.GetType();
 
+            if (type == typeof(EnemyLazer))
+                enemyLazers.Add((EnemyLazer)lazer);
+            else
+                playerLazers.Add((PlayerLazer)lazer);
         }
 
         public void LoadContent()
@@ -61,6 +72,16 @@ namespace CrazyFour.Core
             {
                 timer -= gameTime.ElapsedGameTime.TotalSeconds;
                 totalTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                foreach(EnemyLazer enemy in GameController.enemyLazers)
+                {
+                    enemy.Update(gameTime);
+                }
+
+                foreach (PlayerLazer player in GameController.playerLazers)
+                {
+                    player.Update(gameTime);
+                }
             }
             else
             {
@@ -90,7 +111,17 @@ namespace CrazyFour.Core
 
         public void Draw(GameTime gameTime) 
         {
+            foreach(EnemyLazer enemy in GameController.enemyLazers)
+            {
+                enemy.Draw(gameTime);
+            }
 
+            foreach (PlayerLazer player in GameController.playerLazers)
+            {
+                player.Draw(gameTime);
+            }
+
+            GameController.playerLazers.RemoveAll(r => r.inGame is false);
         }
     }
 }

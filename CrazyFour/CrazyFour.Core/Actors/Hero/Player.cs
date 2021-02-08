@@ -1,4 +1,6 @@
-﻿using CrazyFour.Core.Helpers;
+﻿using CrazyFour.Core.Factories;
+using CrazyFour.Core.Helpers;
+using CrazyFour.Core.Lazers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,8 +14,8 @@ namespace CrazyFour.Core.Actors.Hero
     public class Player : IActor
     {
         private const string SPRITE_IMAGE = "Images/Players/hero";
-        private const string LAZER_IMAGE = "Images/Lazers/AguaLazer";
         private int speed;
+        private bool isFiring = false;
 
         public Player(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
         {
@@ -22,10 +24,9 @@ namespace CrazyFour.Core.Actors.Hero
             content = c;
 
             // defining the default speed
-            speed = 4 * hz;
+            speed = 4 * GameController.hz;
 
             LoadSprite(LoadType.Ship, SPRITE_IMAGE);
-            LoadSprite(LoadType.Lazer, LAZER_IMAGE);
         }
 
         public override void Draw(GameTime gameTime)
@@ -48,10 +49,12 @@ namespace CrazyFour.Core.Actors.Hero
 
             // use controlling the speed of the game by pressing the S key
             if (kState.IsKeyDown(Keys.S))
-                speed = (int)Speed.QuarterSpeed * hz;
+                speed = (int)Speed.QuarterSpeed * GameController.hz;
             else 
-                speed = (int)Speed.Normal * hz;
+                speed = (int)Speed.Normal * GameController.hz;
 
+
+            // Moving the player
             if (kState.IsKeyDown(Keys.Right) && position.X < graphics.PreferredBackBufferWidth + 1 - GetSprite().Width)
                 position.X += speed * dt;
 
@@ -64,6 +67,27 @@ namespace CrazyFour.Core.Actors.Hero
             if (kState.IsKeyDown(Keys.Up) && position.Y > 0)
                 position.Y -= speed * dt;
 
+
+            // Firing projectile but making sure we fire only one at a time
+            if (!isFiring)
+            {
+                if (kState.IsKeyDown(Keys.Space))
+                {
+                    isFiring = true;
+
+                    LazerFactory factory = new LazerFactory(graphics, spriteBatch, content);
+                    ILazer lazer = factory.GetLazer(LazerType.Player, position, gameTime);
+
+                    GameController.AddLazer(lazer);
+                    //position.X += speed * dt;
+                }
+            }
+
+            // releasing the flag once we fire one
+            if (kState.IsKeyUp(Keys.Space))
+            {
+                isFiring = false;
+            }
         }
     }
 }

@@ -15,6 +15,7 @@ namespace CrazyFour
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private ActorFactory factory;
+        private GameController controller;
 
         private const int windowWidth = 1280;
         private const int windowHeight = 720;
@@ -40,6 +41,8 @@ namespace CrazyFour
 
             _graphics.PreferredBackBufferWidth = windowWidth;
             _graphics.PreferredBackBufferHeight = windowHeight;
+
+            controller = GameController.Instance;
 
             timer = 0D;
         }
@@ -81,11 +84,13 @@ namespace CrazyFour
                     if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                         Exit();
 
-                    // TODO: Add your update logic here
+                    
                     timer += gameTime.ElapsedGameTime.TotalSeconds;
                     mState = Mouse.GetState();
 
                     player.Update(gameTime);
+
+                    controller.Update(gameTime);
 
                     base.Update(gameTime);
                 }
@@ -118,6 +123,10 @@ namespace CrazyFour
                     sizeOfText = defaultFont.MeasureString(msg);
                     _spriteBatch.DrawString(defaultFont, msg, new Vector2(windowWidth / 2 - sizeOfText.X / 2, windowHeight / 2 + 50), Color.White);
 
+                    msg = "Use the Spacebar key to fire";
+                    sizeOfText = defaultFont.MeasureString(msg);
+                    _spriteBatch.DrawString(defaultFont, msg, new Vector2(windowWidth / 2 - sizeOfText.X / 2, windowHeight / 2 + 100), Color.White);
+
                     _spriteBatch.End();
                     base.Draw(gameTime);
                     return;
@@ -130,6 +139,9 @@ namespace CrazyFour
                 underboss.Draw(gameTime);
                 capo.Draw(gameTime);
                 soldier.Draw(gameTime);
+
+                // updating the lasers
+                controller.Draw(gameTime);
 
                 _spriteBatch.End();
 

@@ -26,4 +26,10 @@ namespace CrazyFour.Core.Helpers
         Ship,
         Lazer
     }
+
+    public enum LazerType
+    {
+        Enemy,
+        Player
+    }
 }
