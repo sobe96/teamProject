@@ -20,7 +20,7 @@ namespace CrazyFour.Core.Lasers
         private Vector2 position;
         private int speed;
         private int radius = 6;
-        public bool inGame = true;
+        public bool isActive = true;
         private bool objectComplete = false;
         
 
@@ -78,7 +78,7 @@ namespace CrazyFour.Core.Lasers
             position.Y -= speed * dt;
 
             if (position.Y < 0)
-                inGame = false;
+                isActive = false;
         }
 
     }

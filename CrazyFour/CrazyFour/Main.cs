@@ -28,7 +28,8 @@ namespace CrazyFour
         private Texture2D spaceBackground;
         private double timer;
         private SpriteFont defaultFont;
-        private bool inGame = false;
+
+
 
         public Main()
         {
@@ -73,10 +74,10 @@ namespace CrazyFour
                 KeyboardState kState = Keyboard.GetState();
                 if (kState.IsKeyDown(Keys.Enter))
                 {
-                    inGame = true;
+                    Config.inGame = true;
                 }
 
-                if (inGame)
+                if (Config.inGame)
                 {
                     if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                         Exit();
@@ -103,14 +104,13 @@ namespace CrazyFour
             { 
                 GraphicsDevice.Clear(Color.CornflowerBlue);
 
-                // TODO: Add your drawing code here
-
                 _spriteBatch.Begin();
 
                 // Loading the defaults
                 _spriteBatch.Draw(spaceBackground, new Vector2(0, 0), Color.White);
 
-                if(!inGame)
+                // If the game hasn't started only
+                if(!Config.inGame)
                 {
                     String msg = "Press Enter to Start Game.";
                     Vector2 sizeOfText = defaultFont.MeasureString(msg);

@@ -127,10 +127,10 @@ namespace CrazyFour.Core
                 }
 
                 // Removing any player lasors that have gone out of window
-                GameController.playerLazers.RemoveAll(r => r.inGame is false);
+                GameController.playerLazers.RemoveAll(r => r.isActive is false);
 
                 // Removing any enemy lasors that have done out of the window
-                GameController.enemyLazers.RemoveAll(r => r.inGame is false);
+                GameController.enemyLazers.RemoveAll(r => r.isActive is false);
             }
         }
     }
