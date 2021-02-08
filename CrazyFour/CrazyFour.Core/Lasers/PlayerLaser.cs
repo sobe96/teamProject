@@ -7,9 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CrazyFour.Core.Lazers
+namespace CrazyFour.Core.Lasers
 {
-    public class PlayerLazer : ILazer
+    public class PlayerLaser : ILaser
     {
         public GraphicsDeviceManager graphics;
         public ContentManager content;
@@ -23,7 +23,7 @@ namespace CrazyFour.Core.Lazers
         private bool objectComplete = false;
         
 
-        public PlayerLazer(GraphicsDeviceManager gra, SpriteBatch spr, ContentManager con)
+        public PlayerLaser(GraphicsDeviceManager gra, SpriteBatch spr, ContentManager con)
         {
             graphics = gra;
             spriteBatch = spr;

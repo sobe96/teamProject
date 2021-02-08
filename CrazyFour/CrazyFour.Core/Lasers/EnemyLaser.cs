@@ -6,9 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CrazyFour.Core.Lazers
+namespace CrazyFour.Core.Lasers
 {
-    public class EnemyLazer : ILazer
+    public class EnemyLaser : ILaser
     {
         public GraphicsDeviceManager graphics;
         public ContentManager content;
@@ -18,7 +18,7 @@ namespace CrazyFour.Core.Lazers
         private Vector2 position;
         private string img;
 
-        public EnemyLazer(GraphicsDeviceManager gra, SpriteBatch spr, ContentManager con)
+        public EnemyLaser(GraphicsDeviceManager gra, SpriteBatch spr, ContentManager con)
         {
             graphics = gra;
             spriteBatch = spr;

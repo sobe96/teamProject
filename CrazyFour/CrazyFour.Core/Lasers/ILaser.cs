@@ -6,9 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CrazyFour.Core.Lazers
+namespace CrazyFour.Core.Lasers
 {
-    public abstract class ILazer
+    public abstract class ILaser
     {
         public abstract void Initialize(ActorTypes type, Vector2 pos);
 

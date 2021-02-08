@@ -1,6 +1,6 @@
 ﻿using CrazyFour.Core.Actors.Enemy;
 using CrazyFour.Core.Helpers;
-using CrazyFour.Core.Lazers;
+using CrazyFour.Core.Lasers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -17,8 +17,8 @@ namespace CrazyFour.Core
         public List<Capo> capos = new List<Capo>();
         public List<Soldier> soldiers = new List<Soldier>();
 
-        public static List<EnemyLazer> enemyLazers = new List<EnemyLazer>();
-        public static List<PlayerLazer> playerLazers = new List<PlayerLazer>();
+        public static List<EnemyLaser> enemyLazers = new List<EnemyLaser>();
+        public static List<PlayerLaser> playerLazers = new List<PlayerLaser>();
 
         public double timer = 2D;
         public double maxTime = 2D;
@@ -51,14 +51,14 @@ namespace CrazyFour.Core
 
         private GameController() { }
 
-        public static void AddLazer(ILazer lazer)
+        public static void AddLazer(ILaser lazer)
         {
             Type type = lazer.GetType();
 
-            if (type == typeof(EnemyLazer))
-                enemyLazers.Add((EnemyLazer)lazer);
+            if (type == typeof(EnemyLaser))
+                enemyLazers.Add((EnemyLaser)lazer);
             else
-                playerLazers.Add((PlayerLazer)lazer);
+                playerLazers.Add((PlayerLaser)lazer);
         }
 
         public void LoadContent()
@@ -73,12 +73,12 @@ namespace CrazyFour.Core
                 timer -= gameTime.ElapsedGameTime.TotalSeconds;
                 totalTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-                foreach(EnemyLazer enemy in GameController.enemyLazers)
+                foreach(EnemyLaser enemy in GameController.enemyLazers)
                 {
                     enemy.Update(gameTime);
                 }
 
-                foreach (PlayerLazer player in GameController.playerLazers)
+                foreach (PlayerLaser player in GameController.playerLazers)
                 {
                     player.Update(gameTime);
                 }
@@ -111,12 +111,12 @@ namespace CrazyFour.Core
 
         public void Draw(GameTime gameTime) 
         {
-            foreach(EnemyLazer enemy in GameController.enemyLazers)
+            foreach(EnemyLaser enemy in GameController.enemyLazers)
             {
                 enemy.Draw(gameTime);
             }
 
-            foreach (PlayerLazer player in GameController.playerLazers)
+            foreach (PlayerLaser player in GameController.playerLazers)
             {
                 player.Draw(gameTime);
             }

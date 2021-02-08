@@ -1,6 +1,6 @@
 ﻿using CrazyFour.Core.Factories;
 using CrazyFour.Core.Helpers;
-using CrazyFour.Core.Lazers;
+using CrazyFour.Core.Lasers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -75,8 +75,8 @@ namespace CrazyFour.Core.Actors.Hero
                 {
                     isFiring = true;
 
-                    LazerFactory factory = new LazerFactory(graphics, spriteBatch, content);
-                    ILazer lazer = factory.GetLazer(LazerType.Player, position, gameTime);
+                    LaserFactory factory = new LaserFactory(graphics, spriteBatch, content);
+                    ILaser lazer = factory.GetLazer(LazerType.Player, position, gameTime);
 
                     GameController.AddLazer(lazer);
                     //position.X += speed * dt;
