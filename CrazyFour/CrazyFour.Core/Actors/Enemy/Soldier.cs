@@ -13,6 +13,9 @@ namespace CrazyFour.Core.Actors.Enemy
         private const string SPRITE_IMAGE = "Images/Players/soldier";
         private const string LAZER_IMAGE = "Images/Lazers/GreenLazer";
         private int speed;
+        private int radius = 15;
+
+
 
         public Soldier(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
         {

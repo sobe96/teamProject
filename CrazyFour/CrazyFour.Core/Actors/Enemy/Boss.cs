@@ -13,6 +13,8 @@ namespace CrazyFour.Core.Actors.Enemy
         private const string SPRITE_IMAGE = "Images/Players/boss";
         private const string LAZER_IMAGE = "Images/Lazers/RedLazer";
         private int speed;
+        private int radius = 100;
+
 
         public Boss(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
         {

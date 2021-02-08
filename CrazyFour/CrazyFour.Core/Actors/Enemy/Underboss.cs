@@ -13,6 +13,9 @@ namespace CrazyFour.Core.Actors.Enemy
         private const string SPRITE_IMAGE = "Images/Players/underboss";
         private const string LAZER_IMAGE = "Images/Lazers/BlueLazer";
         private int speed;
+        private int radius = 40;
+
+
 
         public Underboss(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
         {

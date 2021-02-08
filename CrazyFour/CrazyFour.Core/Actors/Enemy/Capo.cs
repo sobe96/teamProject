@@ -13,6 +13,9 @@ namespace CrazyFour.Core.Actors.Enemy
         private const string SPRITE_IMAGE = "Images/Players/capo";
         private const string LAZER_IMAGE = "Images/Lazers/YellowLazer";
         private int speed;
+        private int radius = 11;
+
+
 
         public Capo(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
         {

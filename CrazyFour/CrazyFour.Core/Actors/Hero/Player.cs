@@ -16,6 +16,9 @@ namespace CrazyFour.Core.Actors.Hero
         private const string SPRITE_IMAGE = "Images/Players/hero";
         private int speed;
         private bool isFiring = false;
+        private int radius = 33;
+
+
 
         public Player(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
         {

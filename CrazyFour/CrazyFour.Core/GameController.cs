@@ -2,6 +2,7 @@
 using CrazyFour.Core.Helpers;
 using CrazyFour.Core.Lasers;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,8 @@ namespace CrazyFour.Core
         private static readonly object padlock = new object();
         private static GameController instance = null;
 
+        public List<Texture2D> soldierSprites = new List<Texture2D>();
+
         public List<Capo> capos = new List<Capo>();
         public List<Soldier> soldiers = new List<Soldier>();
 
@@ -24,8 +27,6 @@ namespace CrazyFour.Core
         public double maxTime = 2D;
         public static int hz = 60;
         public int nextSpeed = 240;
-
-        public bool inGame = false;
         public float totalTime = 0f;
 
 
@@ -68,7 +69,7 @@ namespace CrazyFour.Core
 
         public void Update(GameTime gameTime)
         {
-            if (inGame)
+            if (Config.inGame)
             {
                 timer -= gameTime.ElapsedGameTime.TotalSeconds;
                 totalTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -88,7 +89,7 @@ namespace CrazyFour.Core
                 KeyboardState kState = Keyboard.GetState();
                 if (kState.IsKeyDown(Keys.Enter))
                 {
-                    inGame = true;
+                    Config.inGame = true;
                     totalTime = 0;
                     timer = 2D;
                     maxTime = 2D;
@@ -111,17 +112,26 @@ namespace CrazyFour.Core
 
         public void Draw(GameTime gameTime) 
         {
-            foreach(EnemyLaser enemy in GameController.enemyLazers)
+            if (Config.inGame)
             {
-                enemy.Draw(gameTime);
-            }
+                // Updating position for the enemy lasers
+                foreach (EnemyLaser enemy in GameController.enemyLazers)
+                {
+                    enemy.Draw(gameTime);
+                }
 
-            foreach (PlayerLaser player in GameController.playerLazers)
-            {
-                player.Draw(gameTime);
-            }
+                // Updating position for the player lasers
+                foreach (PlayerLaser player in GameController.playerLazers)
+                {
+                    player.Draw(gameTime);
+                }
 
-            GameController.playerLazers.RemoveAll(r => r.inGame is false);
+                // Removing any player lasors that have gone out of window
+                GameController.playerLazers.RemoveAll(r => r.inGame is false);
+
+                // Removing any enemy lasors that have done out of the window
+                GameController.enemyLazers.RemoveAll(r => r.inGame is false);
+            }
         }
     }
 }

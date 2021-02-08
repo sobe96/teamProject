@@ -19,7 +19,7 @@ namespace CrazyFour.Core.Lasers
         private Texture2D projectile;
         private Vector2 position;
         private int speed;
-
+        private int radius = 6;
         public bool inGame = true;
         private bool objectComplete = false;
         

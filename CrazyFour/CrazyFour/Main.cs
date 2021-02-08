@@ -17,9 +17,6 @@ namespace CrazyFour
         private ActorFactory factory;
         private GameController controller;
 
-        private const int windowWidth = 1280;
-        private const int windowHeight = 720;
-
         private MouseState mState;
 
         private IActor player;
@@ -39,8 +36,8 @@ namespace CrazyFour
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
 
-            _graphics.PreferredBackBufferWidth = windowWidth;
-            _graphics.PreferredBackBufferHeight = windowHeight;
+            _graphics.PreferredBackBufferWidth = Config.windowWidth;
+            _graphics.PreferredBackBufferHeight = Config.windowHeight;
 
             controller = GameController.Instance;
 
@@ -117,15 +114,15 @@ namespace CrazyFour
                 {
                     String msg = "Press Enter to Start Game.";
                     Vector2 sizeOfText = defaultFont.MeasureString(msg);
-                    _spriteBatch.DrawString(defaultFont, msg, new Vector2(windowWidth / 2 - sizeOfText.X / 2, windowHeight / 2), Color.White);
+                    _spriteBatch.DrawString(defaultFont, msg, new Vector2(Config.windowWidth / 2 - sizeOfText.X / 2, Config.windowHeight / 2), Color.White);
 
                     msg = "Use the 'S' key to slow the game down";
                     sizeOfText = defaultFont.MeasureString(msg);
-                    _spriteBatch.DrawString(defaultFont, msg, new Vector2(windowWidth / 2 - sizeOfText.X / 2, windowHeight / 2 + 50), Color.White);
+                    _spriteBatch.DrawString(defaultFont, msg, new Vector2(Config.windowWidth / 2 - sizeOfText.X / 2, Config.windowHeight / 2 + 50), Color.White);
 
                     msg = "Use the Spacebar key to fire";
                     sizeOfText = defaultFont.MeasureString(msg);
-                    _spriteBatch.DrawString(defaultFont, msg, new Vector2(windowWidth / 2 - sizeOfText.X / 2, windowHeight / 2 + 100), Color.White);
+                    _spriteBatch.DrawString(defaultFont, msg, new Vector2(Config.windowWidth / 2 - sizeOfText.X / 2, Config.windowHeight / 2 + 100), Color.White);
 
                     _spriteBatch.End();
                     base.Draw(gameTime);
