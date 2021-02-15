@@ -121,7 +121,7 @@ namespace CrazyFour.Core
                 player.Draw(gameTime);
             }
 
-            GameController.playerLazers.RemoveAll(r => r.inGame is false);
+            playerLazers.RemoveAll(r => r.inGame is false);
         }
     }
 }

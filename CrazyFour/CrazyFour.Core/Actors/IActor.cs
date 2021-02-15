@@ -20,6 +20,7 @@ namespace CrazyFour.Core.Actors
         public bool inGame = false;
         protected bool isSpriteLoaded = false;
         protected Vector2 defaultPosition;
+        public int radius;
 
         public virtual void Initialize(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
         {
@@ -52,9 +53,9 @@ namespace CrazyFour.Core.Actors
                 int height = spriteImage.Height;
 
                 if (width > height)
-                    return Convert.ToInt32(Math.Ceiling((decimal)(width / 2)));
+                    return radius = Convert.ToInt32(Math.Ceiling((decimal)(width / 2)));
                 else
-                    return Convert.ToInt32(Math.Ceiling((decimal)(width / 2)));
+                    return radius = Convert.ToInt32(Math.Ceiling((decimal)(width / 2)));
             }
 
             throw new ArgumentNullException("Must set the sprite image first.");
