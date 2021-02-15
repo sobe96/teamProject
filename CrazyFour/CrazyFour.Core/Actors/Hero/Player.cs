@@ -16,6 +16,8 @@ namespace CrazyFour.Core.Actors.Hero
         private const string SPRITE_IMAGE = "Images/Players/hero";
         private int speed;
         private bool isFiring = false;
+        // I'd say that firing should be automatic
+        //private bool isFiring = true;
 
 
         public static int radius { get; set; } = 29;
@@ -63,7 +65,6 @@ namespace CrazyFour.Core.Actors.Hero
             else 
                 speed = (int)Speed.Normal * GameController.hz;
 
-
             // Moving the player
             if (kState.IsKeyDown(Keys.Right) && position.X < graphics.PreferredBackBufferWidth + 1 - GetSprite().Width)
                 position.X += speed * dt;
@@ -77,7 +78,7 @@ namespace CrazyFour.Core.Actors.Hero
             if (kState.IsKeyDown(Keys.Up) && position.Y > 0)
                 position.Y -= speed * dt;
 
-
+            
             // Firing projectile but making sure we fire only one at a time
             if (!isFiring)
             {
@@ -92,7 +93,7 @@ namespace CrazyFour.Core.Actors.Hero
                 }
             }
 
-            // releasing the flag once we fire one
+            //releasing the flag once we fire one
             if (kState.IsKeyUp(Keys.Space))
             {
                 isFiring = false;

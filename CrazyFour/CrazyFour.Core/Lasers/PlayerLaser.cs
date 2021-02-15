@@ -78,7 +78,9 @@ namespace CrazyFour.Core.Lasers
             else
                 speed = (int)Speed.Normal * GameController.hz;
 
-            position.Y -= speed * dt;
+            position.Y -=  2 * speed * dt;
+            
+
 
             if (position.Y < 0)
                 isActive = false;
