@@ -32,4 +32,12 @@ namespace CrazyFour.Core.Helpers
         Enemy,
         Player
     }
+
+    public enum Direction
+    {
+        Top = -1,
+        Right = 1,
+        Bottom = 1,
+        Left = -1
+    }
 }

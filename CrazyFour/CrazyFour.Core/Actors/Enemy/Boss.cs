@@ -36,7 +36,7 @@ namespace CrazyFour.Core.Actors.Enemy
                 Color.White);
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime, Vector2? pp)
         {
             throw new NotImplementedException();
         }

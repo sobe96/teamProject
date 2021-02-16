@@ -32,6 +32,11 @@ namespace CrazyFour.Core.Actors.Hero
             LoadSprite(LoadType.Ship, SPRITE_IMAGE);
         }
 
+        public Vector2 GetPlayerPosition()
+        { 
+            return position; 
+        }
+
         public override void Draw(GameTime gameTime)
         {
             if (!inGame)
@@ -45,7 +50,7 @@ namespace CrazyFour.Core.Actors.Hero
                 spriteBatch.Draw(GetSprite(), new Vector2(position.X, position.Y), Color.White);
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime, Vector2? pp)
         {
             KeyboardState kState = Keyboard.GetState();
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;

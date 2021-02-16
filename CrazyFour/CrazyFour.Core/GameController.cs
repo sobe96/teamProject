@@ -1,4 +1,6 @@
-﻿using CrazyFour.Core.Actors.Enemy;
+﻿using CrazyFour.Core.Actors;
+using CrazyFour.Core.Actors.Enemy;
+using CrazyFour.Core.Factories;
 using CrazyFour.Core.Helpers;
 using CrazyFour.Core.Lasers;
 using Microsoft.Xna.Framework;
@@ -29,7 +31,8 @@ namespace CrazyFour.Core
         public int nextSpeed = 240;
         public float totalTime = 0f;
 
-
+        private ActorFactory factory;
+        private const int MAXSOLDIERS = 4;
 
         public static GameController Instance
         {
@@ -62,17 +65,72 @@ namespace CrazyFour.Core
                 playerLazers.Add((PlayerLaser)lazer);
         }
 
-        public void LoadContent()
+        public void LoadContent(ActorFactory fac)
         {
+            factory = fac;
 
+            //player = factory.GetActor(ActorTypes.Player);
+            //boss = factory.GetActor(ActorTypes.Boss);
+            //underboss = factory.GetActor(ActorTypes.Underboss);
+            //capo = factory.GetActor(ActorTypes.Capo);
+            //soldier = factory.GetActor(ActorTypes.Soldier);
         }
 
-        public void Update(GameTime gameTime)
+        public void Draw(GameTime gameTime)
+        {
+            if (Config.inGame)
+            {
+                totalTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                // spawning enemy solders
+                if ((int)totalTime > 5 && soldiers.Count < MAXSOLDIERS)
+                {
+                    Soldier sol = (Soldier)factory.GetActor(ActorTypes.Soldier);
+                    sol.Draw(gameTime);
+
+                    //IActor player = factory.GetActor(ActorTypes.Player);
+                    soldiers.Add(sol);
+                }
+
+                // Updating the enemy's position
+                foreach (Soldier sol in soldiers)
+                {
+                    sol.Draw(gameTime);
+                }
+
+
+                // Updating position for the enemy lasers
+                foreach (EnemyLaser enemy in GameController.enemyLazers)
+                {
+                    enemy.Draw(gameTime);
+                }
+
+                // Updating position for the player lasers
+                foreach (PlayerLaser player in GameController.playerLazers)
+                {
+                    player.Draw(gameTime);
+                }
+
+                // Removing any player lasors that have gone out of window
+                GameController.playerLazers.RemoveAll(r => r.isActive is false);
+
+                // Removing any enemy lasors that have done out of the window
+                GameController.enemyLazers.RemoveAll(r => r.isActive is false);
+            }
+        }
+
+
+        public void Update(GameTime gameTime, Vector2 playerPosition)
         {
             if (Config.inGame)
             {
                 timer -= gameTime.ElapsedGameTime.TotalSeconds;
                 totalTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                foreach(Soldier sol in soldiers)
+                {
+                    sol.Update(gameTime, playerPosition);
+                }
 
                 foreach(EnemyLaser enemy in GameController.enemyLazers)
                 {
@@ -110,28 +168,6 @@ namespace CrazyFour.Core
             }
         }
 
-        public void Draw(GameTime gameTime) 
-        {
-            if (Config.inGame)
-            {
-                // Updating position for the enemy lasers
-                foreach (EnemyLaser enemy in GameController.enemyLazers)
-                {
-                    enemy.Draw(gameTime);
-                }
-
-                // Updating position for the player lasers
-                foreach (PlayerLaser player in GameController.playerLazers)
-                {
-                    player.Draw(gameTime);
-                }
-
-                // Removing any player lasors that have gone out of window
-                GameController.playerLazers.RemoveAll(r => r.isActive is false);
-
-                // Removing any enemy lasors that have done out of the window
-                GameController.enemyLazers.RemoveAll(r => r.isActive is false);
-            }
-        }
+        
     }
 }

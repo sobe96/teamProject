@@ -46,7 +46,7 @@ namespace CrazyFour.Core.Actors.Enemy
                 spriteBatch.Draw(GetSprite(), defaultPosition, Color.White);
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime, Vector2? pp)
         {
             throw new NotImplementedException();
         }

@@ -56,52 +56,22 @@ namespace CrazyFour
 
         protected override void LoadContent()
         {
+            controller.LoadContent(factory);
+
             player = factory.GetActor(ActorTypes.Player);
-            boss = factory.GetActor(ActorTypes.Boss);
-            underboss = factory.GetActor(ActorTypes.Underboss);
-            capo = factory.GetActor(ActorTypes.Capo);
-            soldier = factory.GetActor(ActorTypes.Soldier);
+            //boss = factory.GetActor(ActorTypes.Boss);
+            //underboss = factory.GetActor(ActorTypes.Underboss);
+            //capo = factory.GetActor(ActorTypes.Capo);
+            //soldier = factory.GetActor(ActorTypes.Soldier);
 
             spaceBackground = Content.Load<Texture2D>("Images/space");
             defaultFont = Content.Load<SpriteFont>("DefaultFont");
         }
 
-        protected override void Update(GameTime gameTime)
-        {
-            try
-            {
-                // Making sure we start the game when the enter button is pressed
-                KeyboardState kState = Keyboard.GetState();
-                if (kState.IsKeyDown(Keys.Enter))
-                {
-                    Config.inGame = true;
-                }
-
-                if (Config.inGame)
-                {
-                    if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                        Exit();
-
-                    
-                    timer += gameTime.ElapsedGameTime.TotalSeconds;
-                    mState = Mouse.GetState();
-
-                    player.Update(gameTime);
-
-                    controller.Update(gameTime);
-
-                    base.Update(gameTime);
-                }
-            }
-            catch (Exception ex) {
-                var colorTask = MessageBox.Show("Error Occurred", ex.Message, new[] { "OK" });
-            }
-        }
-
         protected override void Draw(GameTime gameTime)
         {
             try
-            { 
+            {
                 GraphicsDevice.Clear(Color.CornflowerBlue);
 
                 _spriteBatch.Begin();
@@ -110,7 +80,7 @@ namespace CrazyFour
                 _spriteBatch.Draw(spaceBackground, new Vector2(0, 0), Color.White);
 
                 // If the game hasn't started only
-                if(!Config.inGame)
+                if (!Config.inGame)
                 {
                     String msg = "Press Enter to Start Game.";
                     Vector2 sizeOfText = defaultFont.MeasureString(msg);
@@ -132,10 +102,10 @@ namespace CrazyFour
                 _spriteBatch.DrawString(defaultFont, "Timer: " + Utilities.TicksToTime(Math.Ceiling(timer)), new Vector2(0, 0), Color.White);
 
                 player.Draw(gameTime);
-                boss.Draw(gameTime);
-                underboss.Draw(gameTime);
-                capo.Draw(gameTime);
-                soldier.Draw(gameTime);
+                //boss.Draw(gameTime);
+                //underboss.Draw(gameTime);
+                //capo.Draw(gameTime);
+                //soldier.Draw(gameTime);
 
                 // updating the lasers
                 controller.Draw(gameTime);
@@ -150,5 +120,40 @@ namespace CrazyFour
                 var colorTask = MessageBox.Show("Error Occurred", ex.Message, new[] { "OK" });
             }
         }
+
+
+        protected override void Update(GameTime gameTime)
+        {
+            try
+            {
+                // Making sure we start the game when the enter button is pressed
+                KeyboardState kState = Keyboard.GetState();
+                if (kState.IsKeyDown(Keys.Enter))
+                {
+                    Config.inGame = true;
+                }
+
+                if (Config.inGame)
+                {
+                    if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                        Exit();
+
+                    
+                    timer += gameTime.ElapsedGameTime.TotalSeconds;
+                    mState = Mouse.GetState();
+
+                    player.Update(gameTime, null);
+
+                    controller.Update(gameTime, ((Player)player).GetPlayerPosition());
+
+                    base.Update(gameTime);
+                }
+            }
+            catch (Exception ex) {
+                var colorTask = MessageBox.Show("Error Occurred", ex.Message, new[] { "OK" });
+            }
+        }
+
+        
     }
 }
