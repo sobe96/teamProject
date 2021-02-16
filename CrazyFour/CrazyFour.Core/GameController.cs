@@ -139,8 +139,24 @@ namespace CrazyFour.Core
 
                 foreach (PlayerLaser player in GameController.playerLazers)
                 {
+                    foreach (Soldier sol in soldiers)
+                    {
+                        int sum = Soldier.radius + PlayerLaser.radius;
+
+                        if (Vector2.Distance(player.position, sol.currentPosition) < sum)
+                        {
+                            sol.isHit = true;
+                            player.isHit = true;
+                        }
+
+                        sol.Update(gameTime, playerPosition);
+                    }
+
                     player.Update(gameTime);
                 }
+
+                GameController.playerLazers.RemoveAll(r => r.isHit);
+                soldiers.RemoveAll(r => r.isHit);
             }
             else
             {
@@ -155,17 +171,16 @@ namespace CrazyFour.Core
                 }
             }
 
-            if (timer <= 0)
-            {
-                //asteroids.Add(new Asteroid(nextSpeed));
-                timer = maxTime;
+            //if (timer <= 0)
+            //{
+            //    timer = maxTime;
 
-                if (maxTime > 0.5)
-                    maxTime -= 0.1D;
+            //    if (maxTime > 0.5)
+            //        maxTime -= 0.1D;
 
-                if (nextSpeed < 720)
-                    nextSpeed += 4;
-            }
+            //    if (nextSpeed < 720)
+            //        nextSpeed += 4;
+            //}
         }
 
         

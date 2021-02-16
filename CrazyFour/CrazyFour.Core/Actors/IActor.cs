@@ -20,8 +20,11 @@ namespace CrazyFour.Core.Actors
         public bool inGame = false;
         protected bool isSpriteLoaded = false;
         protected Vector2 defaultPosition;
-        protected Vector2 currentPosition;
+        
+        public Vector2 currentPosition;
         protected Vector2 playerPosition;
+
+        public bool isHit = false;
 
         public virtual void Initialize(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
         {

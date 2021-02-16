@@ -14,8 +14,10 @@ namespace CrazyFour.Core.Actors.Enemy
         private const string SPRITE_IMAGE = "Images/Players/soldier";
         private const string LAZER_IMAGE = "Images/Lazers/GreenLazer";
         private float speed;
-        private int radius = 15;
         private Random rand = new Random();
+        
+        public static int radius { get; } = 15;
+
 
         public Soldier(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
         {
@@ -29,12 +31,6 @@ namespace CrazyFour.Core.Actors.Enemy
             LoadSprite(LoadType.Ship, SPRITE_IMAGE);
             LoadSprite(LoadType.Lazer, LAZER_IMAGE);
             inGame = true;
-
-            //int width = rand.Next(GetRadius(), graphics.PreferredBackBufferWidth / 2);
-            //int height = rand.Next(graphics.PreferredBackBufferHeight - 200);
-
-            int w = GetRadius() * -1;
-            int w2 = (GetRadius() * 3) * -1;
 
             int width = rand.Next(GetRadius(), graphics.PreferredBackBufferWidth - GetRadius());
             int height = rand.Next((GetRadius() * 3) * -1, GetRadius() * -1);
