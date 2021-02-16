@@ -1,4 +1,5 @@
-﻿using CrazyFour.Core.Helpers;
+﻿using CrazyFour.Core.Actors.Enemy;
+using CrazyFour.Core.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -17,12 +18,15 @@ namespace CrazyFour.Core.Lasers
 
         private const string LAZER_IMAGE = "Images/Lazers/AguaLazer";
         private Texture2D projectile;
-        private Vector2 position;
+        public Vector2 position;
         private int speed;
 
-        public bool inGame = true;
-        private bool objectComplete = false;
-        
+        public static int radius { get; } = 6;
+
+        public bool isActive { get; set; } = true;
+
+        public bool isHit { get; set; } = false;
+
 
         public PlayerLaser(GraphicsDeviceManager gra, SpriteBatch spr, ContentManager con)
         {
@@ -56,7 +60,6 @@ namespace CrazyFour.Core.Lasers
                     throw new NotImplementedException();
             }
 
-            objectComplete = true;
         }
 
         public override void Draw(GameTime game)
@@ -78,7 +81,8 @@ namespace CrazyFour.Core.Lasers
             position.Y -= speed * dt;
 
             if (position.Y < 0)
-                inGame = false;
+                isActive = false;
+
         }
 
     }

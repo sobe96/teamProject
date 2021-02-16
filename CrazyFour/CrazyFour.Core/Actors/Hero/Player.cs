@@ -17,6 +17,11 @@ namespace CrazyFour.Core.Actors.Hero
         private int speed;
         private bool isFiring = false;
 
+
+        public static int radius { get; set; } = 29;
+
+
+
         public Player(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
         {
             graphics = g;
@@ -27,6 +32,11 @@ namespace CrazyFour.Core.Actors.Hero
             speed = 4 * GameController.hz;
 
             LoadSprite(LoadType.Ship, SPRITE_IMAGE);
+        }
+
+        public Vector2 GetPlayerPosition()
+        { 
+            return position; 
         }
 
         public override void Draw(GameTime gameTime)
@@ -42,7 +52,7 @@ namespace CrazyFour.Core.Actors.Hero
                 spriteBatch.Draw(GetSprite(), new Vector2(position.X, position.Y), Color.White);
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime, Vector2? pp)
         {
             KeyboardState kState = Keyboard.GetState();
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -76,10 +86,9 @@ namespace CrazyFour.Core.Actors.Hero
                     isFiring = true;
 
                     LaserFactory factory = new LaserFactory(graphics, spriteBatch, content);
-                    ILaser lazer = factory.GetLazer(LazerType.Player, position, gameTime);
+                    ILaser lazer = factory.GetLazer(LazerType.Player, new Vector2(position.X + radius, position.Y), gameTime);
 
                     GameController.AddLazer(lazer);
-                    //position.X += speed * dt;
                 }
             }
 

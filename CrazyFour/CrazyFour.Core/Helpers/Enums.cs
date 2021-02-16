@@ -29,7 +29,18 @@ namespace CrazyFour.Core.Helpers
 
     public enum LazerType
     {
-        Enemy,
-        Player
+        Player,
+        Boss,
+        Underboss,
+        Capo,
+        Soldier
+    }
+
+    public enum Direction
+    {
+        Top = -1,
+        Right = 1,
+        Bottom = 1,
+        Left = -1
     }
 }

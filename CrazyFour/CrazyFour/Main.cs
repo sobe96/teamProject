@@ -17,9 +17,6 @@ namespace CrazyFour
         private ActorFactory factory;
         private GameController controller;
 
-        private const int windowWidth = 1280;
-        private const int windowHeight = 720;
-
         private MouseState mState;
 
         private IActor player;
@@ -31,7 +28,8 @@ namespace CrazyFour
         private Texture2D spaceBackground;
         private double timer;
         private SpriteFont defaultFont;
-        private bool inGame = false;
+
+
 
         public Main()
         {
@@ -39,8 +37,8 @@ namespace CrazyFour
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
 
-            _graphics.PreferredBackBufferWidth = windowWidth;
-            _graphics.PreferredBackBufferHeight = windowHeight;
+            _graphics.PreferredBackBufferWidth = Config.windowWidth;
+            _graphics.PreferredBackBufferHeight = Config.windowHeight;
 
             controller = GameController.Instance;
 
@@ -58,74 +56,43 @@ namespace CrazyFour
 
         protected override void LoadContent()
         {
+            controller.LoadContent(factory);
+
             player = factory.GetActor(ActorTypes.Player);
-            boss = factory.GetActor(ActorTypes.Boss);
-            underboss = factory.GetActor(ActorTypes.Underboss);
-            capo = factory.GetActor(ActorTypes.Capo);
-            soldier = factory.GetActor(ActorTypes.Soldier);
+            //boss = factory.GetActor(ActorTypes.Boss);
+            //underboss = factory.GetActor(ActorTypes.Underboss);
+            //capo = factory.GetActor(ActorTypes.Capo);
+            //soldier = factory.GetActor(ActorTypes.Soldier);
 
             spaceBackground = Content.Load<Texture2D>("Images/space");
             defaultFont = Content.Load<SpriteFont>("DefaultFont");
         }
 
-        protected override void Update(GameTime gameTime)
-        {
-            try
-            {
-                // Making sure we start the game when the enter button is pressed
-                KeyboardState kState = Keyboard.GetState();
-                if (kState.IsKeyDown(Keys.Enter))
-                {
-                    inGame = true;
-                }
-
-                if (inGame)
-                {
-                    if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                        Exit();
-
-                    
-                    timer += gameTime.ElapsedGameTime.TotalSeconds;
-                    mState = Mouse.GetState();
-
-                    player.Update(gameTime);
-
-                    controller.Update(gameTime);
-
-                    base.Update(gameTime);
-                }
-            }
-            catch (Exception ex) {
-                var colorTask = MessageBox.Show("Error Occurred", ex.Message, new[] { "OK" });
-            }
-        }
-
         protected override void Draw(GameTime gameTime)
         {
             try
-            { 
+            {
                 GraphicsDevice.Clear(Color.CornflowerBlue);
-
-                // TODO: Add your drawing code here
 
                 _spriteBatch.Begin();
 
                 // Loading the defaults
                 _spriteBatch.Draw(spaceBackground, new Vector2(0, 0), Color.White);
 
-                if(!inGame)
+                // If the game hasn't started only
+                if (!Config.inGame)
                 {
                     String msg = "Press Enter to Start Game.";
                     Vector2 sizeOfText = defaultFont.MeasureString(msg);
-                    _spriteBatch.DrawString(defaultFont, msg, new Vector2(windowWidth / 2 - sizeOfText.X / 2, windowHeight / 2), Color.White);
+                    _spriteBatch.DrawString(defaultFont, msg, new Vector2(Config.windowWidth / 2 - sizeOfText.X / 2, Config.windowHeight / 2), Color.White);
 
                     msg = "Use the 'S' key to slow the game down";
                     sizeOfText = defaultFont.MeasureString(msg);
-                    _spriteBatch.DrawString(defaultFont, msg, new Vector2(windowWidth / 2 - sizeOfText.X / 2, windowHeight / 2 + 50), Color.White);
+                    _spriteBatch.DrawString(defaultFont, msg, new Vector2(Config.windowWidth / 2 - sizeOfText.X / 2, Config.windowHeight / 2 + 50), Color.White);
 
                     msg = "Use the Spacebar key to fire";
                     sizeOfText = defaultFont.MeasureString(msg);
-                    _spriteBatch.DrawString(defaultFont, msg, new Vector2(windowWidth / 2 - sizeOfText.X / 2, windowHeight / 2 + 100), Color.White);
+                    _spriteBatch.DrawString(defaultFont, msg, new Vector2(Config.windowWidth / 2 - sizeOfText.X / 2, Config.windowHeight / 2 + 100), Color.White);
 
                     _spriteBatch.End();
                     base.Draw(gameTime);
@@ -135,10 +102,10 @@ namespace CrazyFour
                 _spriteBatch.DrawString(defaultFont, "Timer: " + Utilities.TicksToTime(Math.Ceiling(timer)), new Vector2(0, 0), Color.White);
 
                 player.Draw(gameTime);
-                boss.Draw(gameTime);
-                underboss.Draw(gameTime);
-                capo.Draw(gameTime);
-                soldier.Draw(gameTime);
+                //boss.Draw(gameTime);
+                //underboss.Draw(gameTime);
+                //capo.Draw(gameTime);
+                //soldier.Draw(gameTime);
 
                 // updating the lasers
                 controller.Draw(gameTime);
@@ -153,5 +120,39 @@ namespace CrazyFour
                 var colorTask = MessageBox.Show("Error Occurred", ex.Message, new[] { "OK" });
             }
         }
+
+
+        protected override void Update(GameTime gameTime)
+        {
+            try
+            {
+                // Making sure we start the game when the enter button is pressed
+                KeyboardState kState = Keyboard.GetState();
+                if (kState.IsKeyDown(Keys.Enter))
+                {
+                    Config.inGame = true;
+                }
+
+                if (Config.inGame)
+                {
+                    if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                        Exit();
+
+                    
+                    timer += gameTime.ElapsedGameTime.TotalSeconds;
+                    mState = Mouse.GetState();
+
+                    player.Update(gameTime, null);
+                    controller.Update(gameTime, ((Player)player).GetPlayerPosition());
+
+                    base.Update(gameTime);
+                }
+            }
+            catch (Exception ex) {
+                var colorTask = MessageBox.Show("Error Occurred", ex.Message, new[] { "OK" });
+            }
+        }
+
+        
     }
 }

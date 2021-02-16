@@ -20,6 +20,11 @@ namespace CrazyFour.Core.Actors
         public bool inGame = false;
         protected bool isSpriteLoaded = false;
         protected Vector2 defaultPosition;
+        
+        public Vector2 currentPosition;
+        protected Vector2 playerPosition;
+
+        public bool isHit = false;
 
         public virtual void Initialize(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
         {
@@ -68,7 +73,7 @@ namespace CrazyFour.Core.Actors
             throw new ArgumentException("No sprite defined");
         }
 
-        public abstract void Update(GameTime gameTime);
+        public abstract void Update(GameTime gameTime, Vector2? playerPosition);
 
         public abstract void Draw(GameTime gameTime);
 

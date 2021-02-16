@@ -13,6 +13,8 @@ namespace CrazyFour.Core.Actors.Enemy
         private const string SPRITE_IMAGE = "Images/Players/boss";
         private const string LAZER_IMAGE = "Images/Lazers/RedLazer";
         private int speed;
+        private int radius = 100;
+
 
         public Boss(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
         {
@@ -34,7 +36,7 @@ namespace CrazyFour.Core.Actors.Enemy
                 Color.White);
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime, Vector2? pp)
         {
             throw new NotImplementedException();
         }

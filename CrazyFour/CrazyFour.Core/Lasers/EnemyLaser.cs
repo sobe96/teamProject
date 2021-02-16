@@ -17,6 +17,9 @@ namespace CrazyFour.Core.Lasers
         private Texture2D projectile;
         private Vector2 position;
         private string img;
+        private int radius = 6;
+        public bool isActive = true;
+
 
         public EnemyLaser(GraphicsDeviceManager gra, SpriteBatch spr, ContentManager con)
         {
