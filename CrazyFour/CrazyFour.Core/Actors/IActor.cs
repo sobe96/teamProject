@@ -57,9 +57,9 @@ namespace CrazyFour.Core.Actors
                 int height = spriteImage.Height;
 
                 if (width > height)
-                    return radius = Convert.ToInt32(Math.Ceiling((decimal)(width / 2)));
+                    return Convert.ToInt32(Math.Ceiling((decimal)(width / 2)));
                 else
-                    return radius = Convert.ToInt32(Math.Ceiling((decimal)(width / 2)));
+                    return Convert.ToInt32(Math.Ceiling((decimal)(width / 2)));
             }
 
             throw new ArgumentNullException("Must set the sprite image first.");
