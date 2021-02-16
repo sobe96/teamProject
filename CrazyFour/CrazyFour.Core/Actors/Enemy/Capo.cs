@@ -15,7 +15,7 @@ namespace CrazyFour.Core.Actors.Enemy
         private float speed;
         private Random rand = new Random();
 
-        public static int radius { get; } = 15;
+        public static int radius { get; } = 12;
 
 
 
