@@ -19,6 +19,7 @@ namespace CrazyFour.Core.Lasers
         private string img;
         private int radius = 6;
         public bool isActive = true;
+        public bool isHit = false;
 
 
         public EnemyLaser(GraphicsDeviceManager gra, SpriteBatch spr, ContentManager con)

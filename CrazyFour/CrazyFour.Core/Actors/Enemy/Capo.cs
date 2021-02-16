@@ -12,8 +12,10 @@ namespace CrazyFour.Core.Actors.Enemy
     {
         private const string SPRITE_IMAGE = "Images/Players/capo";
         private const string LAZER_IMAGE = "Images/Lazers/YellowLazer";
-        private int speed;
-        private int radius = 11;
+        private float speed;
+        private Random rand = new Random();
+
+        public static int radius { get; } = 12;
 
 
 
@@ -24,23 +26,25 @@ namespace CrazyFour.Core.Actors.Enemy
             content = c;
 
             // defining the default speed
-            speed = 4 * GameController.hz;
-
-            defaultPosition.X = 250;
-            defaultPosition.Y = 424;
+            speed = 2f * GameController.hz;
 
             LoadSprite(LoadType.Ship, SPRITE_IMAGE);
             LoadSprite(LoadType.Lazer, LAZER_IMAGE);
+            inGame = true;
+
+            // Randomizing starting point
+            int width = rand.Next(GetRadius(), graphics.PreferredBackBufferWidth - GetRadius());
+            int height = rand.Next(GetRadius() * 1, (GetRadius() * 3) * 1);
+
+            defaultPosition = new Vector2(width, height);
+            currentPosition = defaultPosition;
         }
 
         public override void Draw(GameTime gameTime)
         {
             if (inGame)
             {
-                Random rand = new Random();
-                int width = rand.Next(GetRadius(), graphics.PreferredBackBufferWidth / 2);
-                int height = rand.Next(graphics.PreferredBackBufferHeight - 200);
-                spriteBatch.Draw(GetSprite(), new Vector2(width, height), Color.White);
+                spriteBatch.Draw(GetSprite(), currentPosition, Color.White);
             }
             else
                 spriteBatch.Draw(GetSprite(), defaultPosition, Color.White);
@@ -48,7 +52,15 @@ namespace CrazyFour.Core.Actors.Enemy
 
         public override void Update(GameTime gameTime, Vector2? pp)
         {
-            throw new NotImplementedException();
+            float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            playerPosition = (Vector2)pp;
+
+            if (inGame)
+            {
+                Vector2 move = playerPosition - currentPosition;
+                move.Normalize();
+                currentPosition += move * speed * dt;
+            }
         }
     }
 }

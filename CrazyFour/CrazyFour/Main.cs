@@ -16,18 +16,12 @@ namespace CrazyFour
         private SpriteBatch _spriteBatch;
         private ActorFactory factory;
         private GameController controller;
-
         private MouseState mState;
-
         private IActor player;
-        private IActor boss;
-        private IActor underboss;
-        private IActor capo;
-        private IActor soldier;
-
         private Texture2D spaceBackground;
-        private double timer;
         private SpriteFont defaultFont;
+
+        public double timer;
 
 
 
@@ -57,12 +51,7 @@ namespace CrazyFour
         protected override void LoadContent()
         {
             controller.LoadContent(factory);
-
             player = factory.GetActor(ActorTypes.Player);
-            //boss = factory.GetActor(ActorTypes.Boss);
-            //underboss = factory.GetActor(ActorTypes.Underboss);
-            //capo = factory.GetActor(ActorTypes.Capo);
-            //soldier = factory.GetActor(ActorTypes.Soldier);
 
             spaceBackground = Content.Load<Texture2D>("Images/space");
             defaultFont = Content.Load<SpriteFont>("DefaultFont");
@@ -102,10 +91,6 @@ namespace CrazyFour
                 _spriteBatch.DrawString(defaultFont, "Timer: " + Utilities.TicksToTime(Math.Ceiling(timer)), new Vector2(0, 0), Color.White);
 
                 player.Draw(gameTime);
-                //boss.Draw(gameTime);
-                //underboss.Draw(gameTime);
-                //capo.Draw(gameTime);
-                //soldier.Draw(gameTime);
 
                 // updating the lasers
                 controller.Draw(gameTime);
@@ -126,6 +111,8 @@ namespace CrazyFour
         {
             try
             {
+                GameController.totalTime = (float)timer;
+
                 // Making sure we start the game when the enter button is pressed
                 KeyboardState kState = Keyboard.GetState();
                 if (kState.IsKeyDown(Keys.Enter))

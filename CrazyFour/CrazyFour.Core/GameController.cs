@@ -19,20 +19,18 @@ namespace CrazyFour.Core
 
         public List<Texture2D> soldierSprites = new List<Texture2D>();
 
-        public List<Capo> capos = new List<Capo>();
-        public List<Soldier> soldiersList = new List<Soldier>();
-
+        public List<IActor> enemyList = new List<IActor>();
         public static List<EnemyLaser> enemyLazers = new List<EnemyLaser>();
         public static List<PlayerLaser> playerLazers = new List<PlayerLaser>();
 
-        public double timer = 2D;
-        public double maxTime = 2D;
         public static int hz = 60;
-        public int nextSpeed = 240;
-        public float totalTime = 0f;
+        public static float totalTime = 0f;
 
         private ActorFactory factory;
         private const int MAXSOLDIERS = 4;
+        private const int MAXCAPOS = 2;
+        private const int MAXUNDERBOSS = 1;
+        private const int MAXBOSS = 1;
 
         private bool doneConfiguringSolders = false;
         private bool doneConfiguringUnderboss = false;
@@ -73,12 +71,6 @@ namespace CrazyFour.Core
         public void LoadContent(ActorFactory fac)
         {
             factory = fac;
-
-            //player = factory.GetActor(ActorTypes.Player);
-            //boss = factory.GetActor(ActorTypes.Boss);
-            //underboss = factory.GetActor(ActorTypes.Underboss);
-            //capo = factory.GetActor(ActorTypes.Capo);
-            //soldier = factory.GetActor(ActorTypes.Soldier);
         }
 
         public void InitializeEnemies(GameTime game, ActorTypes type)
@@ -88,21 +80,31 @@ namespace CrazyFour.Core
                 case ActorTypes.Boss:
                     break;
                 case ActorTypes.Capo:
+                    if (!doneConfiguringCapo)
+                    {
+                        if ((int)totalTime >= 3)
+                        {
+                            for (int i = 0; i < MAXCAPOS; i++)
+                            {
+                                var sol = (Capo)factory.GetActor(ActorTypes.Capo);
+                                enemyList.Add(sol);
+                            }
+
+                            doneConfiguringCapo = true;
+                        }
+                    }
                     break;
                 case ActorTypes.Player:
                     break;
                 case ActorTypes.Soldier:
                     if (!doneConfiguringSolders)
                     {
-                        totalTime += (float)game.ElapsedGameTime.TotalSeconds;
-
-                        // spawning enemy solders
-                        if ((int)totalTime > 1 && soldiersList.Count < MAXSOLDIERS)
+                        if ((int)totalTime >= 1)
                         {
-                            for (int i = 0; i <= MAXSOLDIERS; i++)
+                            for (int i = 0; i < MAXSOLDIERS; i++)
                             {
                                 var sol = (Soldier)factory.GetActor(ActorTypes.Soldier);
-                                soldiersList.Add(sol);
+                                enemyList.Add(sol);
                             }
 
                             doneConfiguringSolders = true;
@@ -119,7 +121,7 @@ namespace CrazyFour.Core
             if (Config.inGame)
             {
                 // Updating the enemy's position
-                foreach (Soldier sol in soldiersList)
+                foreach (var sol in enemyList)
                 {
                     sol.Draw(gameTime);
                 }
@@ -146,26 +148,26 @@ namespace CrazyFour.Core
 
         public void Update(GameTime gameTime, Vector2 playerPosition)
         {
-            InitializeEnemies(gameTime, ActorTypes.Soldier);
-
             if (Config.inGame)
             {
-                timer -= gameTime.ElapsedGameTime.TotalSeconds;
-                totalTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                InitializeEnemies(gameTime, ActorTypes.Soldier);
+                InitializeEnemies(gameTime, ActorTypes.Capo);
 
-                foreach(Soldier sol in soldiersList)
+                //totalTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                foreach (var sol in enemyList)
                 {
                     sol.Update(gameTime, playerPosition);
                 }
 
-                foreach(EnemyLaser enemy in GameController.enemyLazers)
+                foreach (EnemyLaser enemy in GameController.enemyLazers)
                 {
                     enemy.Update(gameTime);
                 }
 
                 foreach (PlayerLaser player in GameController.playerLazers)
                 {
-                    foreach (Soldier sol in soldiersList)
+                    foreach (var sol in enemyList)
                     {
                         int sum = Soldier.radius + PlayerLaser.radius;
 
@@ -179,8 +181,9 @@ namespace CrazyFour.Core
                     player.Update(gameTime);
                 }
 
-                GameController.playerLazers.RemoveAll(r => r.isHit);
-                soldiersList.RemoveAll(r => r.isHit);
+                GameController.playerLazers.RemoveAll(r => r.isActive is false || r.isHit);
+                GameController.enemyLazers.RemoveAll(r => r.isActive is false || r.isHit);
+                enemyList.RemoveAll(r => r.isHit);
             }
         }
 
