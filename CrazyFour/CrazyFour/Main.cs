@@ -143,7 +143,6 @@ namespace CrazyFour
                     mState = Mouse.GetState();
 
                     player.Update(gameTime, null);
-
                     controller.Update(gameTime, ((Player)player).GetPlayerPosition());
 
                     base.Update(gameTime);

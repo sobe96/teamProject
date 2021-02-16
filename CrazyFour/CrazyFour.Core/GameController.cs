@@ -20,7 +20,7 @@ namespace CrazyFour.Core
         public List<Texture2D> soldierSprites = new List<Texture2D>();
 
         public List<Capo> capos = new List<Capo>();
-        public List<Soldier> soldiers = new List<Soldier>();
+        public List<Soldier> soldiersList = new List<Soldier>();
 
         public static List<EnemyLaser> enemyLazers = new List<EnemyLaser>();
         public static List<PlayerLaser> playerLazers = new List<PlayerLaser>();
@@ -33,6 +33,11 @@ namespace CrazyFour.Core
 
         private ActorFactory factory;
         private const int MAXSOLDIERS = 4;
+
+        private bool doneConfiguringSolders = false;
+        private bool doneConfiguringUnderboss = false;
+        private bool doneConfiguringCapo = false;
+        private bool doneConfiguringBoss = false;
 
         public static GameController Instance
         {
@@ -76,28 +81,48 @@ namespace CrazyFour.Core
             //soldier = factory.GetActor(ActorTypes.Soldier);
         }
 
+        public void InitializeEnemies(GameTime game, ActorTypes type)
+        {
+            switch(type)
+            {
+                case ActorTypes.Boss:
+                    break;
+                case ActorTypes.Capo:
+                    break;
+                case ActorTypes.Player:
+                    break;
+                case ActorTypes.Soldier:
+                    if (!doneConfiguringSolders)
+                    {
+                        totalTime += (float)game.ElapsedGameTime.TotalSeconds;
+
+                        // spawning enemy solders
+                        if ((int)totalTime > 1 && soldiersList.Count < MAXSOLDIERS)
+                        {
+                            for (int i = 0; i <= MAXSOLDIERS; i++)
+                            {
+                                var sol = (Soldier)factory.GetActor(ActorTypes.Soldier);
+                                soldiersList.Add(sol);
+                            }
+
+                            doneConfiguringSolders = true;
+                        }
+                    }
+                    break;
+                case ActorTypes.Underboss:
+                    break;
+            }
+        }
+
         public void Draw(GameTime gameTime)
         {
             if (Config.inGame)
             {
-                totalTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-                // spawning enemy solders
-                if ((int)totalTime > 5 && soldiers.Count < MAXSOLDIERS)
-                {
-                    Soldier sol = (Soldier)factory.GetActor(ActorTypes.Soldier);
-                    sol.Draw(gameTime);
-
-                    //IActor player = factory.GetActor(ActorTypes.Player);
-                    soldiers.Add(sol);
-                }
-
                 // Updating the enemy's position
-                foreach (Soldier sol in soldiers)
+                foreach (Soldier sol in soldiersList)
                 {
                     sol.Draw(gameTime);
                 }
-
 
                 // Updating position for the enemy lasers
                 foreach (EnemyLaser enemy in GameController.enemyLazers)
@@ -119,15 +144,16 @@ namespace CrazyFour.Core
             }
         }
 
-
         public void Update(GameTime gameTime, Vector2 playerPosition)
         {
+            InitializeEnemies(gameTime, ActorTypes.Soldier);
+
             if (Config.inGame)
             {
                 timer -= gameTime.ElapsedGameTime.TotalSeconds;
                 totalTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-                foreach(Soldier sol in soldiers)
+                foreach(Soldier sol in soldiersList)
                 {
                     sol.Update(gameTime, playerPosition);
                 }
@@ -139,7 +165,7 @@ namespace CrazyFour.Core
 
                 foreach (PlayerLaser player in GameController.playerLazers)
                 {
-                    foreach (Soldier sol in soldiers)
+                    foreach (Soldier sol in soldiersList)
                     {
                         int sum = Soldier.radius + PlayerLaser.radius;
 
@@ -148,39 +174,14 @@ namespace CrazyFour.Core
                             sol.isHit = true;
                             player.isHit = true;
                         }
-
-                        sol.Update(gameTime, playerPosition);
                     }
 
                     player.Update(gameTime);
                 }
 
                 GameController.playerLazers.RemoveAll(r => r.isHit);
-                soldiers.RemoveAll(r => r.isHit);
+                soldiersList.RemoveAll(r => r.isHit);
             }
-            else
-            {
-                KeyboardState kState = Keyboard.GetState();
-                if (kState.IsKeyDown(Keys.Enter))
-                {
-                    Config.inGame = true;
-                    totalTime = 0;
-                    timer = 2D;
-                    maxTime = 2D;
-                    nextSpeed = 240;
-                }
-            }
-
-            //if (timer <= 0)
-            //{
-            //    timer = maxTime;
-
-            //    if (maxTime > 0.5)
-            //        maxTime -= 0.1D;
-
-            //    if (nextSpeed < 720)
-            //        nextSpeed += 4;
-            //}
         }
 
         

@@ -26,9 +26,10 @@ namespace CrazyFour.Core.Factories
         {
             switch (type)
             {
-                case LazerType.Enemy:
+                case LazerType.Boss:
                     EnemyLaser enemy = new EnemyLaser(graphics, spriteBatch, content);
                     enemy.Initialize(ActorTypes.Boss, pos);
+                    enemy.Update(game);
                     return enemy;
 
                 case LazerType.Player:

@@ -16,7 +16,9 @@ namespace CrazyFour.Core.Actors.Hero
         private const string SPRITE_IMAGE = "Images/Players/hero";
         private int speed;
         private bool isFiring = false;
-        private int radius = 29;
+
+
+        public static int radius { get; set; } = 29;
 
 
 
@@ -84,11 +86,9 @@ namespace CrazyFour.Core.Actors.Hero
                     isFiring = true;
 
                     LaserFactory factory = new LaserFactory(graphics, spriteBatch, content);
-                    //ILaser lazer = factory.GetLazer(LazerType.Player, position, gameTime);
                     ILaser lazer = factory.GetLazer(LazerType.Player, new Vector2(position.X + radius, position.Y), gameTime);
 
                     GameController.AddLazer(lazer);
-                    //position.X += speed * dt;
                 }
             }
 

@@ -83,7 +83,6 @@ namespace CrazyFour.Core.Lasers
             if (position.Y < 0)
                 isActive = false;
 
-            
         }
 
     }
