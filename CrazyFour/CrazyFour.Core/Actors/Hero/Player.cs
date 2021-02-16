@@ -15,7 +15,9 @@ namespace CrazyFour.Core.Actors.Hero
     {
         private const string SPRITE_IMAGE = "Images/Players/hero";
         private int speed;
-        private bool isFiring = false;
+        private float initCounter = 5f;
+        private float counter = 0.5f;
+        //private bool isFiring = false;
         // I'd say that firing should be automatic
         //private bool isFiring = true;
 
@@ -79,6 +81,16 @@ namespace CrazyFour.Core.Actors.Hero
                 position.Y -= speed * dt;
 
             
+            counter -= dt;
+            if (counter <= 0) 
+            {
+                LaserFactory factory = new LaserFactory(graphics, spriteBatch, content);
+                ILaser lazer = factory.GetLazer(LazerType.Player, new Vector2(position.X + radius, position.Y), gameTime);
+
+                GameController.AddLazer(lazer);
+                counter = initCounter / 10;
+            }
+            /*
             // Firing projectile but making sure we fire only one at a time
             if (!isFiring)
             {
@@ -97,7 +109,7 @@ namespace CrazyFour.Core.Actors.Hero
             if (kState.IsKeyUp(Keys.Space))
             {
                 isFiring = false;
-            }
+            }*/
         }
     }
 }
