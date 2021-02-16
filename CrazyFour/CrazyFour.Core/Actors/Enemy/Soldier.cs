@@ -34,7 +34,6 @@ namespace CrazyFour.Core.Actors.Enemy
 
             // Randomizing starting point
             int width = rand.Next(GetRadius(), graphics.PreferredBackBufferWidth - GetRadius());
-            //int height = rand.Next((GetRadius() * 3) * -1, GetRadius() * -1);
             int height = rand.Next(GetRadius() * 1, (GetRadius() * 3) * 1);
 
             defaultPosition = new Vector2(width, height);
@@ -46,12 +45,6 @@ namespace CrazyFour.Core.Actors.Enemy
         {
             if (inGame)
             {
-                int width = rand.Next(-1, 2);
-                int height = rand.Next(-1, 2);
-
-                //currentPosition.X += width;
-                //currentPosition.Y += height;
-
                 spriteBatch.Draw(GetSprite(), currentPosition, Color.White);
             }
             else
@@ -67,8 +60,6 @@ namespace CrazyFour.Core.Actors.Enemy
             {
                 Vector2 move = playerPosition - currentPosition;
                 move.Normalize();
-
-                //currentPosition += move * speed * dt;
                 currentPosition += move * speed * dt;
             }
         }
