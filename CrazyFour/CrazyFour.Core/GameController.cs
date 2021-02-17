@@ -27,9 +27,9 @@ namespace CrazyFour.Core
         public static float totalTime = 0f;
 
         private ActorFactory factory;
-        private const int MAXSOLDIERS = 4;
-        private const int MAXCAPOS = 2;
-        private const int MAXUNDERBOSS = 1;
+        private const int MAXSOLDIERS = 6;
+        private const int MAXCAPOS = 4;
+        private const int MAXUNDERBOSS = 2;
         private const int MAXBOSS = 1;
 
         private bool doneConfiguringSolders = false;
@@ -73,16 +73,29 @@ namespace CrazyFour.Core
             factory = fac;
         }
 
-        public void InitializeEnemies(GameTime game, ActorTypes type)
+       public void InitializeEnemies(GameTime game, ActorTypes type)
         {
             switch(type)
             {
                 case ActorTypes.Boss:
+                    if (!doneConfiguringBoss)
+                    {
+                        if ((int)totalTime >= 15)
+                        {
+                            for (int i = 0; i < MAXBOSS; i++)
+                            {
+                                var sol = (Boss)factory.GetActor(ActorTypes.Boss);
+                                enemyList.Add(sol);
+                            }
+
+                            doneConfiguringBoss = true;
+                        }
+                    }
                     break;
                 case ActorTypes.Capo:
                     if (!doneConfiguringCapo)
                     {
-                        if ((int)totalTime >= 3)
+                        if ((int)totalTime >= 5)
                         {
                             for (int i = 0; i < MAXCAPOS; i++)
                             {
@@ -112,6 +125,19 @@ namespace CrazyFour.Core
                     }
                     break;
                 case ActorTypes.Underboss:
+                    if (!doneConfiguringUnderboss)
+                    {
+                        if ((int)totalTime >= 10)
+                        {
+                            for (int i = 0; i < MAXUNDERBOSS; i++)
+                            {
+                                var sol = (Underboss)factory.GetActor(ActorTypes.Underboss);
+                                enemyList.Add(sol);
+                            }
+
+                            doneConfiguringUnderboss = true;
+                        }
+                    }
                     break;
             }
         }
@@ -152,6 +178,8 @@ namespace CrazyFour.Core
             {
                 InitializeEnemies(gameTime, ActorTypes.Soldier);
                 InitializeEnemies(gameTime, ActorTypes.Capo);
+                InitializeEnemies(gameTime, ActorTypes.Underboss);
+                InitializeEnemies(gameTime, ActorTypes.Boss);
 
                 //totalTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
