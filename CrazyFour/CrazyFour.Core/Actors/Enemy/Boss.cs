@@ -11,7 +11,7 @@ namespace CrazyFour.Core.Actors.Enemy
     public class Boss : IActor
     {
         private const string SPRITE_IMAGE = "Images/Players/boss";
-        private const string LAZER_IMAGE = "Images/Lazers/RedLazer";
+        private const string LASER_IMAGE = "Images/Lazers/RedLazer";
         private float speed;
         private Random rand = new Random();
 
@@ -25,10 +25,10 @@ namespace CrazyFour.Core.Actors.Enemy
             radius = 100;
 
             // defining the default speed
-            speed = 1f * (float)GameController.hz;
+            speed = 2f * (float)GameController.hz;
 
             LoadSprite(LoadType.Ship, SPRITE_IMAGE);
-            LoadSprite(LoadType.Laser, LAZER_IMAGE);
+            LoadSprite(LoadType.Laser, LASER_IMAGE);
             inGame = true;
 
             // Randomizing starting point

@@ -11,7 +11,7 @@ namespace CrazyFour.Core.Actors.Enemy
     public class Underboss : IActor
     {
         private const string SPRITE_IMAGE = "Images/Players/underboss";
-        private const string LAZER_IMAGE = "Images/Lazers/BlueLazer";
+        private const string LASER_IMAGE = "Images/Lazers/BlueLazer";
         private float speed;
         private Random rand = new Random();
 
@@ -21,13 +21,13 @@ namespace CrazyFour.Core.Actors.Enemy
             spriteBatch = s;
             content = c;
 
-            radius = 10;
+            radius = 40;
 
             // defining the default speed
-            speed = 1f * (float)GameController.hz;
+            speed = 4f * (float)GameController.hz;
 
             LoadSprite(LoadType.Ship, SPRITE_IMAGE);
-            LoadSprite(LoadType.Laser, LAZER_IMAGE);
+            LoadSprite(LoadType.Laser, LASER_IMAGE);
             inGame = true;
 
             // Randomizing starting point

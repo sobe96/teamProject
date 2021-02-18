@@ -14,7 +14,7 @@ namespace CrazyFour.Core.Actors.Enemy
     public class Soldier : IActor
     {
         private const string SPRITE_IMAGE = "Images/Players/soldier";
-        private const string LAZER_IMAGE = "Images/Lazers/GreenLazer";
+        private const string LASER_IMAGE = "Images/Lazers/GreenLazer";
         private float speed;
         private Random rand = new Random();
         
@@ -30,7 +30,7 @@ namespace CrazyFour.Core.Actors.Enemy
             speed = 1f * (float)GameController.hz;
 
             LoadSprite(LoadType.Ship, SPRITE_IMAGE);
-            LoadSprite(LoadType.Laser, LAZER_IMAGE);
+            LoadSprite(LoadType.Laser, LASER_IMAGE);
             inGame = true;
 
             // Randomizing starting point

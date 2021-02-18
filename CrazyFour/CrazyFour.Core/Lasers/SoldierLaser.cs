@@ -10,7 +10,7 @@ namespace CrazyFour.Core.Lasers
 {
     public class SoldierLaser : ILaser
     {
-        private const string LASOR_IMAGE = "Images/Lazers/GreenLazer";
+        private const string LASER_IMAGE = "Images/Lazers/GreenLazer";
 
         private Texture2D projectile;
         private Vector2 position;

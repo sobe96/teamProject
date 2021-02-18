@@ -11,7 +11,7 @@ namespace CrazyFour.Core.Actors.Enemy
     public class Capo : IActor
     {
         private const string SPRITE_IMAGE = "Images/Players/capo";
-        private const string LAZER_IMAGE = "Images/Lazers/YellowLazer";
+        private const string LASER_IMAGE = "Images/Lazers/YellowLazer";
         private float speed;
         private Random rand = new Random();
 
@@ -28,7 +28,7 @@ namespace CrazyFour.Core.Actors.Enemy
             speed = 1f * GameController.hz;
 
             LoadSprite(LoadType.Ship, SPRITE_IMAGE);
-            LoadSprite(LoadType.Laser, LAZER_IMAGE);
+            LoadSprite(LoadType.Laser, LASER_IMAGE);
             inGame = true;
 
             // Randomizing starting point
