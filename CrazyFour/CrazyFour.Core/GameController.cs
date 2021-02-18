@@ -107,8 +107,6 @@ namespace CrazyFour.Core
                         }
                     }
                     break;
-                case ActorTypes.Player:
-                    break;
                 case ActorTypes.Soldier:
                     if (!doneConfiguringSolders)
                     {
@@ -139,6 +137,9 @@ namespace CrazyFour.Core
                         }
                     }
                     break;
+
+                default:
+                    throw new ArgumentException();
             }
         }
 
@@ -180,8 +181,6 @@ namespace CrazyFour.Core
                 InitializeEnemies(gameTime, ActorTypes.Capo);
                 InitializeEnemies(gameTime, ActorTypes.Underboss);
                 InitializeEnemies(gameTime, ActorTypes.Boss);
-
-                //totalTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
                 foreach (var sol in enemyList)
                 {

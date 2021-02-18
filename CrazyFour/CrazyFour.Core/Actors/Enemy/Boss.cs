@@ -28,7 +28,7 @@ namespace CrazyFour.Core.Actors.Enemy
             speed = 2f * (float)GameController.hz;
 
             LoadSprite(LoadType.Ship, SPRITE_IMAGE);
-            LoadSprite(LoadType.Lazer, LAZER_IMAGE);
+            LoadSprite(LoadType.Laser, LAZER_IMAGE);
             inGame = true;
 
             // Randomizing starting point

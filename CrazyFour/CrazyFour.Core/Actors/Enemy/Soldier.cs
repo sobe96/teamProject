@@ -64,10 +64,10 @@ namespace CrazyFour.Core.Actors.Enemy
                 move.Normalize();
                 currentPosition += move * speed * dt;
 
-                LaserFactory factory = new LaserFactory(graphics, spriteBatch, content);
-                ILaser lazer = factory.GetLazer(LazerType.Soldier, new Vector2(playerPosition.X + radius, playerPosition.Y), gameTime);
+                //LaserFactory factory = new LaserFactory(graphics, spriteBatch, content);
+                //ILaser lazer = factory.GetLazer(LazerType.Soldier, new Vector2(playerPosition.X + radius, playerPosition.Y), gameTime);
 
-                GameController.AddLaser(lazer);
+                //GameController.AddLaser(lazer);
             }
         }
     }
