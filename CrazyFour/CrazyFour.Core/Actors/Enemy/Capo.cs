@@ -25,7 +25,7 @@ namespace CrazyFour.Core.Actors.Enemy
             radius = 12;
 
             // defining the default speed
-            speed = 2f * GameController.hz;
+            speed = 1f * GameController.hz;
 
             LoadSprite(LoadType.Ship, SPRITE_IMAGE);
             LoadSprite(LoadType.Laser, LAZER_IMAGE);
@@ -33,7 +33,7 @@ namespace CrazyFour.Core.Actors.Enemy
 
             // Randomizing starting point
             int width = rand.Next(GetRadius(), graphics.PreferredBackBufferWidth - GetRadius());
-            int height = rand.Next(GetRadius() * 1, (GetRadius() * 3) * 1);
+            int height = rand.Next((GetRadius() * 3) * -1, GetRadius() * -1);
 
             defaultPosition = new Vector2(width, height);
             currentPosition = defaultPosition;

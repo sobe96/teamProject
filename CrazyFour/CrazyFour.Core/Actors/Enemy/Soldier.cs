@@ -35,7 +35,7 @@ namespace CrazyFour.Core.Actors.Enemy
 
             // Randomizing starting point
             int width = rand.Next(GetRadius(), graphics.PreferredBackBufferWidth - GetRadius());
-            int height = rand.Next(GetRadius() * 1, (GetRadius() * 3) * 1);
+            int height = rand.Next((GetRadius() * 3) * -1, GetRadius() * -1);
 
             defaultPosition = new Vector2(width, height);
             currentPosition = defaultPosition;
