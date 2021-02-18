@@ -27,10 +27,16 @@ namespace CrazyFour.Core.Factories
             switch (type)
             {
                 case LazerType.Boss:
-                    EnemyLaser enemy = new EnemyLaser(graphics, spriteBatch, content);
-                    enemy.Initialize(ActorTypes.Boss, pos);
-                    enemy.Update(game);
-                    return enemy;
+                    EnemyLaser enemyBoss = new EnemyLaser(graphics, spriteBatch, content);
+                    enemyBoss.Initialize(ActorTypes.Boss, pos);
+                    enemyBoss.Update(game);
+                    return enemyBoss;
+
+                case LazerType.Soldier:
+                    EnemyLaser enemySoldier = new EnemyLaser(graphics, spriteBatch, content);
+                    enemySoldier.Initialize(ActorTypes.Soldier, pos);
+                    enemySoldier.Update(game);
+                    return enemySoldier;
 
                 case LazerType.Player:
                     PlayerLaser player = new PlayerLaser(graphics, spriteBatch, content);

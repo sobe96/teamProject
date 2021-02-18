@@ -15,7 +15,9 @@ namespace CrazyFour.Core.Actors.Enemy
     {
         private const string SPRITE_IMAGE = "Images/Players/soldier";
         private const string LAZER_IMAGE = "Images/Lazers/BlueLazer";
+        private const int SOL_HP = 3;
         private float speed;
+        private int counterHits = 0;
         private Random rand = new Random();
 
         private float initCounter = 5f;
@@ -77,14 +79,18 @@ namespace CrazyFour.Core.Actors.Enemy
                 {
 
                     LaserFactory factory = new LaserFactory(graphics, spriteBatch, content);
-                    ILaser lazerSol = factory.GetLazer(LazerType.Soldier, new Vector2(position.X + radius, position.Y), gameTime);
+                    ILaser lazerSol = factory.GetLazer(LazerType.Soldier, new Vector2(currentPosition.X + radius - 3, currentPosition.Y + 15), gameTime);
 
                     GameController.AddLazer(lazerSol);
                     counter = initCounter / 10;
                 }
-           
-            
+
+                
+                
+
             }
+
+
         }
     }
 }

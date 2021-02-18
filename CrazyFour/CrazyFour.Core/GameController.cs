@@ -28,9 +28,9 @@ namespace CrazyFour.Core
         public static float totalTime = 0f;
 
         private ActorFactory factory;
-        private const int MAXSOLDIERS = 1;
+        private const int MAXSOLDIERS = 6;
         private const int SOL_HP = 3;
-        private const int MAXCAPOS = 1;
+        private const int MAXCAPOS = 4;
         private const int CAPO_HP = 6;
         private const int MAXUNDERBOSS = 1;
         private const int UBOSS_HP = 15;
@@ -172,7 +172,7 @@ namespace CrazyFour.Core
                         {
                             enemy.Update(gameTime);
                         }
-
+                        
                         foreach (PlayerLaser player in GameController.playerLazers)
                         {
                             foreach (var sol in enemyList)

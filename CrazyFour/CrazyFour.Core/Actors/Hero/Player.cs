@@ -14,6 +14,8 @@ namespace CrazyFour.Core.Actors.Hero
     public class Player : IActor
     {
         private const string SPRITE_IMAGE = "Images/Players/hero";
+        private const int SOL_HP = 3;
+        private int counterHits = 0;
         private int speed;
         private float initCounter = 5f;
         private float counter = 0.5f;
@@ -91,6 +93,23 @@ namespace CrazyFour.Core.Actors.Hero
                 counter = initCounter / 10;
             }
             /*
+            foreach (var sol in GameController.enemyLazers)
+            {
+                int sum = sol.radius + radius;
+
+                if (Vector2.Distance(sol.position, currentPosition) < sum)
+                {
+                    counterHits += 1;
+                    sol.isHit = true;
+                    if (counterHits == SOL_HP)
+                    {
+                        Player.isHit = true;
+                        counterHits = 0;
+                    }
+
+                }
+            }
+            
             // Firing projectile but making sure we fire only one at a time
             if (!isFiring)
             {

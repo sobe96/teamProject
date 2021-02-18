@@ -18,10 +18,10 @@ namespace CrazyFour.Core.Lasers
 
         private const string LAZER_IMAGE = "Images/Lazers/BlueLazer";
         private Texture2D projectile;
-        private Vector2 position;
+        public Vector2 position;
         private int speed;
 
-        public static int radius { get; } = 6;
+        public int radius { get; } = 6;
 
         public bool isActive { get; set; } = true;
 

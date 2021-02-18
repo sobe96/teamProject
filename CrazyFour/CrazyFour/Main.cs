@@ -138,7 +138,7 @@ namespace CrazyFour
                     controller.Update(gameTime, ((Player)player).GetPlayerPosition());
 
                     soldier.Update(gameTime, ((Soldier)soldier).GetSoldierPosition());
-                    controller.Update(gameTime, ((Soldier)soldier).GetSoldierPosition());
+                    //controller.Update(gameTime, ((Soldier)soldier).GetSoldierPosition());
 
                     base.Update(gameTime);
                 }
