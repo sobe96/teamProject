@@ -15,15 +15,14 @@ namespace CrazyFour.Core.Actors.Enemy
         private float speed;
         private Random rand = new Random();
 
-        public static int radius { get; } = 12;
-
-
 
         public Capo(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
         {
             graphics = g;
             spriteBatch = s;
             content = c;
+
+            radius = 12;
 
             // defining the default speed
             speed = 2f * GameController.hz;

@@ -18,15 +18,13 @@ namespace CrazyFour.Core.Actors.Hero
         private bool isFiring = false;
 
 
-        public static int radius { get; set; } = 29;
-
-
-
         public Player(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
         {
             graphics = g;
             spriteBatch = s;
             content = c;
+
+            radius = 29;
 
             // defining the default speed
             speed = 4 * GameController.hz;

@@ -14,13 +14,14 @@ namespace CrazyFour.Core.Actors.Enemy
         private const string LAZER_IMAGE = "Images/Lazers/BlueLazer";
         private float speed;
         private Random rand = new Random();
-        public static int radius { get; } = 10;
 
         public Underboss(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
         {
             graphics = g;
             spriteBatch = s;
             content = c;
+
+            radius = 10;
 
             // defining the default speed
             speed = 3f * (float)GameController.hz;

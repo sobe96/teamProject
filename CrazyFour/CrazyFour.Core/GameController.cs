@@ -192,20 +192,20 @@ namespace CrazyFour.Core
                     enemy.Update(gameTime);
                 }
 
-                foreach (PlayerLaser player in GameController.playerLasers)
+                foreach (PlayerLaser pLaser in GameController.playerLasers)
                 {
                     foreach (var sol in enemyList)
                     {
-                        int sum = Soldier.radius + PlayerLaser.radius;
+                        int sum = sol.radius + PlayerLaser.radius;
 
-                        if (Vector2.Distance(player.position, sol.currentPosition) < sum)
+                        if (Vector2.Distance(pLaser.position, sol.currentPosition) < sum)
                         {
                             sol.isHit = true;
-                            player.isHit = true;
+                            pLaser.isHit = true;
                         }
                     }
 
-                    player.Update(gameTime);
+                    pLaser.Update(gameTime);
                 }
 
                 GameController.playerLasers.RemoveAll(r => r.isActive is false || r.isHit);

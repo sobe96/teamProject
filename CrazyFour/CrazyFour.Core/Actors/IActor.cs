@@ -11,7 +11,7 @@ namespace CrazyFour.Core.Actors
     public abstract class IActor
     {
         protected Texture2D spriteImage;
-        protected Texture2D lazerImage;
+        protected Texture2D laserImage;
         protected SpriteBatch spriteBatch;
         protected GraphicsDeviceManager graphics;
         protected ContentManager content;
@@ -25,6 +25,8 @@ namespace CrazyFour.Core.Actors
         protected Vector2 playerPosition;
 
         public bool isHit = false;
+
+        public virtual int radius { get; set; } = 0;
 
         public virtual void Initialize(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
         {
@@ -42,7 +44,7 @@ namespace CrazyFour.Core.Actors
                     isSpriteLoaded = true;
                     break;
                 case LoadType.Laser:
-                    lazerImage = content.Load<Texture2D>(img);
+                    laserImage = content.Load<Texture2D>(img);
                     break;
             }
             
