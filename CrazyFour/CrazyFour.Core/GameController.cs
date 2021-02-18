@@ -20,8 +20,8 @@ namespace CrazyFour.Core
         public List<Texture2D> soldierSprites = new List<Texture2D>();
 
         public List<IActor> enemyList = new List<IActor>();
-        public static List<EnemyLaser> enemyLazers = new List<EnemyLaser>();
-        public static List<PlayerLaser> playerLazers = new List<PlayerLaser>();
+        public static List<ILaser> enemyLasers = new List<ILaser>();
+        public static List<PlayerLaser> playerLasers = new List<PlayerLaser>();
 
         public static int hz = 60;
         public static float totalTime = 0f;
@@ -58,14 +58,14 @@ namespace CrazyFour.Core
 
         private GameController() { }
 
-        public static void AddLazer(ILaser lazer)
+        public static void AddLaser(ILaser laser)
         {
-            Type type = lazer.GetType();
+            Type type = laser.GetType();
 
-            if (type == typeof(EnemyLaser))
-                enemyLazers.Add((EnemyLaser)lazer);
+            if (type == typeof(SoldierLaser))
+                enemyLasers.Add(laser);
             else
-                playerLazers.Add((PlayerLaser)lazer);
+                playerLasers.Add((PlayerLaser)laser);
         }
 
         public void LoadContent(ActorFactory fac)
@@ -127,22 +127,22 @@ namespace CrazyFour.Core
                 }
 
                 // Updating position for the enemy lasers
-                foreach (EnemyLaser enemy in GameController.enemyLazers)
+                foreach (SoldierLaser enemy in GameController.enemyLasers)
                 {
                     enemy.Draw(gameTime);
                 }
 
                 // Updating position for the player lasers
-                foreach (PlayerLaser player in GameController.playerLazers)
+                foreach (PlayerLaser player in GameController.playerLasers)
                 {
                     player.Draw(gameTime);
                 }
 
                 // Removing any player lasors that have gone out of window
-                GameController.playerLazers.RemoveAll(r => r.isActive is false);
+                GameController.playerLasers.RemoveAll(r => r.isActive is false);
 
                 // Removing any enemy lasors that have done out of the window
-                GameController.enemyLazers.RemoveAll(r => r.isActive is false);
+                GameController.enemyLasers.RemoveAll(r => r.isActive is false);
             }
         }
 
@@ -160,12 +160,12 @@ namespace CrazyFour.Core
                     sol.Update(gameTime, playerPosition);
                 }
 
-                foreach (EnemyLaser enemy in GameController.enemyLazers)
+                foreach (SoldierLaser enemy in GameController.enemyLasers)
                 {
                     enemy.Update(gameTime);
                 }
 
-                foreach (PlayerLaser player in GameController.playerLazers)
+                foreach (PlayerLaser player in GameController.playerLasers)
                 {
                     foreach (var sol in enemyList)
                     {
@@ -181,8 +181,8 @@ namespace CrazyFour.Core
                     player.Update(gameTime);
                 }
 
-                GameController.playerLazers.RemoveAll(r => r.isActive is false || r.isHit);
-                GameController.enemyLazers.RemoveAll(r => r.isActive is false || r.isHit);
+                GameController.playerLasers.RemoveAll(r => r.isActive is false || r.isHit);
+                GameController.enemyLasers.RemoveAll(r => r.isActive is false || r.isHit);
                 enemyList.RemoveAll(r => r.isHit);
             }
         }

@@ -30,7 +30,7 @@ namespace CrazyFour.Core.Actors.Enemy
             defaultPosition.Y = 424;
 
             LoadSprite(LoadType.Ship, SPRITE_IMAGE);
-            LoadSprite(LoadType.Lazer, LAZER_IMAGE);
+            LoadSprite(LoadType.Laser, LAZER_IMAGE);
         }
 
         public override void Draw(GameTime gameTime)

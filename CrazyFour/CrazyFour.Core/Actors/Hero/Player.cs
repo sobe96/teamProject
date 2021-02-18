@@ -88,7 +88,7 @@ namespace CrazyFour.Core.Actors.Hero
                     LaserFactory factory = new LaserFactory(graphics, spriteBatch, content);
                     ILaser lazer = factory.GetLazer(LazerType.Player, new Vector2(position.X + radius, position.Y), gameTime);
 
-                    GameController.AddLazer(lazer);
+                    GameController.AddLaser(lazer);
                 }
             }
 

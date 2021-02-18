@@ -26,7 +26,7 @@ namespace CrazyFour.Core.Actors.Enemy
             speed = 4 * GameController.hz;
 
             LoadSprite(LoadType.Ship, SPRITE_IMAGE);
-            LoadSprite(LoadType.Lazer, LAZER_IMAGE);
+            LoadSprite(LoadType.Laser, LAZER_IMAGE);
         }
 
         public override void Draw(GameTime gameTime)

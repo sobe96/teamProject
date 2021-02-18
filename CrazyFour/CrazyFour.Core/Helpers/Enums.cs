@@ -24,7 +24,7 @@ namespace CrazyFour.Core.Helpers
     public enum LoadType
     {
         Ship,
-        Lazer
+        Laser
     }
 
     public enum LazerType

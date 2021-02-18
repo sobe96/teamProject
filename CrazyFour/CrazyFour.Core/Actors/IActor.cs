@@ -41,7 +41,7 @@ namespace CrazyFour.Core.Actors
                     spriteImage = content.Load<Texture2D>(img);
                     isSpriteLoaded = true;
                     break;
-                case LoadType.Lazer:
+                case LoadType.Laser:
                     lazerImage = content.Load<Texture2D>(img);
                     break;
             }

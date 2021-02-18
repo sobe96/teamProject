@@ -1,4 +1,6 @@
-﻿using CrazyFour.Core.Helpers;
+﻿using CrazyFour.Core.Factories;
+using CrazyFour.Core.Helpers;
+using CrazyFour.Core.Lasers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -29,7 +31,7 @@ namespace CrazyFour.Core.Actors.Enemy
             speed = 1f * (float)GameController.hz;
 
             LoadSprite(LoadType.Ship, SPRITE_IMAGE);
-            LoadSprite(LoadType.Lazer, LAZER_IMAGE);
+            LoadSprite(LoadType.Laser, LAZER_IMAGE);
             inGame = true;
 
             // Randomizing starting point
@@ -61,6 +63,11 @@ namespace CrazyFour.Core.Actors.Enemy
                 Vector2 move = playerPosition - currentPosition;
                 move.Normalize();
                 currentPosition += move * speed * dt;
+
+                LaserFactory factory = new LaserFactory(graphics, spriteBatch, content);
+                ILaser lazer = factory.GetLazer(LazerType.Soldier, new Vector2(playerPosition.X + radius, playerPosition.Y), gameTime);
+
+                GameController.AddLaser(lazer);
             }
         }
     }

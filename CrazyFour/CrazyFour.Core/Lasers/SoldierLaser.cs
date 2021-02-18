@@ -8,21 +8,18 @@ using System.Text;
 
 namespace CrazyFour.Core.Lasers
 {
-    public class EnemyLaser : ILaser
+    public class SoldierLaser : ILaser
     {
-        public GraphicsDeviceManager graphics;
-        public ContentManager content;
-        public SpriteBatch spriteBatch;
+        private const string LASOR_IMAGE = "Images/Lazers/GreenLazer";
 
         private Texture2D projectile;
         private Vector2 position;
         private string img;
         private int radius = 6;
-        public bool isActive = true;
-        public bool isHit = false;
 
 
-        public EnemyLaser(GraphicsDeviceManager gra, SpriteBatch spr, ContentManager con)
+
+        public SoldierLaser(GraphicsDeviceManager gra, SpriteBatch spr, ContentManager con)
         {
             graphics = gra;
             spriteBatch = spr;
