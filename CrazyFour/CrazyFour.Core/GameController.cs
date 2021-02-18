@@ -24,13 +24,18 @@ namespace CrazyFour.Core
         public static List<PlayerLaser> playerLazers = new List<PlayerLaser>();
 
         public static int hz = 60;
+        private int Counter = 0;
         public static float totalTime = 0f;
 
         private ActorFactory factory;
-        private const int MAXSOLDIERS = 4;
-        private const int MAXCAPOS = 2;
+        private const int MAXSOLDIERS = 1;
+        private const int SOL_HP = 3;
+        private const int MAXCAPOS = 1;
+        private const int CAPO_HP = 6;
         private const int MAXUNDERBOSS = 1;
+        private const int UBOSS_HP = 15;
         private const int MAXBOSS = 1;
+        private const int BOSS_HP = 30;
 
         private bool doneConfiguringSolders = false;
         private bool doneConfiguringUnderboss = false;
@@ -86,8 +91,8 @@ namespace CrazyFour.Core
                         {
                             for (int i = 0; i < MAXCAPOS; i++)
                             {
-                                var sol = (Capo)factory.GetActor(ActorTypes.Capo);
-                                enemyList.Add(sol);
+                                var capo = (Capo)factory.GetActor(ActorTypes.Capo);
+                                enemyList.Add(capo);
                             }
 
                             doneConfiguringCapo = true;
@@ -152,41 +157,109 @@ namespace CrazyFour.Core
             {
                 InitializeEnemies(gameTime, ActorTypes.Soldier);
                 InitializeEnemies(gameTime, ActorTypes.Capo);
+                InitializeEnemies(gameTime, ActorTypes.Underboss);
+                InitializeEnemies(gameTime, ActorTypes.Boss);
 
                 //totalTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-                foreach (var sol in enemyList)
-                {
-                    sol.Update(gameTime, playerPosition);
-                }
-
-                foreach (EnemyLaser enemy in GameController.enemyLazers)
-                {
-                    enemy.Update(gameTime);
-                }
-
-                foreach (PlayerLaser player in GameController.playerLazers)
-                {
-                    foreach (var sol in enemyList)
-                    {
-                        int sum = Soldier.radius + PlayerLaser.radius;
-
-                        if (Vector2.Distance(player.position, sol.currentPosition) < sum)
+                
+                        foreach (var sol in enemyList)
                         {
-                            sol.isHit = true;
-                            player.isHit = true;
+                            sol.Update(gameTime, playerPosition);
                         }
-                    }
 
-                    player.Update(gameTime);
-                }
+                        foreach (EnemyLaser enemy in GameController.enemyLazers)
+                        {
+                            enemy.Update(gameTime);
+                        }
 
+                        foreach (PlayerLaser player in GameController.playerLazers)
+                        {
+                            foreach (var sol in enemyList)
+                            {
+                                int sum = Soldier.radius + PlayerLaser.radius;
+
+                                if (Vector2.Distance(player.position, sol.currentPosition) < sum)
+                                {
+                                    Counter += 1;
+                                    player.isHit = true;
+                                    if (Counter == SOL_HP)
+                                    {
+                                        sol.isHit = true;
+                                        Counter = 0;
+                                    }
+
+                                }
+                            }
+
+                            player.Update(gameTime);
+                        }
+                        
                 GameController.playerLazers.RemoveAll(r => r.isActive is false || r.isHit);
                 GameController.enemyLazers.RemoveAll(r => r.isActive is false || r.isHit);
                 enemyList.RemoveAll(r => r.isHit);
             }
         }
 
-        
+        /*public void Update(GameTime gameTime, Vector2 playerPosition, ActorTypes type)
+        {
+            if (Config.inGame)
+            {
+                InitializeEnemies(gameTime, ActorTypes.Soldier);
+                InitializeEnemies(gameTime, ActorTypes.Capo);
+                InitializeEnemies(gameTime, ActorTypes.Underboss);
+                InitializeEnemies(gameTime, ActorTypes.Boss);
+
+                //totalTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                switch (type)
+                {
+                    case ActorTypes.Boss:
+                        break;
+                    case ActorTypes.Underboss:
+                        break;
+                    case ActorTypes.Capo:
+                        break;
+                    case ActorTypes.Soldier:
+                        foreach (var sol in enemyList)
+                        {
+                            sol.Update(gameTime, playerPosition);
+                        }
+
+                        foreach (EnemyLaser enemy in GameController.enemyLazers)
+                        {
+                            enemy.Update(gameTime);
+                        }
+
+                        foreach (PlayerLaser player in GameController.playerLazers)
+                        {
+                            foreach (var sol in enemyList)
+                            {
+                                int sum = Soldier.radius + PlayerLaser.radius;
+
+                                if (Vector2.Distance(player.position, sol.currentPosition) < sum)
+                                {
+                                    Counter += 1;
+                                    player.isHit = true;
+                                    if (Counter == SOL_HP)
+                                    {
+                                        sol.isHit = true;
+                                        Counter = 0;
+                                    }
+
+                                }
+                            }
+
+                            player.Update(gameTime);
+                        }
+                        break;
+                }
+                GameController.playerLazers.RemoveAll(r => r.isActive is false || r.isHit);
+                GameController.enemyLazers.RemoveAll(r => r.isActive is false || r.isHit);
+                enemyList.RemoveAll(r => r.isHit);
+            }
+        }*/
+
+
     }
 }

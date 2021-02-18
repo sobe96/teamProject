@@ -22,6 +22,7 @@ namespace CrazyFour.Core.Actors
         protected Vector2 defaultPosition;
         
         public Vector2 currentPosition;
+        protected Vector2 soldierPosition;
         protected Vector2 playerPosition;
 
         public bool isHit = false;
