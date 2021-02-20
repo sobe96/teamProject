@@ -1,7 +1,11 @@
-﻿using CrazyFour.Core.Helpers;
+﻿using CrazyFour.Core.Actors.Hero;
+using CrazyFour.Core.Factories;
+using CrazyFour.Core.Helpers;
+using CrazyFour.Core.Lasers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,6 +19,9 @@ namespace CrazyFour.Core.Actors.Enemy
         private float speed;
         private Random rand = new Random();
 
+        private float initCounter = 10f;
+        private float counter = 0.5f;
+
 
         public Boss(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
         {
@@ -24,11 +31,7 @@ namespace CrazyFour.Core.Actors.Enemy
 
             radius = 100;
 
-            // defining the default speed
-            speed = 2f * (float)GameController.hz;
-
             LoadSprite(LoadType.Ship, SPRITE_IMAGE);
-            LoadSprite(LoadType.Laser, LASER_IMAGE);
             inGame = true;
 
             // Randomizing starting point
@@ -52,14 +55,32 @@ namespace CrazyFour.Core.Actors.Enemy
 
         public override void Update(GameTime gameTime, Vector2? pp)
         {
+            KeyboardState kState = Keyboard.GetState();
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
             playerPosition = (Vector2)pp;
+            playerPosition.X += -55;     // player's radius
 
             if (inGame)
             {
+                // use controlling the speed of the game by pressing the S key
+                if (kState.IsKeyDown(Keys.S))
+                    speed = Utilities.ConvertToPercentage(Speed.QuarterSpeed) * GameController.hz;
+                else
+                    speed = Utilities.ConvertToPercentage(Speed.Normal) * GameController.hz;
+
                 Vector2 move = playerPosition - currentPosition;
                 move.Normalize();
                 currentPosition += move * speed * dt;
+
+                counter -= dt;
+                if (counter <= 0)
+                {
+                    LaserFactory factory = new LaserFactory(graphics, spriteBatch, content);
+                    ILaser lazerSol = factory.GetLazer(LaserType.Soldier, new Vector2(currentPosition.X + radius - 3, currentPosition.Y + 15), gameTime);
+
+                    GameController.AddLaser(lazerSol);
+                    counter = initCounter / 10;
+                }
             }
         }
     }

@@ -28,11 +28,11 @@ namespace CrazyFour.Core
         public static float totalTime = 0f;
 
         private ActorFactory factory;
-        private const int MAXSOLDIERS = 6;
+        private const int MAXSOLDIERS = 5;
         private const int SOL_HP = 3;
         private const int MAXCAPOS = 4;
         private const int CAPO_HP = 6;
-        private const int MAXUNDERBOSS = 1;
+        private const int MAXUNDERBOSS = 2;
         private const int UBOSS_HP = 15;
         private const int MAXBOSS = 1;
         private const int BOSS_HP = 30;
@@ -67,7 +67,7 @@ namespace CrazyFour.Core
         {
             Type type = laser.GetType();
 
-            if (type == typeof(SoldierLaser))
+            if (type == typeof(EnemyLaser))
                 enemyLasers.Add(laser);
             else
                 playerLasers.Add((PlayerLaser)laser);
@@ -85,7 +85,7 @@ namespace CrazyFour.Core
                 case ActorTypes.Boss:
                     if (!doneConfiguringBoss)
                     {
-                        if ((int)totalTime >= 15)
+                        if ((int)totalTime >= 7)
                         {
                             for (int i = 0; i < MAXBOSS; i++)
                             {
@@ -100,7 +100,7 @@ namespace CrazyFour.Core
                 case ActorTypes.Capo:
                     if (!doneConfiguringCapo)
                     {
-                        if ((int)totalTime >= 5)
+                        if ((int)totalTime >= 3)
                         {
                             for (int i = 0; i < MAXCAPOS; i++)
                             {
@@ -130,7 +130,7 @@ namespace CrazyFour.Core
                 case ActorTypes.Underboss:
                     if (!doneConfiguringUnderboss)
                     {
-                        if ((int)totalTime >= 10)
+                        if ((int)totalTime >= 5)
                         {
                             for (int i = 0; i < MAXUNDERBOSS; i++)
                             {
@@ -159,7 +159,7 @@ namespace CrazyFour.Core
                 }
 
                 // Updating position for the enemy lasers
-                foreach (SoldierLaser enemy in GameController.enemyLasers)
+                foreach (EnemyLaser enemy in GameController.enemyLasers)
                 {
                     enemy.Draw(gameTime);
                 }
@@ -187,43 +187,40 @@ namespace CrazyFour.Core
                 InitializeEnemies(gameTime, ActorTypes.Underboss);
                 InitializeEnemies(gameTime, ActorTypes.Boss);
 
-                //totalTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                foreach (var sol in enemyList)
+                {
+                    sol.Update(gameTime, playerPosition);
+                }
 
-                
-                        foreach (var sol in enemyList)
-                        {
-                            sol.Update(gameTime, playerPosition);
-                        }
-
-                        foreach (EnemyLaser enemy in GameController.enemyLazers)
-                        {
-                            enemy.Update(gameTime);
-                        }
+                foreach (EnemyLaser enemy in GameController.enemyLasers)
+                {
+                    enemy.Update(gameTime);
+                }
                         
-                        foreach (PlayerLaser player in GameController.playerLazers)
+                foreach (PlayerLaser laser in GameController.playerLasers)
+                {
+                    foreach (var sol in enemyList)
+                    {
+                        int sum = sol.radius + PlayerLaser.radius;
+
+                        if (Vector2.Distance(laser.position, sol.currentPosition) < sum)
                         {
-                            foreach (var sol in enemyList)
+                            Counter += 1;
+                            laser.isHit = true;
+
+                            if (Counter == SOL_HP)
                             {
-                                int sum = Soldier.radius + PlayerLaser.radius;
-
-                                if (Vector2.Distance(player.position, sol.currentPosition) < sum)
-                                {
-                                    Counter += 1;
-                                    player.isHit = true;
-                                    if (Counter == SOL_HP)
-                                    {
-                                        sol.isHit = true;
-                                        Counter = 0;
-                                    }
-
-                                }
+                                sol.isHit = true;
+                                Counter = 0;
                             }
-
-                            player.Update(gameTime);
                         }
+                    }
+
+                    laser.Update(gameTime);
+                }
                         
-                GameController.playerLazers.RemoveAll(r => r.isActive is false || r.isHit);
-                GameController.enemyLazers.RemoveAll(r => r.isActive is false || r.isHit);
+                GameController.playerLasers.RemoveAll(r => r.isActive is false || r.isHit);
+                GameController.enemyLasers.RemoveAll(r => r.isActive is false || r.isHit);
                 enemyList.RemoveAll(r => r.isHit);
             }
         }

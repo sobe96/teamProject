@@ -19,7 +19,7 @@ namespace CrazyFour.Core.Lasers
         private const string LAZER_IMAGE = "Images/Lazers/AguaLazer";
         private Texture2D projectile;
         public Vector2 position;
-        private int speed;
+        private float speed;
 
         public static int radius { get; } = 6;
 
@@ -74,13 +74,11 @@ namespace CrazyFour.Core.Lasers
 
             // use controlling the speed of the game by pressing the S key
             if (kState.IsKeyDown(Keys.S))
-                speed = (int)Speed.HalfSpeed * GameController.hz;
+                speed = Utilities.ConvertToPercentage(Speed.QuarterSpeed) * GameController.hz;
             else
-                speed = (int)Speed.Normal * GameController.hz;
+                speed = Utilities.ConvertToPercentage(Speed.Normal) * GameController.hz;
 
-            position.Y -=  2 * speed * dt;
-            
-
+            position.Y -= 3f * speed * dt;
 
             if (position.Y < 0)
                 isActive = false;

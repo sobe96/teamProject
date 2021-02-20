@@ -15,10 +15,10 @@ namespace CrazyFour.Core.Helpers
 
     public enum Speed
     {
-        Normal = 4,
-        ThreeQuarterSpeed = 3,
-        HalfSpeed = 2,
-        QuarterSpeed = 1
+        Normal = 100,
+        ThreeQuarterSpeed = 75,
+        HalfSpeed = 50,
+        QuarterSpeed = 25
     }
 
     public enum LoadType
@@ -27,7 +27,7 @@ namespace CrazyFour.Core.Helpers
         Laser
     }
 
-    public enum LazerType
+    public enum LaserType
     {
         Player,
         Boss,

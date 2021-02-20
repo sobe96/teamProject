@@ -10,16 +10,13 @@ using System.Text;
 
 namespace CrazyFour.Core.Lasers
 {
-    public class SoldierLaser : ILaser
+    public class EnemyLaser : ILaser
     {
-        private const string LASER_IMAGE = "Images/Lazers/GreenLazer";
-
-        private const string LAZER_IMAGE = "Images/Lazers/BlueLazer";
         private Texture2D projectile;
-        private Vector2 position;
-        private string img;
-        private int radius = 6;
+        public Vector2 position;
 
+
+        public float speed { get; set; }
 
         public int radius { get; } = 6;
 
@@ -73,16 +70,15 @@ namespace CrazyFour.Core.Lasers
 
             // use controlling the speed of the game by pressing the S key
             if (kState.IsKeyDown(Keys.S))
-                speed = (int)Speed.ThreeQuarterSpeed * GameController.hz;
+                speed = Utilities.ConvertToPercentage(Speed.QuarterSpeed) * GameController.hz;
             else
-                speed = (int)Speed.Normal * GameController.hz;
+                speed = Utilities.ConvertToPercentage(Speed.Normal) * GameController.hz;
 
-            position.Y += 2 * speed * dt;
-
-
+            position.Y += 2f * speed * dt;
 
             if (position.Y < 0)
                 isActive = false;
         }
+
     }
 }

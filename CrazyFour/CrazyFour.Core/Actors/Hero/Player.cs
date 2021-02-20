@@ -16,12 +16,12 @@ namespace CrazyFour.Core.Actors.Hero
         private const string SPRITE_IMAGE = "Images/Players/hero";
         private const int SOL_HP = 3;
         private int counterHits = 0;
-        private int speed;
+        private float speed;
         private float initCounter = 5f;
         private float counter = 0.5f;
-        //private bool isFiring = false;
+        
         // I'd say that firing should be automatic
-        //private bool isFiring = true;
+        private bool isFiring = true;
 
 
         public Player(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
@@ -62,46 +62,43 @@ namespace CrazyFour.Core.Actors.Hero
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             // use controlling the speed of the game by pressing the S key
-            if (kState.IsKeyDown(Keys.S))
-                speed = (int)Speed.ThreeQuarterSpeed * GameController.hz;
-            else 
-                speed = (int)Speed.Normal * GameController.hz;
+            speed = Utilities.ConvertToPercentage(Speed.Normal) * GameController.hz;
 
             // Moving the player
             if (kState.IsKeyDown(Keys.Right) && position.X < graphics.PreferredBackBufferWidth + 1 - GetSprite().Width)
-                position.X += speed * dt;
+                position.X += 3f * speed * dt;
 
             if (kState.IsKeyDown(Keys.Left) && position.X > 0)
-                position.X -= speed * dt;
+                position.X -= 3f * speed * dt;
 
             if (kState.IsKeyDown(Keys.Down) && position.Y < graphics.PreferredBackBufferHeight + 1 - GetSprite().Height)
-                position.Y += speed * dt;
+                position.Y += 3f * speed * dt;
 
             if (kState.IsKeyDown(Keys.Up) && position.Y > 0)
-                position.Y -= speed * dt;
+                position.Y -= 3f * speed * dt;
 
             
-            counter -= dt;
-            if (counter <= 0) 
-            {
-                LaserFactory factory = new LaserFactory(graphics, spriteBatch, content);
-                ILaser lazer = factory.GetLazer(LazerType.Player, new Vector2(position.X + radius, position.Y), gameTime);
+            //counter -= dt;
+            //if (counter <= 0) 
+            //{
+            //    LaserFactory factory = new LaserFactory(graphics, spriteBatch, content);
+            //    ILaser lazer = factory.GetLazer(LaserType.Player, new Vector2(position.X + radius, position.Y), gameTime);
 
-                GameController.AddLazer(lazer);
-                counter = initCounter / 10;
-            }
-            /*
-            foreach (var sol in GameController.enemyLazers)
+            //    GameController.AddLaser(lazer);
+            //    counter = initCounter / 10;
+            //}
+            
+            foreach (var sol in GameController.enemyLasers)
             {
-                int sum = sol.radius + radius;
+                int sum = ((EnemyLaser)sol).radius + radius;
 
-                if (Vector2.Distance(sol.position, currentPosition) < sum)
+                if (Vector2.Distance(((EnemyLaser)sol).position, currentPosition) < sum)
                 {
                     counterHits += 1;
                     sol.isHit = true;
                     if (counterHits == SOL_HP)
                     {
-                        Player.isHit = true;
+                        isHit = true;
                         counterHits = 0;
                     }
 
@@ -116,7 +113,7 @@ namespace CrazyFour.Core.Actors.Hero
                     isFiring = true;
 
                     LaserFactory factory = new LaserFactory(graphics, spriteBatch, content);
-                    ILaser lazer = factory.GetLazer(LazerType.Player, new Vector2(position.X + radius, position.Y), gameTime);
+                    ILaser lazer = factory.GetLazer(LaserType.Player, new Vector2(position.X + radius, position.Y), gameTime);
 
                     GameController.AddLaser(lazer);
                 }
@@ -126,7 +123,8 @@ namespace CrazyFour.Core.Actors.Hero
             if (kState.IsKeyUp(Keys.Space))
             {
                 isFiring = false;
-            }*/
+            }
         }
+
     }
 }

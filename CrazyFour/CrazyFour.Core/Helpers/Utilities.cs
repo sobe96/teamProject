@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace CrazyFour.Core.Helpers
@@ -15,6 +16,12 @@ namespace CrazyFour.Core.Helpers
             string time = minutes.ToString("D2") + ":" + seconds.ToString("D2");
 
             return time;
+        }
+
+        public static float ConvertToPercentage(Speed speedType)
+        {
+            float ret = (((float)speedType) / 100);
+            return ret;
         }
     }
 }
