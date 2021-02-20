@@ -29,18 +29,16 @@ namespace CrazyFour.Core.Factories
             switch (type)
             {
                 case LazerType.Boss:
-                    throw new NotImplementedException();
-
-                case LazerType.Underboss:
-                    throw new NotImplementedException();
-
-                case LazerType.Capo:
-                    throw new NotImplementedException();
+                    EnemyLaser enemyBoss = new EnemyLaser(graphics, spriteBatch, content);
+                    enemyBoss.Initialize(ActorTypes.Boss, pos);
+                    enemyBoss.Update(game);
+                    return enemyBoss;
 
                 case LazerType.Soldier:
-                    actor = new SoldierLaser(graphics, spriteBatch, content);
-                    actor.Initialize(ActorTypes.Soldier, pos);
-                    break;
+                    EnemyLaser enemySoldier = new EnemyLaser(graphics, spriteBatch, content);
+                    enemySoldier.Initialize(ActorTypes.Soldier, pos);
+                    enemySoldier.Update(game);
+                    return enemySoldier;
 
                 case LazerType.Player:
                     actor = new PlayerLaser(graphics, spriteBatch, content);

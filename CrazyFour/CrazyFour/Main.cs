@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using CrazyFour.Core;
 using CrazyFour.Core.Actors.Hero;
+using CrazyFour.Core.Actors.Enemy;
 using CrazyFour.Core.Factories;
 using CrazyFour.Core.Helpers;
 using CrazyFour.Core.Actors;
@@ -18,6 +19,7 @@ namespace CrazyFour
         private GameController controller;
         private MouseState mState;
         private IActor player;
+        //private IActor soldier;
         private Texture2D spaceBackground;
         private SpriteFont defaultFont;
 
@@ -52,6 +54,9 @@ namespace CrazyFour
         {
             controller.LoadContent(factory);
             player = factory.GetActor(ActorTypes.Player);
+
+            //controller.LoadContent(factory);
+            //soldier = factory.GetActor(ActorTypes.Soldier);
 
             spaceBackground = Content.Load<Texture2D>("Images/space");
             defaultFont = Content.Load<SpriteFont>("DefaultFont");
@@ -131,6 +136,9 @@ namespace CrazyFour
 
                     player.Update(gameTime, null);
                     controller.Update(gameTime, ((Player)player).GetPlayerPosition());
+
+                    //soldier.Update(gameTime, ((Soldier)soldier).GetSoldierPosition());
+                    //controller.Update(gameTime, ((Soldier)soldier).GetSoldierPosition());
 
                     base.Update(gameTime);
                 }

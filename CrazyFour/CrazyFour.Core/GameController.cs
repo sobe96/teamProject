@@ -24,13 +24,18 @@ namespace CrazyFour.Core
         public static List<PlayerLaser> playerLasers = new List<PlayerLaser>();
 
         public static int hz = 60;
+        private int Counter = 0;
         public static float totalTime = 0f;
 
         private ActorFactory factory;
         private const int MAXSOLDIERS = 6;
+        private const int SOL_HP = 3;
         private const int MAXCAPOS = 4;
-        private const int MAXUNDERBOSS = 2;
+        private const int CAPO_HP = 6;
+        private const int MAXUNDERBOSS = 1;
+        private const int UBOSS_HP = 15;
         private const int MAXBOSS = 1;
+        private const int BOSS_HP = 30;
 
         private bool doneConfiguringSolders = false;
         private bool doneConfiguringUnderboss = false;
@@ -99,8 +104,8 @@ namespace CrazyFour.Core
                         {
                             for (int i = 0; i < MAXCAPOS; i++)
                             {
-                                var sol = (Capo)factory.GetActor(ActorTypes.Capo);
-                                enemyList.Add(sol);
+                                var capo = (Capo)factory.GetActor(ActorTypes.Capo);
+                                enemyList.Add(capo);
                             }
 
                             doneConfiguringCapo = true;
@@ -182,34 +187,43 @@ namespace CrazyFour.Core
                 InitializeEnemies(gameTime, ActorTypes.Underboss);
                 InitializeEnemies(gameTime, ActorTypes.Boss);
 
-                foreach (var sol in enemyList)
-                {
-                    sol.Update(gameTime, playerPosition);
-                }
+                //totalTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-                foreach (SoldierLaser enemy in GameController.enemyLasers)
-                {
-                    enemy.Update(gameTime);
-                }
-
-                foreach (PlayerLaser pLaser in GameController.playerLasers)
-                {
-                    foreach (var sol in enemyList)
-                    {
-                        int sum = sol.radius + PlayerLaser.radius;
-
-                        if (Vector2.Distance(pLaser.position, sol.currentPosition) < sum)
+                
+                        foreach (var sol in enemyList)
                         {
-                            sol.isHit = true;
-                            pLaser.isHit = true;
+                            sol.Update(gameTime, playerPosition);
                         }
-                    }
 
-                    pLaser.Update(gameTime);
-                }
+                        foreach (EnemyLaser enemy in GameController.enemyLazers)
+                        {
+                            enemy.Update(gameTime);
+                        }
+                        
+                        foreach (PlayerLaser player in GameController.playerLazers)
+                        {
+                            foreach (var sol in enemyList)
+                            {
+                                int sum = Soldier.radius + PlayerLaser.radius;
 
-                GameController.playerLasers.RemoveAll(r => r.isActive is false || r.isHit);
-                GameController.enemyLasers.RemoveAll(r => r.isActive is false || r.isHit);
+                                if (Vector2.Distance(player.position, sol.currentPosition) < sum)
+                                {
+                                    Counter += 1;
+                                    player.isHit = true;
+                                    if (Counter == SOL_HP)
+                                    {
+                                        sol.isHit = true;
+                                        Counter = 0;
+                                    }
+
+                                }
+                            }
+
+                            player.Update(gameTime);
+                        }
+                        
+                GameController.playerLazers.RemoveAll(r => r.isActive is false || r.isHit);
+                GameController.enemyLazers.RemoveAll(r => r.isActive is false || r.isHit);
                 enemyList.RemoveAll(r => r.isHit);
             }
         }

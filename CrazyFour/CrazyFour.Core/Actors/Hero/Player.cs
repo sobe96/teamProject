@@ -14,8 +14,14 @@ namespace CrazyFour.Core.Actors.Hero
     public class Player : IActor
     {
         private const string SPRITE_IMAGE = "Images/Players/hero";
+        private const int SOL_HP = 3;
+        private int counterHits = 0;
         private int speed;
-        private bool isFiring = false;
+        private float initCounter = 5f;
+        private float counter = 0.5f;
+        //private bool isFiring = false;
+        // I'd say that firing should be automatic
+        //private bool isFiring = true;
 
 
         public Player(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
@@ -61,7 +67,6 @@ namespace CrazyFour.Core.Actors.Hero
             else 
                 speed = (int)Speed.Normal * GameController.hz;
 
-
             // Moving the player
             if (kState.IsKeyDown(Keys.Right) && position.X < graphics.PreferredBackBufferWidth + 1 - GetSprite().Width)
                 position.X += speed * dt;
@@ -75,7 +80,34 @@ namespace CrazyFour.Core.Actors.Hero
             if (kState.IsKeyDown(Keys.Up) && position.Y > 0)
                 position.Y -= speed * dt;
 
+            
+            counter -= dt;
+            if (counter <= 0) 
+            {
+                LaserFactory factory = new LaserFactory(graphics, spriteBatch, content);
+                ILaser lazer = factory.GetLazer(LazerType.Player, new Vector2(position.X + radius, position.Y), gameTime);
 
+                GameController.AddLazer(lazer);
+                counter = initCounter / 10;
+            }
+            /*
+            foreach (var sol in GameController.enemyLazers)
+            {
+                int sum = sol.radius + radius;
+
+                if (Vector2.Distance(sol.position, currentPosition) < sum)
+                {
+                    counterHits += 1;
+                    sol.isHit = true;
+                    if (counterHits == SOL_HP)
+                    {
+                        Player.isHit = true;
+                        counterHits = 0;
+                    }
+
+                }
+            }
+            
             // Firing projectile but making sure we fire only one at a time
             if (!isFiring)
             {
@@ -90,11 +122,11 @@ namespace CrazyFour.Core.Actors.Hero
                 }
             }
 
-            // releasing the flag once we fire one
+            //releasing the flag once we fire one
             if (kState.IsKeyUp(Keys.Space))
             {
                 isFiring = false;
-            }
+            }*/
         }
     }
 }

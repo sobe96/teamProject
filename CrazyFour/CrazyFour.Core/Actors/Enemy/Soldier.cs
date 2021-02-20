@@ -14,10 +14,18 @@ namespace CrazyFour.Core.Actors.Enemy
     public class Soldier : IActor
     {
         private const string SPRITE_IMAGE = "Images/Players/soldier";
-        private const string LASER_IMAGE = "Images/Lazers/GreenLazer";
+        private const string LAZER_IMAGE = "Images/Lazers/BlueLazer";
+        private const int SOL_HP = 3;
         private float speed;
+        private int counterHits = 0;
         private Random rand = new Random();
-        
+
+        private float initCounter = 5f;
+        private float counter = 0.5f;
+
+        public static int radius { get; } = 15;
+
+
         public Soldier(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
         {
             graphics = g;
@@ -42,6 +50,11 @@ namespace CrazyFour.Core.Actors.Enemy
 
         }
 
+        public Vector2 GetSoldierPosition()
+        {
+            return position;
+        }
+
         public override void Draw(GameTime gameTime)
         {
             if (inGame)
@@ -63,11 +76,23 @@ namespace CrazyFour.Core.Actors.Enemy
                 move.Normalize();
                 currentPosition += move * speed * dt;
 
-                //LaserFactory factory = new LaserFactory(graphics, spriteBatch, content);
-                //ILaser lazer = factory.GetLazer(LazerType.Soldier, new Vector2(playerPosition.X + radius, playerPosition.Y), gameTime);
+                counter -= dt;
+                if (counter <= 0)
+                {
 
-                //GameController.AddLaser(lazer);
+                    LaserFactory factory = new LaserFactory(graphics, spriteBatch, content);
+                    ILaser lazerSol = factory.GetLazer(LazerType.Soldier, new Vector2(currentPosition.X + radius - 3, currentPosition.Y + 15), gameTime);
+
+                    GameController.AddLazer(lazerSol);
+                    counter = initCounter / 10;
+                }
+
+                
+                
+
             }
+
+
         }
     }
 }
