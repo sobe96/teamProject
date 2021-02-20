@@ -84,9 +84,13 @@ namespace CrazyFour
                     sizeOfText = defaultFont.MeasureString(msg);
                     _spriteBatch.DrawString(defaultFont, msg, new Vector2(Config.windowWidth / 2 - sizeOfText.X / 2, Config.windowHeight / 2 + 50), Color.White);
 
-                    msg = "Use the Spacebar key to fire";
+                    msg = "Use the 'K' key to toggle auto-fire ON/OFF";
                     sizeOfText = defaultFont.MeasureString(msg);
                     _spriteBatch.DrawString(defaultFont, msg, new Vector2(Config.windowWidth / 2 - sizeOfText.X / 2, Config.windowHeight / 2 + 100), Color.White);
+
+                    msg = "Use the Spacebar key to fire";
+                    sizeOfText = defaultFont.MeasureString(msg);
+                    _spriteBatch.DrawString(defaultFont, msg, new Vector2(Config.windowWidth / 2 - sizeOfText.X / 2, Config.windowHeight / 2 + 150), Color.White);
 
                     _spriteBatch.End();
                     base.Draw(gameTime);
