@@ -22,6 +22,8 @@ namespace CrazyFour.Core.Actors.Hero
         
         // I'd say that firing should be automatic
         private bool isFiring = true;
+        private bool autoFire = true;
+        private bool toggler = false;
 
 
         public Player(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
@@ -76,17 +78,6 @@ namespace CrazyFour.Core.Actors.Hero
 
             if (kState.IsKeyDown(Keys.Up) && position.Y > (graphics.PreferredBackBufferHeight / 2))
                 position.Y -= 3f * speed * dt;
-
-            
-            //counter -= dt;
-            //if (counter <= 0) 
-            //{
-            //    LaserFactory factory = new LaserFactory(graphics, spriteBatch, content);
-            //    ILaser lazer = factory.GetLazer(LaserType.Player, new Vector2(position.X + radius, position.Y), gameTime);
-
-            //    GameController.AddLaser(lazer);
-            //    counter = initCounter / 10;
-            //}
             
             foreach (var sol in GameController.enemyLasers)
             {
@@ -104,25 +95,56 @@ namespace CrazyFour.Core.Actors.Hero
 
                 }
             }
-            
-            // Firing projectile but making sure we fire only one at a time
-            if (!isFiring)
+            if (kState.IsKeyDown(Keys.K) && toggler == false)
             {
-                if (kState.IsKeyDown(Keys.Space))
+                if (autoFire == true)
                 {
-                    isFiring = true;
+                    autoFire = false;
+                    toggler = true;
+                }
+                else
+                {
+                    autoFire = true;
+                    toggler = true;
+                }
+            }
+            if (kState.IsKeyUp(Keys.K))
+            {
+                toggler = false;
+            }
+            // Firing projectile but making sure we fire only one at a time
+            if (!autoFire)
+            {
+                if (!isFiring)
+                {
+                    if (kState.IsKeyDown(Keys.Space))
+                    {
+                        isFiring = true;
 
+                        LaserFactory factory = new LaserFactory(graphics, spriteBatch, content);
+                        ILaser lazer = factory.GetLazer(LaserType.Player, new Vector2(position.X + radius, position.Y), gameTime);
+
+                        GameController.AddLaser(lazer);
+                    }
+                }
+
+                //releasing the flag once we fire one
+                if (kState.IsKeyUp(Keys.Space))
+                {
+                    isFiring = false;
+                }
+            }
+            else
+            {
+                counter -= dt;
+                if (counter <= 0)
+                {
                     LaserFactory factory = new LaserFactory(graphics, spriteBatch, content);
                     ILaser lazer = factory.GetLazer(LaserType.Player, new Vector2(position.X + radius, position.Y), gameTime);
 
                     GameController.AddLaser(lazer);
+                    counter = initCounter / 10;
                 }
-            }
-
-            //releasing the flag once we fire one
-            if (kState.IsKeyUp(Keys.Space))
-            {
-                isFiring = false;
             }
         }
 
