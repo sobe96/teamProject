@@ -20,4 +20,10 @@
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CrazyFour.Core\CrazyFour.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Content\Images\Players\" />
+  </ItemGroup>
 </Project>
