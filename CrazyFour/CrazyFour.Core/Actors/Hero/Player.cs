@@ -74,7 +74,7 @@ namespace CrazyFour.Core.Actors.Hero
             if (kState.IsKeyDown(Keys.Down) && position.Y < graphics.PreferredBackBufferHeight + 1 - GetSprite().Height)
                 position.Y += 3f * speed * dt;
 
-            if (kState.IsKeyDown(Keys.Up) && position.Y > 0)
+            if (kState.IsKeyDown(Keys.Up) && position.Y > (graphics.PreferredBackBufferHeight / 2))
                 position.Y -= 3f * speed * dt;
 
             
