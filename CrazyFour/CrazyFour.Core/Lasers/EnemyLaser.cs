@@ -15,14 +15,11 @@ namespace CrazyFour.Core.Lasers
         private Texture2D projectile;
         public Vector2 position;
 
-
         public float speed { get; set; }
 
         public int radius { get; } = 6;
 
         public bool isActive { get; set; } = true;
-
-        public bool isHit { get; set; } = false;
 
 
         public EnemyLaser(GraphicsDeviceManager gra, SpriteBatch spr, ContentManager con)
@@ -76,6 +73,7 @@ namespace CrazyFour.Core.Lasers
 
             position.Y += 2f * speed * dt;
 
+            // preping for removal
             if (position.Y < 0)
                 isActive = false;
         }

@@ -19,28 +19,15 @@ namespace CrazyFour.Core
 
         public List<Texture2D> soldierSprites = new List<Texture2D>();
 
-        public List<IActor> enemyList = new List<IActor>();
+        public static List<IActor> enemyList = new List<IActor>();
         public static List<ILaser> enemyLasers = new List<ILaser>();
         public static List<PlayerLaser> playerLasers = new List<PlayerLaser>();
 
         public static int hz = 60;
-        private int Counter = 0;
         public static float totalTime = 0f;
 
         private ActorFactory factory;
-        private const int MAXSOLDIERS = 5;
-        private const int SOL_HP = 3;
-        private const int MAXCAPOS = 4;
-        private const int CAPO_HP = 6;
-        private const int MAXUNDERBOSS = 2;
-        private const int UBOSS_HP = 15;
-        private const int MAXBOSS = 1;
-        private const int BOSS_HP = 30;
 
-        private bool doneConfiguringSolders = false;
-        private bool doneConfiguringUnderboss = false;
-        private bool doneConfiguringCapo = false;
-        private bool doneConfiguringBoss = false;
 
         public static GameController Instance
         {
@@ -83,62 +70,62 @@ namespace CrazyFour.Core
             switch(type)
             {
                 case ActorTypes.Boss:
-                    if (!doneConfiguringBoss)
+                    if (!Config.doneConfiguringBoss)
                     {
-                        if ((int)totalTime >= 7)
+                        if ((int)totalTime >= 15)
                         {
-                            for (int i = 0; i < MAXBOSS; i++)
+                            for (int i = 0; i < Config.MAXBOSS; i++)
                             {
                                 var sol = (Boss)factory.GetActor(ActorTypes.Boss);
                                 enemyList.Add(sol);
                             }
 
-                            doneConfiguringBoss = true;
+                            Config.doneConfiguringBoss = true;
                         }
                     }
                     break;
                 case ActorTypes.Capo:
-                    if (!doneConfiguringCapo)
+                    if (!Config.doneConfiguringCapo)
                     {
-                        if ((int)totalTime >= 3)
+                        if ((int)totalTime >= 5)
                         {
-                            for (int i = 0; i < MAXCAPOS; i++)
+                            for (int i = 0; i < Config.MAXCAPOS; i++)
                             {
                                 var capo = (Capo)factory.GetActor(ActorTypes.Capo);
                                 enemyList.Add(capo);
                             }
 
-                            doneConfiguringCapo = true;
+                            Config.doneConfiguringCapo = true;
                         }
                     }
                     break;
                 case ActorTypes.Soldier:
-                    if (!doneConfiguringSolders)
+                    if (!Config.doneConfiguringSolders)
                     {
                         if ((int)totalTime >= 1)
                         {
-                            for (int i = 0; i < MAXSOLDIERS; i++)
+                            for (int i = 0; i < Config.MAXSOLDIERS; i++)
                             {
                                 var sol = (Soldier)factory.GetActor(ActorTypes.Soldier);
                                 enemyList.Add(sol);
                             }
 
-                            doneConfiguringSolders = true;
+                            Config.doneConfiguringSolders = true;
                         }
                     }
                     break;
                 case ActorTypes.Underboss:
-                    if (!doneConfiguringUnderboss)
+                    if (!Config.doneConfiguringUnderboss)
                     {
-                        if ((int)totalTime >= 5)
+                        if ((int)totalTime >= 10)
                         {
-                            for (int i = 0; i < MAXUNDERBOSS; i++)
+                            for (int i = 0; i < Config.MAXUNDERBOSS; i++)
                             {
                                 var sol = (Underboss)factory.GetActor(ActorTypes.Underboss);
                                 enemyList.Add(sol);
                             }
 
-                            doneConfiguringUnderboss = true;
+                            Config.doneConfiguringUnderboss = true;
                         }
                     }
                     break;
@@ -169,12 +156,6 @@ namespace CrazyFour.Core
                 {
                     player.Draw(gameTime);
                 }
-
-                // Removing any player lasors that have gone out of window
-                GameController.playerLasers.RemoveAll(r => r.isActive is false);
-
-                // Removing any enemy lasors that have done out of the window
-                GameController.enemyLasers.RemoveAll(r => r.isActive is false);
             }
         }
 
@@ -196,35 +177,18 @@ namespace CrazyFour.Core
                 {
                     enemy.Update(gameTime);
                 }
-                        
-                foreach (PlayerLaser laser in GameController.playerLasers)
-                {
-                    foreach (var sol in enemyList)
-                    {
-                        int sum = sol.radius + PlayerLaser.radius;
 
-                        if (Vector2.Distance(laser.position, sol.currentPosition) < sum)
-                        {
-                            Counter += 1;
-                            laser.isHit = true;
 
-                            if (Counter == SOL_HP)
-                            {
-                                sol.isHit = true;
-                                Counter = 0;
-                            }
-                        }
-                    }
-
-                    laser.Update(gameTime);
-                }
-                        
+                // Removing any player lasors that have gone out of window
                 GameController.playerLasers.RemoveAll(r => r.isActive is false || r.isHit);
+
+                // Removing any enemy lasors that have done out of the window
                 GameController.enemyLasers.RemoveAll(r => r.isActive is false || r.isHit);
-                enemyList.RemoveAll(r => r.isHit);
+
+                // Removing the enemies from our list
+                enemyList.RemoveAll(r => r.isHit || r.isActive is false);
             }
         }
-
         
     }
 }

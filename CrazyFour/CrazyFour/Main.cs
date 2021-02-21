@@ -55,9 +55,6 @@ namespace CrazyFour
             controller.LoadContent(factory);
             player = factory.GetActor(ActorTypes.Player);
 
-            //controller.LoadContent(factory);
-            //soldier = factory.GetActor(ActorTypes.Soldier);
-
             spaceBackground = Content.Load<Texture2D>("Images/space");
             defaultFont = Content.Load<SpriteFont>("DefaultFont");
         }
@@ -137,9 +134,6 @@ namespace CrazyFour
                     player.Update(gameTime, null);
                     controller.Update(gameTime, ((Player)player).GetPlayerPosition());
 
-                    //soldier.Update(gameTime, ((Soldier)soldier).GetSoldierPosition());
-                    //controller.Update(gameTime, ((Soldier)soldier).GetSoldierPosition());
-
                     base.Update(gameTime);
                 }
             }
@@ -147,7 +141,6 @@ namespace CrazyFour
                 var colorTask = MessageBox.Show("Error Occurred", ex.Message, new[] { "OK" });
             }
         }
-
         
     }
 }

@@ -26,6 +26,7 @@ namespace CrazyFour.Core.Actors
         protected Vector2 playerPosition;
 
         public bool isHit = false;
+        public bool isActive = true;
 
         public virtual int radius { get; set; } = 0;
 

@@ -14,27 +14,27 @@ namespace CrazyFour.Core.Actors.Enemy
     public class Soldier : IActor
     {
         private const string SPRITE_IMAGE = "Images/Players/soldier";
-        private const string LASER_IMAGE = "Images/Lazers/BlueLazer";
         private float speed;
-        private Random rand = new Random();
-
         private float initCounter = 10f;
         private float counter = 0.5f;
-
+        private bool returning = false;
+        private Vector2 returnPosition;
+        private int hitCounter = 0;
 
         public Soldier(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
         {
             graphics = g;
             spriteBatch = s;
             content = c;
-
-            radius = 15;
-            LoadSprite(LoadType.Ship, SPRITE_IMAGE);
+            radius = 16;
             inGame = true;
+            isActive = true;
+
+            LoadSprite(LoadType.Ship, SPRITE_IMAGE);
 
             // Randomizing starting point
-            int width = rand.Next(GetRadius(), graphics.PreferredBackBufferWidth - GetRadius());
-            int height = rand.Next((GetRadius() * 3) * -1, GetRadius() * -1);
+            int width = Config.rand.Next(GetRadius(), graphics.PreferredBackBufferWidth - GetRadius());
+            int height = Config.rand.Next(GetRadius() * -1, 0);
 
             defaultPosition = new Vector2(width, height);
             currentPosition = defaultPosition;
@@ -68,9 +68,25 @@ namespace CrazyFour.Core.Actors.Enemy
                 if (kState.IsKeyDown(Keys.S))
                     speed = Utilities.ConvertToPercentage(Speed.QuarterSpeed) * GameController.hz;
                 else
-                    speed = Utilities.ConvertToPercentage(Speed.HalfSpeed) * GameController.hz;
+                    speed = Utilities.ConvertToPercentage(Speed.ThreeQuarterSpeed) * GameController.hz;
+
+                // Checking to see if we are out of scope, if so, we remove from memory
+                if(currentPosition.Y < (GetRadius() * -1))
+                    isActive = false;
+
 
                 Vector2 move = playerPosition - currentPosition;
+
+                // Checking to see if we are returning due to hitting the mid point of the screen
+                if(returning)
+                    move = returnPosition - currentPosition;
+                else if (currentPosition.Y >= (graphics.PreferredBackBufferHeight / 2))
+                {
+                    returnPosition = Utilities.GetReturnPosition(graphics, defaultPosition, radius);
+                    move = returnPosition - currentPosition;
+                    returning = true;
+                }
+
                 move.Normalize();
                 currentPosition += move * speed * dt;
 
@@ -78,11 +94,32 @@ namespace CrazyFour.Core.Actors.Enemy
                 if (counter <= 0)
                 {
                     LaserFactory factory = new LaserFactory(graphics, spriteBatch, content);
-                    ILaser lazerSol = factory.GetLazer(LaserType.Soldier, new Vector2(currentPosition.X + radius - 3, currentPosition.Y + 15), gameTime);
+                    ILaser laserSol = factory.GetLazer(LaserType.Soldier, new Vector2(currentPosition.X + radius - 3, currentPosition.Y + 15), gameTime);
 
-                    GameController.AddLaser(lazerSol);
+                    GameController.AddLaser(laserSol);
                     counter = initCounter / 10;
                 }
+
+                // Checking for any hit from the player lasers
+                foreach (PlayerLaser laser in GameController.playerLasers)
+                {
+                    int sum = radius + PlayerLaser.radius;
+
+                    if (Vector2.Distance(laser.position, currentPosition) < sum)
+                    {
+                        hitCounter += 1;
+                        laser.isHit = true;
+
+                        if (hitCounter == Config.SOL_HP)
+                        {
+                            isHit = true;
+                            hitCounter = 0;
+                        }
+                    }
+
+                    laser.Update(gameTime);
+                }
+
             }
         }
     }
