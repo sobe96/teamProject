@@ -24,7 +24,7 @@ namespace CrazyFour.Core.Actors.Hero
         private bool autoFire = true;
         private bool toggler = false;
 
-        public int Lives { get; set; } = 3;
+        public int Lives { get; set; } = Config.defaultNumOfLives;
 
         public DateTime hitTime { get; set; }
 

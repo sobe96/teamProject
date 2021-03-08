@@ -120,7 +120,6 @@ namespace CrazyFour
 
                     if (ndt.Seconds >= 1)
                     {
-                        
                         ((Player)player).SetDefaultPosition();
                         player.Draw(gameTime);
                         player.isHit = false;

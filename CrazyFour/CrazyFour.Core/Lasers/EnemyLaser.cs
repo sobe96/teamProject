@@ -87,8 +87,6 @@ namespace CrazyFour.Core.Lasers
 
             if (dis <= sum)
             {
-                float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
-
                 player.isHit = true;
                 player.Lives -= 1;
                 player.hitTime = DateTime.Now;
