@@ -1,4 +1,6 @@
-﻿using CrazyFour.Core.Actors.Enemy;
+﻿using CrazyFour.Core.Actors;
+using CrazyFour.Core.Actors.Enemy;
+using CrazyFour.Core.Actors.Hero;
 using CrazyFour.Core.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -85,5 +87,17 @@ namespace CrazyFour.Core.Lasers
 
         }
 
+        public override bool CheckHit(Player playerPos)
+        {
+            int sum = radius + PlayerLaser.radius;
+
+            if (Vector2.Distance(position, playerPos.currentPosition) < sum)
+            {
+                isHit = true;
+                return true;
+            }
+
+            return false;
+        }
     }
 }

@@ -32,7 +32,7 @@ namespace CrazyFour.Core.Actors.Hero
             spriteBatch = s;
             content = c;
 
-            radius = 29;
+            radius = 30;
 
             // defining the default speed
             speed = 4 * GameController.hz;

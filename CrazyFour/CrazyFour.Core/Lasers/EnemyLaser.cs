@@ -1,4 +1,6 @@
-﻿using CrazyFour.Core.Actors.Enemy;
+﻿using CrazyFour.Core.Actors;
+using CrazyFour.Core.Actors.Enemy;
+using CrazyFour.Core.Actors.Hero;
 using CrazyFour.Core.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -78,5 +80,18 @@ namespace CrazyFour.Core.Lasers
                 isActive = false;
         }
 
+        public override bool CheckHit(Player player)
+        {
+            int sum = radius + player.GetRadius();
+            float dis = Vector2.Distance(position, player.GetPlayerPosition());
+
+            if (dis <= sum)
+            {
+                player.isHit = true;
+                return true;
+            }
+
+            return false;
+        }
     }
 }

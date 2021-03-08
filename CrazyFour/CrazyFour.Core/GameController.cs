@@ -1,5 +1,6 @@
 ﻿using CrazyFour.Core.Actors;
 using CrazyFour.Core.Actors.Enemy;
+using CrazyFour.Core.Actors.Hero;
 using CrazyFour.Core.Factories;
 using CrazyFour.Core.Helpers;
 using CrazyFour.Core.Lasers;
@@ -159,25 +160,33 @@ namespace CrazyFour.Core
             }
         }
 
-        public void Update(GameTime gameTime, Vector2 playerPosition)
+        public void Update(GameTime gameTime, Player player)
         {
             if (Config.inGame)
             {
                 InitializeEnemies(gameTime, ActorTypes.Soldier);
-                InitializeEnemies(gameTime, ActorTypes.Capo);
-                InitializeEnemies(gameTime, ActorTypes.Underboss);
-                InitializeEnemies(gameTime, ActorTypes.Boss);
+                //InitializeEnemies(gameTime, ActorTypes.Capo);
+                //InitializeEnemies(gameTime, ActorTypes.Underboss);
+                //InitializeEnemies(gameTime, ActorTypes.Boss);
 
                 foreach (var sol in enemyList)
                 {
-                    sol.Update(gameTime, playerPosition);
+                    sol.Update(gameTime, player.currentPosition);
                 }
 
-                foreach (EnemyLaser enemy in GameController.enemyLasers)
+                bool hit = false;
+
+                foreach (EnemyLaser lasor in GameController.enemyLasers)
                 {
-                    enemy.Update(gameTime);
+                    lasor.Update(gameTime);
+                    hit = lasor.CheckHit(player);
+
+                    if (hit)
+                        break;
                 }
 
+                if (hit)
+                    GameController.enemyLasers.Clear();
 
                 // Removing any player lasors that have gone out of window
                 GameController.playerLasers.RemoveAll(r => r.isActive is false || r.isHit);

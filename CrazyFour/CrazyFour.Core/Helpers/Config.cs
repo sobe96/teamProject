@@ -16,7 +16,7 @@ namespace CrazyFour.Core.Helpers
 
         public static Random rand = new Random();
 
-        public static int MAXSOLDIERS { get; } = 4;
+        public static int MAXSOLDIERS { get; } = 1;
 
         public static int MAXCAPOS { get; } = 4;
 
