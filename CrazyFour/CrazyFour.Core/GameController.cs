@@ -165,13 +165,13 @@ namespace CrazyFour.Core
             if (Config.inGame)
             {
                 InitializeEnemies(gameTime, ActorTypes.Soldier);
-                //InitializeEnemies(gameTime, ActorTypes.Capo);
-                //InitializeEnemies(gameTime, ActorTypes.Underboss);
-                //InitializeEnemies(gameTime, ActorTypes.Boss);
+                InitializeEnemies(gameTime, ActorTypes.Capo);
+                InitializeEnemies(gameTime, ActorTypes.Underboss);
+                InitializeEnemies(gameTime, ActorTypes.Boss);
 
                 foreach (var sol in enemyList)
                 {
-                    sol.Update(gameTime, player.currentPosition);
+                    sol.Update(gameTime, player.GetPlayerPosition());
                 }
 
                 bool hit = false;

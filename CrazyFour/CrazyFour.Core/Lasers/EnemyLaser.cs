@@ -82,8 +82,8 @@ namespace CrazyFour.Core.Lasers
 
         public override bool CheckHit(Player player)
         {
-            int sum = radius + player.GetRadius();
-            float dis = Vector2.Distance(position, player.GetPlayerPosition());
+            int sum = radius + player.radius;
+            float dis = Vector2.Distance(position, player.GetPlayerTruePosition());
 
             if (dis <= sum)
             {

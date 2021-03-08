@@ -28,8 +28,7 @@ namespace CrazyFour.Core.Actors
         public bool isHit = false;
         public bool isActive = true;
 
-        public virtual int radius { get; set; } = 0
-            ;
+        public virtual int radius { get; set; } = 0;
 
         public virtual void Initialize(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
         {
@@ -60,14 +59,14 @@ namespace CrazyFour.Core.Actors
             {
                 int width = spriteImage.Width;
                 int height = spriteImage.Height;
-                int radius = 0;
+                int rad = 0;
 
                 if (width > height)
-                    radius = Convert.ToInt32(Math.Ceiling((decimal)(width / 2)));
+                    rad = Convert.ToInt32(Math.Ceiling((decimal)(width / 2)));
                 else
-                    radius = Convert.ToInt32(Math.Ceiling((decimal)(height / 2)));
+                    rad = Convert.ToInt32(Math.Ceiling((decimal)(height / 2)));
 
-                return radius;
+                return rad;
             }
 
             throw new ArgumentNullException("Must set the sprite image first.");
