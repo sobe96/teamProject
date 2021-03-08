@@ -68,7 +68,7 @@ namespace CrazyFour.Core.Actors.Enemy
                 if (kState.IsKeyDown(Keys.S))
                     speed = Utilities.ConvertToPercentage(Speed.QuarterSpeed) * GameController.hz;
                 else
-                    speed = Utilities.ConvertToPercentage(Speed.ThreeQuarterSpeed) * GameController.hz;
+                    speed = Utilities.ConvertToPercentage(Speed.HalfSpeed) * GameController.hz;
 
                 // Checking to see if we are out of scope, if so, we remove from memory
                 if(currentPosition.Y < (GetRadius() * -1))

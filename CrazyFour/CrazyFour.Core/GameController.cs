@@ -138,7 +138,7 @@ namespace CrazyFour.Core
 
         public void Draw(GameTime gameTime)
         {
-            if (Config.inGame)
+            if (Config.status == GameStatus.Playing)
             {
                 // Updating the enemy's position
                 foreach (var sol in enemyList)
@@ -162,7 +162,7 @@ namespace CrazyFour.Core
 
         public void Update(GameTime gameTime, Player player)
         {
-            if (Config.inGame)
+            if (Config.status == GameStatus.Playing)
             {
                 InitializeEnemies(gameTime, ActorTypes.Soldier);
                 InitializeEnemies(gameTime, ActorTypes.Capo);

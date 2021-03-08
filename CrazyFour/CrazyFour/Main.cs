@@ -72,7 +72,7 @@ namespace CrazyFour
 
                 if (((Player)player).isDead)
                 {
-                    Config.inGame = false;
+                    Config.status = GameStatus.Gameover;
 
                     GameController.enemyLasers.Clear();
                     GameController.enemyList.Clear();
@@ -88,7 +88,7 @@ namespace CrazyFour
 
 
                 // If the game hasn't started only
-                if (!Config.inGame)
+                if (Config.status == GameStatus.Starting)
                 {
                     String msg = "Press Enter to Start Game.";
                     Vector2 sizeOfText = defaultFont.MeasureString(msg);
@@ -157,10 +157,10 @@ namespace CrazyFour
                 KeyboardState kState = Keyboard.GetState();
                 if (kState.IsKeyDown(Keys.Enter))
                 {
-                    Config.inGame = true;
+                    Config.status = GameStatus.Playing;
                 }
 
-                if (Config.inGame)
+                if (Config.status == GameStatus.Playing)
                 {
                     if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                         Exit();
