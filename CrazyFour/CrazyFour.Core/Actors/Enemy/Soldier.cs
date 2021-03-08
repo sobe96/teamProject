@@ -119,7 +119,6 @@ namespace CrazyFour.Core.Actors.Enemy
 
                     laser.Update(gameTime);
                 }
-
             }
         }
     }

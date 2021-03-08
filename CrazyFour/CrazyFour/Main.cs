@@ -72,7 +72,7 @@ namespace CrazyFour
 
                 if (((Player)player).isDead)
                 {
-                    Config.status = GameStatus.Gameover;
+                    Config.status = GameStatus.Died;
 
                     GameController.enemyLasers.Clear();
                     GameController.enemyList.Clear();
@@ -113,6 +113,17 @@ namespace CrazyFour
 
                 _spriteBatch.DrawString(defaultFont, "Timer: " + Utilities.TicksToTime(Math.Ceiling(timer)), new Vector2(0, 0), Color.White);
                 _spriteBatch.DrawString(defaultFont, "Lives: " + ((Player)player).Lives, new Vector2(0, 25), Color.White);
+
+                if (Config.status == GameStatus.Gameover)
+                {
+                    String msg = "You Won!";
+                    Vector2 sizeOfText = defaultFont.MeasureString(msg);
+                    _spriteBatch.DrawString(defaultFont, msg, new Vector2(Config.windowWidth / 2 - sizeOfText.X / 2, Config.windowHeight / 2), Color.White);
+
+                    _spriteBatch.End();
+                    base.Draw(gameTime);
+                    return;
+                }
 
                 if (player.isHit)
                 {
@@ -175,6 +186,7 @@ namespace CrazyFour
                     }
 
                     base.Update(gameTime);
+
                 }
             }
             catch (Exception ex) {

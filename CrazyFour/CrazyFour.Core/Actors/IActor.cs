@@ -17,7 +17,6 @@ namespace CrazyFour.Core.Actors
         protected ContentManager content;
 
         protected Vector2 position;
-        public bool inGame = false;
         protected bool isSpriteLoaded = false;
         protected Vector2 defaultPosition;
         
@@ -25,6 +24,7 @@ namespace CrazyFour.Core.Actors
         protected Vector2 soldierPosition;
         protected Vector2 playerPosition;
 
+        public bool inGame = false;
         public bool isHit = false;
         public bool isActive = true;
         public bool isDead = false;
