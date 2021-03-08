@@ -27,6 +27,7 @@ namespace CrazyFour.Core.Actors
 
         public bool isHit = false;
         public bool isActive = true;
+        public bool isDead = false;
 
         public virtual int radius { get; set; } = 0;
 

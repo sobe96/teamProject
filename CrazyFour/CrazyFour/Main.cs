@@ -70,6 +70,23 @@ namespace CrazyFour
                 // Loading the defaults
                 _spriteBatch.Draw(spaceBackground, new Vector2(0, 0), Color.White);
 
+                if (((Player)player).isDead)
+                {
+                    Config.inGame = false;
+
+                    GameController.enemyLasers.Clear();
+                    GameController.enemyList.Clear();
+
+                    String msg = "You Lost!";
+                    Vector2 sizeOfText = defaultFont.MeasureString(msg);
+                    _spriteBatch.DrawString(defaultFont, msg, new Vector2(Config.windowWidth / 2 - sizeOfText.X / 2, Config.windowHeight / 2), Color.White);
+
+                    _spriteBatch.End();
+                    base.Draw(gameTime);
+                    return;
+                }
+
+
                 // If the game hasn't started only
                 if (!Config.inGame)
                 {
@@ -95,6 +112,7 @@ namespace CrazyFour
                 }
 
                 _spriteBatch.DrawString(defaultFont, "Timer: " + Utilities.TicksToTime(Math.Ceiling(timer)), new Vector2(0, 0), Color.White);
+                _spriteBatch.DrawString(defaultFont, "Lives: " + ((Player)player).Lives, new Vector2(0, 25), Color.White);
 
                 player.Draw(gameTime);
 
@@ -111,7 +129,6 @@ namespace CrazyFour
                 var colorTask = MessageBox.Show("Error Occurred", ex.Message, new[] { "OK" });
             }
         }
-
 
         protected override void Update(GameTime gameTime)
         {
@@ -137,6 +154,11 @@ namespace CrazyFour
 
                     player.Update(gameTime, null);
                     controller.Update(gameTime, (Player)player);
+
+                    if (((Player)player).Lives <= 0)
+                    {
+                        player.isDead = true;
+                    }
 
                     base.Update(gameTime);
                 }

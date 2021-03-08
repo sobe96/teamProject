@@ -88,6 +88,7 @@ namespace CrazyFour.Core.Lasers
             if (dis <= sum)
             {
                 player.isHit = true;
+                player.Lives -= 1;
                 return true;
             }
 

@@ -25,6 +25,7 @@ namespace CrazyFour.Core.Actors.Hero
         private bool autoFire = true;
         private bool toggler = false;
 
+        public int Lives { get; set; } = 3;
 
         public Player(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
         {
@@ -118,9 +119,9 @@ namespace CrazyFour.Core.Actors.Hero
                         isFiring = true;
 
                         LaserFactory factory = new LaserFactory(graphics, spriteBatch, content);
-                        ILaser lazer = factory.GetLazer(LaserType.Player, new Vector2(position.X + radius, position.Y), gameTime);
+                        ILaser lasor = factory.GetLazer(LaserType.Player, new Vector2(position.X + radius, position.Y), gameTime);
 
-                        GameController.AddLaser(lazer);
+                        GameController.AddLaser(lasor);
                     }
                 }
 
