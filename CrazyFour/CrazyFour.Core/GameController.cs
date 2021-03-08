@@ -179,7 +179,7 @@ namespace CrazyFour.Core
                 foreach (EnemyLaser lasor in GameController.enemyLasers)
                 {
                     lasor.Update(gameTime);
-                    hit = lasor.CheckHit(player);
+                    hit = lasor.CheckHit(gameTime, player);
 
                     if (hit)
                         break;

@@ -87,11 +87,11 @@ namespace CrazyFour.Core.Lasers
 
         }
 
-        public override bool CheckHit(Player playerPos)
+        public override bool CheckHit(GameTime gameTime, Player player)
         {
             int sum = radius + PlayerLaser.radius;
 
-            if (Vector2.Distance(position, playerPos.currentPosition) < sum)
+            if (Vector2.Distance(position, player.currentPosition) < sum)
             {
                 isHit = true;
                 return true;

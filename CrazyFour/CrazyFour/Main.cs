@@ -114,9 +114,27 @@ namespace CrazyFour
                 _spriteBatch.DrawString(defaultFont, "Timer: " + Utilities.TicksToTime(Math.Ceiling(timer)), new Vector2(0, 0), Color.White);
                 _spriteBatch.DrawString(defaultFont, "Lives: " + ((Player)player).Lives, new Vector2(0, 25), Color.White);
 
-                player.Draw(gameTime);
+                if (player.isHit)
+                {
+                    TimeSpan ndt = DateTime.Now.Subtract(((Player)player).hitTime);
 
-                // updating the lasers
+                    if (ndt.Seconds >= 1)
+                    {
+                        
+                        ((Player)player).SetDefaultPosition();
+                        player.Draw(gameTime);
+                        player.isHit = false;
+                    }
+                    else
+                    {
+                        controller.Draw(gameTime);
+                        _spriteBatch.End();
+                        base.Draw(gameTime);
+                        return;
+                    }
+                }
+
+                player.Draw(gameTime);
                 controller.Draw(gameTime);
 
                 _spriteBatch.End();
@@ -147,17 +165,14 @@ namespace CrazyFour
                 {
                     if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                         Exit();
-
                     
                     timer += gameTime.ElapsedGameTime.TotalSeconds;
                     mState = Mouse.GetState();
 
-                    player.Update(gameTime, null);
-                    controller.Update(gameTime, (Player)player);
-
-                    if (((Player)player).Lives <= 0)
+                    if (!player.isDead && !player.isHit)
                     {
-                        player.isDead = true;
+                        player.Update(gameTime, null);
+                        controller.Update(gameTime, (Player)player);
                     }
 
                     base.Update(gameTime);

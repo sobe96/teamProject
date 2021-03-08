@@ -45,6 +45,6 @@ namespace CrazyFour.Core.Lasers
 
         public abstract void Update(GameTime game);
 
-        public abstract bool CheckHit(Player playerPos);
+        public abstract bool CheckHit(GameTime gameTime, Player playerPos);
     }
 }

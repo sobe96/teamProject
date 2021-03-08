@@ -15,7 +15,6 @@ namespace CrazyFour.Core.Actors.Hero
     {
         private const string SPRITE_IMAGE = "Images/Players/hero";
         private const int SOL_HP = 3;
-        private int counterHits = 0;
         private float speed;
         private float initCounter = 5f;
         private float counter = 0.5f;
@@ -26,6 +25,8 @@ namespace CrazyFour.Core.Actors.Hero
         private bool toggler = false;
 
         public int Lives { get; set; } = 3;
+
+        public DateTime hitTime { get; set; }
 
         public Player(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
         {
@@ -55,6 +56,13 @@ namespace CrazyFour.Core.Actors.Hero
             nPos.Y = pos.Y + GetSprite().Height / 2;
 
             return nPos;
+        }
+
+        public bool SetDefaultPosition()
+        {
+            currentPosition = defaultPosition;
+            position = defaultPosition;
+            return true;
         }
 
         public override void Draw(GameTime gameTime)
@@ -105,10 +113,12 @@ namespace CrazyFour.Core.Actors.Hero
                     toggler = true;
                 }
             }
+
             if (kState.IsKeyUp(Keys.K))
             {
                 toggler = false;
             }
+            
             // Firing projectile but making sure we fire only one at a time
             if (!autoFire)
             {

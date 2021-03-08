@@ -80,15 +80,22 @@ namespace CrazyFour.Core.Lasers
                 isActive = false;
         }
 
-        public override bool CheckHit(Player player)
+        public override bool CheckHit(GameTime gameTime, Player player)
         {
             int sum = radius + player.radius;
             float dis = Vector2.Distance(position, player.GetPlayerTruePosition());
 
             if (dis <= sum)
             {
+                float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
                 player.isHit = true;
                 player.Lives -= 1;
+                player.hitTime = DateTime.Now;
+
+                if (player.Lives <= 0)
+                    player.isDead = true;
+
                 return true;
             }
 
