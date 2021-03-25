@@ -17,7 +17,6 @@ namespace CrazyFour.Core.Actors
         protected ContentManager content;
 
         protected Vector2 position;
-        public bool inGame = false;
         protected bool isSpriteLoaded = false;
         protected Vector2 defaultPosition;
         
@@ -25,8 +24,10 @@ namespace CrazyFour.Core.Actors
         protected Vector2 soldierPosition;
         protected Vector2 playerPosition;
 
+        public bool inGame = false;
         public bool isHit = false;
         public bool isActive = true;
+        public bool isDead = false;
 
         public virtual int radius { get; set; } = 0;
 
@@ -59,11 +60,14 @@ namespace CrazyFour.Core.Actors
             {
                 int width = spriteImage.Width;
                 int height = spriteImage.Height;
+                int rad = 0;
 
                 if (width > height)
-                    return Convert.ToInt32(Math.Ceiling((decimal)(width / 2)));
+                    rad = Convert.ToInt32(Math.Ceiling((decimal)(width / 2)));
                 else
-                    return Convert.ToInt32(Math.Ceiling((decimal)(width / 2)));
+                    rad = Convert.ToInt32(Math.Ceiling((decimal)(height / 2)));
+
+                return rad;
             }
 
             throw new ArgumentNullException("Must set the sprite image first.");

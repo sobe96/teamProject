@@ -15,7 +15,6 @@ namespace CrazyFour.Core.Actors.Hero
     {
         private const string SPRITE_IMAGE = "Images/Players/hero";
         private const int SOL_HP = 3;
-        private int counterHits = 0;
         private float speed;
         private float initCounter = 5f;
         private float counter = 0.5f;
@@ -25,6 +24,9 @@ namespace CrazyFour.Core.Actors.Hero
         private bool autoFire = true;
         private bool toggler = false;
 
+        public int Lives { get; set; } = Config.defaultNumOfLives;
+
+        public DateTime hitTime { get; set; }
 
         public Player(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
         {
@@ -32,7 +34,7 @@ namespace CrazyFour.Core.Actors.Hero
             spriteBatch = s;
             content = c;
 
-            radius = 29;
+            radius = 15;
 
             // defining the default speed
             speed = 4 * GameController.hz;
@@ -43,6 +45,24 @@ namespace CrazyFour.Core.Actors.Hero
         public Vector2 GetPlayerPosition()
         { 
             return position; 
+        }
+
+        public Vector2 GetPlayerTruePosition()
+        {
+            Vector2 pos = GetPlayerPosition();
+            Vector2 nPos = new Vector2();
+
+            nPos.X = pos.X + GetSprite().Width / 2;
+            nPos.Y = pos.Y + GetSprite().Height / 2;
+
+            return nPos;
+        }
+
+        public bool SetDefaultPosition()
+        {
+            currentPosition = defaultPosition;
+            position = defaultPosition;
+            return true;
         }
 
         public override void Draw(GameTime gameTime)
@@ -79,22 +99,7 @@ namespace CrazyFour.Core.Actors.Hero
             if (kState.IsKeyDown(Keys.Up) && position.Y > (graphics.PreferredBackBufferHeight / 2))
                 position.Y -= 3f * speed * dt;
             
-            foreach (var sol in GameController.enemyLasers)
-            {
-                int sum = ((EnemyLaser)sol).radius + radius;
 
-                if (Vector2.Distance(((EnemyLaser)sol).position, currentPosition) < sum)
-                {
-                    counterHits += 1;
-                    sol.isHit = true;
-                    if (counterHits == SOL_HP)
-                    {
-                        isHit = true;
-                        counterHits = 0;
-                    }
-
-                }
-            }
             if (kState.IsKeyDown(Keys.K) && toggler == false)
             {
                 if (autoFire == true)
@@ -108,10 +113,12 @@ namespace CrazyFour.Core.Actors.Hero
                     toggler = true;
                 }
             }
+
             if (kState.IsKeyUp(Keys.K))
             {
                 toggler = false;
             }
+            
             // Firing projectile but making sure we fire only one at a time
             if (!autoFire)
             {
@@ -122,9 +129,9 @@ namespace CrazyFour.Core.Actors.Hero
                         isFiring = true;
 
                         LaserFactory factory = new LaserFactory(graphics, spriteBatch, content);
-                        ILaser lazer = factory.GetLazer(LaserType.Player, new Vector2(position.X + radius, position.Y), gameTime);
+                        ILaser lasor = factory.GetLazer(LaserType.Player, new Vector2(position.X + radius, position.Y), gameTime);
 
-                        GameController.AddLaser(lazer);
+                        GameController.AddLaser(lasor);
                     }
                 }
 
