@@ -84,7 +84,11 @@ namespace CrazyFour.Core.Actors.Hero
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             // use controlling the speed of the game by pressing the S key
-            speed = Utilities.ConvertToPercentage(Speed.Normal) * GameController.hz;
+            //speed = Utilities.ConvertToPercentage(Speed.Normal) * GameController.hz;
+            if (kState.IsKeyDown(Keys.S))
+                speed = Utilities.ConvertToPercentage(Speed.HalfSpeed) * GameController.hz;
+            else
+                speed = Utilities.ConvertToPercentage(Speed.Normal) * GameController.hz;
 
             // Moving the player
             if (kState.IsKeyDown(Keys.Right) && position.X < graphics.PreferredBackBufferWidth + 1 - GetSprite().Width)
