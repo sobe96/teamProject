@@ -43,4 +43,14 @@ namespace CrazyFour.Core.Helpers
         Bottom = 1,
         Left = -1
     }
+
+    public enum GameStatus
+    {
+        Starting,
+        Playing,
+        Hit,
+        Died,
+        Gameover,
+        NotSet
+    }
 }

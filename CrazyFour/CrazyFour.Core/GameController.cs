@@ -1,5 +1,6 @@
 ﻿using CrazyFour.Core.Actors;
 using CrazyFour.Core.Actors.Enemy;
+using CrazyFour.Core.Actors.Hero;
 using CrazyFour.Core.Factories;
 using CrazyFour.Core.Helpers;
 using CrazyFour.Core.Lasers;
@@ -65,7 +66,7 @@ namespace CrazyFour.Core
             factory = fac;
         }
 
-       public void InitializeEnemies(GameTime game, ActorTypes type)
+        public void InitializeEnemies(GameTime game, ActorTypes type)
         {
             switch(type)
             {
@@ -135,9 +136,26 @@ namespace CrazyFour.Core
             }
         }
 
+        private bool InitializeEnemiesObjects(GameTime gameTime)
+        {
+            InitializeEnemies(gameTime, ActorTypes.Boss);
+            InitializeEnemies(gameTime, ActorTypes.Underboss);
+            InitializeEnemies(gameTime, ActorTypes.Capo);
+            InitializeEnemies(gameTime, ActorTypes.Soldier);
+
+
+            if (Config.doneConfiguringSolders) return true;
+            else if (Config.doneConfiguringUnderboss) return true;
+            else if (Config.doneConfiguringCapo) return true;
+            else if (Config.doneConfiguringBoss) return true;
+            else 
+                return false;
+
+        }
+
         public void Draw(GameTime gameTime)
         {
-            if (Config.inGame)
+            if (Config.status == GameStatus.Playing)
             {
                 // Updating the enemy's position
                 foreach (var sol in enemyList)
@@ -159,25 +177,34 @@ namespace CrazyFour.Core
             }
         }
 
-        public void Update(GameTime gameTime, Vector2 playerPosition)
+        public void Update(GameTime gameTime, Player player)
         {
-            if (Config.inGame)
+            if (Config.status == GameStatus.Playing)
             {
-                InitializeEnemies(gameTime, ActorTypes.Soldier);
-                InitializeEnemies(gameTime, ActorTypes.Capo);
-                InitializeEnemies(gameTime, ActorTypes.Underboss);
-                InitializeEnemies(gameTime, ActorTypes.Boss);
+                if(!InitializeEnemiesObjects(gameTime))
+                {
+                    // means no enemies have been created, so skipping
+                    return;
+                }
 
                 foreach (var sol in enemyList)
                 {
-                    sol.Update(gameTime, playerPosition);
+                    sol.Update(gameTime, player.GetPlayerPosition());
                 }
 
-                foreach (EnemyLaser enemy in GameController.enemyLasers)
+                bool hit = false;
+
+                foreach (EnemyLaser lasor in GameController.enemyLasers)
                 {
-                    enemy.Update(gameTime);
+                    lasor.Update(gameTime);
+                    hit = lasor.CheckHit(gameTime, player);
+
+                    if (hit)
+                        break;
                 }
 
+                if (hit)
+                    GameController.enemyLasers.Clear();
 
                 // Removing any player lasors that have gone out of window
                 GameController.playerLasers.RemoveAll(r => r.isActive is false || r.isHit);
@@ -186,7 +213,11 @@ namespace CrazyFour.Core
                 GameController.enemyLasers.RemoveAll(r => r.isActive is false || r.isHit);
 
                 // Removing the enemies from our list
-                enemyList.RemoveAll(r => r.isHit || r.isActive is false);
+                enemyList.RemoveAll(r => r.isActive is false || r.isHit);
+
+
+                if (GameController.enemyList.Count <= 0)
+                    Config.status = GameStatus.Gameover;
             }
         }
         

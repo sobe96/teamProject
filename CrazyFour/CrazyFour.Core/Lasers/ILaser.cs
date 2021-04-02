@@ -1,4 +1,6 @@
-﻿using CrazyFour.Core.Helpers;
+﻿using CrazyFour.Core.Actors;
+using CrazyFour.Core.Actors.Hero;
+using CrazyFour.Core.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -42,5 +44,7 @@ namespace CrazyFour.Core.Lasers
         public abstract void Draw(GameTime game);
 
         public abstract void Update(GameTime game);
+
+        public abstract bool CheckHit(GameTime gameTime, Player playerPos);
     }
 }

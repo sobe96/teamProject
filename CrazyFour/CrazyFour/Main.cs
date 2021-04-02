@@ -70,8 +70,25 @@ namespace CrazyFour
                 // Loading the defaults
                 _spriteBatch.Draw(spaceBackground, new Vector2(0, 0), Color.White);
 
+                if (((Player)player).isDead)
+                {
+                    Config.status = GameStatus.Died;
+
+                    GameController.enemyLasers.Clear();
+                    GameController.enemyList.Clear();
+
+                    String msg = "You Lost!";
+                    Vector2 sizeOfText = defaultFont.MeasureString(msg);
+                    _spriteBatch.DrawString(defaultFont, msg, new Vector2(Config.windowWidth / 2 - sizeOfText.X / 2, Config.windowHeight / 2), Color.White);
+
+                    _spriteBatch.End();
+                    base.Draw(gameTime);
+                    return;
+                }
+
+
                 // If the game hasn't started only
-                if (!Config.inGame)
+                if (Config.status == GameStatus.Starting)
                 {
                     String msg = "Press Enter to Start Game.";
                     Vector2 sizeOfText = defaultFont.MeasureString(msg);
@@ -95,10 +112,39 @@ namespace CrazyFour
                 }
 
                 _spriteBatch.DrawString(defaultFont, "Timer: " + Utilities.TicksToTime(Math.Ceiling(timer)), new Vector2(0, 0), Color.White);
+                _spriteBatch.DrawString(defaultFont, "Lives: " + ((Player)player).Lives, new Vector2(0, 25), Color.White);
+
+                if (Config.status == GameStatus.Gameover)
+                {
+                    String msg = "You Won!";
+                    Vector2 sizeOfText = defaultFont.MeasureString(msg);
+                    _spriteBatch.DrawString(defaultFont, msg, new Vector2(Config.windowWidth / 2 - sizeOfText.X / 2, Config.windowHeight / 2), Color.White);
+
+                    _spriteBatch.End();
+                    base.Draw(gameTime);
+                    return;
+                }
+
+                if (player.isHit)
+                {
+                    TimeSpan ndt = DateTime.Now.Subtract(((Player)player).hitTime);
+
+                    if (ndt.Seconds >= 1)
+                    {
+                        ((Player)player).SetDefaultPosition();
+                        player.Draw(gameTime);
+                        player.isHit = false;
+                    }
+                    else
+                    {
+                        controller.Draw(gameTime);
+                        _spriteBatch.End();
+                        base.Draw(gameTime);
+                        return;
+                    }
+                }
 
                 player.Draw(gameTime);
-
-                // updating the lasers
                 controller.Draw(gameTime);
 
                 _spriteBatch.End();
@@ -112,7 +158,6 @@ namespace CrazyFour
             }
         }
 
-
         protected override void Update(GameTime gameTime)
         {
             try
@@ -123,22 +168,25 @@ namespace CrazyFour
                 KeyboardState kState = Keyboard.GetState();
                 if (kState.IsKeyDown(Keys.Enter))
                 {
-                    Config.inGame = true;
+                    Config.status = GameStatus.Playing;
                 }
 
-                if (Config.inGame)
+                if (Config.status == GameStatus.Playing)
                 {
                     if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                         Exit();
-
                     
                     timer += gameTime.ElapsedGameTime.TotalSeconds;
                     mState = Mouse.GetState();
 
-                    player.Update(gameTime, null);
-                    controller.Update(gameTime, ((Player)player).GetPlayerPosition());
+                    if (!player.isDead && !player.isHit)
+                    {
+                        player.Update(gameTime, null);
+                        controller.Update(gameTime, (Player)player);
+                    }
 
                     base.Update(gameTime);
+
                 }
             }
             catch (Exception ex) {
