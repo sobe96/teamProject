@@ -66,7 +66,7 @@ namespace CrazyFour.Core
             factory = fac;
         }
 
-       public void InitializeEnemies(GameTime game, ActorTypes type)
+        public void InitializeEnemies(GameTime game, ActorTypes type)
         {
             switch(type)
             {
