@@ -73,7 +73,7 @@ namespace CrazyFour.Core
                 case ActorTypes.Boss:
                     if (!Config.doneConfiguringBoss)
                     {
-                        if ((int)totalTime >= 15)
+                        if ((int)totalTime == 45)
                         {
                             for (int i = 0; i < Config.MAXBOSS; i++)
                             {
@@ -88,7 +88,7 @@ namespace CrazyFour.Core
                 case ActorTypes.Capo:
                     if (!Config.doneConfiguringCapo)
                     {
-                        if ((int)totalTime >= 5)
+                        if (((int)totalTime == 15))
                         {
                             for (int i = 0; i < Config.MAXCAPOS; i++)
                             {
@@ -103,7 +103,7 @@ namespace CrazyFour.Core
                 case ActorTypes.Soldier:
                     if (!Config.doneConfiguringSolders)
                     {
-                        if ((int)totalTime >= 1)
+                        if ((int)totalTime == 1)
                         {
                             for (int i = 0; i < Config.MAXSOLDIERS; i++)
                             {
@@ -118,7 +118,7 @@ namespace CrazyFour.Core
                 case ActorTypes.Underboss:
                     if (!Config.doneConfiguringUnderboss)
                     {
-                        if ((int)totalTime >= 10)
+                        if ((int)totalTime == 30)
                         {
                             for (int i = 0; i < Config.MAXUNDERBOSS; i++)
                             {

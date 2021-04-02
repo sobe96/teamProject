@@ -19,7 +19,6 @@ namespace CrazyFour.Core.Actors.Hero
         private float initCounter = 5f;
         private float counter = 0.5f;
         
-        // I'd say that firing should be automatic
         private bool isFiring = true;
         private bool autoFire = true;
         private bool toggler = false;

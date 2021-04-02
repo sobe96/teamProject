@@ -90,6 +90,13 @@ namespace CrazyFour.Core.Actors.Enemy
                 move.Normalize();
                 currentPosition += move * speed * dt;
 
+                /*if (currentPosition.Y >= (graphics.PreferredBackBufferHeight / 2))
+                {
+                    currentPosition.Y -= currentPosition.Y * speed * dt;
+                }
+                currentPosition.Y -= currentPosition.Y * speed * dt;*/
+
+
                 counter -= dt;
                 if (counter <= 0)
                 {
