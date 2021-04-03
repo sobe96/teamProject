@@ -9,6 +9,6 @@ namespace CrazyFour.Core.Factories
 {
     interface IActorFactory
     {
-        IActor GetActor(ActorTypes type);
+        IActor GetActor(ActorTypes type, int i);
     }
 }

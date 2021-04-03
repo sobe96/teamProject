@@ -53,7 +53,8 @@ namespace CrazyFour
         protected override void LoadContent()
         {
             controller.LoadContent(factory);
-            player = factory.GetActor(ActorTypes.Player);
+            int i = 0;
+            player = factory.GetActor(ActorTypes.Player, i);
 
             spaceBackground = Content.Load<Texture2D>("Images/space");
             defaultFont = Content.Load<SpriteFont>("DefaultFont");

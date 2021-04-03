@@ -25,13 +25,8 @@ namespace CrazyFour.Core.Actors.Enemy
         private Vector2 positionLeftTop;
         private Vector2 move;
         private int hitCounter = 0;
-        private bool leftTop = false;
-        private bool rightTop = false;
-        private bool leftBot = false;
-        private bool rightBot = false;
 
-
-        public Soldier(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
+        public Soldier(GraphicsDeviceManager g, SpriteBatch s, ContentManager c, int i)
         {
             graphics = g;
             spriteBatch = s;
@@ -45,13 +40,12 @@ namespace CrazyFour.Core.Actors.Enemy
             // Randomizing starting point
             //int width = Config.rand.Next(GetRadius(), graphics.PreferredBackBufferWidth - GetRadius());
             //int height = Config.rand.Next(GetRadius() * -1, 0);
-
-            int width = 0;
-            int height = 0;
+            float ratio = graphics.PreferredBackBufferWidth / (graphics.PreferredBackBufferHeight / 2);
+            float width = 0 - 2 * GetRadius()  - (2 * ratio * i * GetRadius());
+            float height = 0 - 2 * GetRadius() - (2 * i * GetRadius());
 
             defaultPosition = new Vector2(width, height);
             currentPosition = defaultPosition;
-            leftTop = true;
         }
 
         public Vector2 GetSoldierPosition()
@@ -85,8 +79,8 @@ namespace CrazyFour.Core.Actors.Enemy
                     speed = Utilities.ConvertToPercentage(Speed.HalfSpeed) * GameController.hz;
 
                 // Checking to see if we are out of scope, if so, we remove from memory
-                if(currentPosition.Y < (GetRadius() * -1))
-                    isActive = false;
+                //if(currentPosition.Y < (GetRadius() * -1))
+                //    isActive = false;
 
                 /*Vector2 move = playerPosition - currentPosition;
                 // Checking to see if we are returning due to hitting the mid point of the screen
@@ -110,14 +104,19 @@ namespace CrazyFour.Core.Actors.Enemy
 
 
 
-                positionRightBot = new Vector2(graphics.PreferredBackBufferWidth - GetRadius(), graphics.PreferredBackBufferHeight / 2);
-                positionLeftBot = new Vector2(0 + GetRadius(), graphics.PreferredBackBufferHeight / 2);
-                positionRightTop = new Vector2(graphics.PreferredBackBufferWidth - GetRadius(), 0);
-                positionLeftTop = new Vector2(0 + GetRadius(), 0);
+                /*positionRightBot = new Vector2(graphics.PreferredBackBufferWidth - 3 * GetRadius(), (graphics.PreferredBackBufferHeight / 2) - 3 * GetRadius());
+                positionLeftBot = new Vector2(0 + 3 * GetRadius(), (graphics.PreferredBackBufferHeight / 2) - 3 * GetRadius());
+                positionRightTop = new Vector2(graphics.PreferredBackBufferWidth - 3 * GetRadius(), 0 + 3 * GetRadius());
+                positionLeftTop = new Vector2(0 + 3 * GetRadius(), 0 + 3 * GetRadius());*/
 
-                //Vector2 move;// = positionRightBot - currentPosition;
+                positionRightBot = new Vector2(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight / 2);
+                positionLeftBot = new Vector2(0 - 2 * GetRadius(), graphics.PreferredBackBufferHeight / 2);
+                positionRightTop = new Vector2(graphics.PreferredBackBufferWidth, 0);
+                positionLeftTop = new Vector2(0 - 2 * GetRadius(), 0);
 
-                if (currentPosition.X <= positionLeftTop.X && currentPosition.Y <= positionLeftTop.Y)
+                //Vector2 move = positionRightBot - currentPosition;
+
+                if (Math.Round(currentPosition.X) <= positionLeftTop.X && currentPosition.Y <= positionLeftTop.Y)
                 {
                     move = positionRightBot - currentPosition;
                 }
@@ -125,11 +124,11 @@ namespace CrazyFour.Core.Actors.Enemy
                 {
                     move = positionRightTop - currentPosition;
                 }
-                if (currentPosition.X <= positionRightTop.X && currentPosition.Y <= positionRightTop.Y)
+                if (Math.Round(currentPosition.X) >= positionRightTop.X && currentPosition.Y <= positionRightTop.Y)
                 {
                     move = positionLeftBot - currentPosition;
                 }
-                if (currentPosition.X >= positionLeftBot.X && currentPosition.Y >= positionLeftBot.Y)
+                if (currentPosition.X <= positionLeftBot.X && currentPosition.Y >= positionLeftBot.Y)
                 {
                     move = positionLeftTop - currentPosition;
                 }

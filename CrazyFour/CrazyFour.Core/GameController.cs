@@ -1,4 +1,4 @@
-﻿using CrazyFour.Core.Actors;
+using CrazyFour.Core.Actors;
 using CrazyFour.Core.Actors.Enemy;
 using CrazyFour.Core.Actors.Hero;
 using CrazyFour.Core.Factories;
@@ -68,7 +68,7 @@ namespace CrazyFour.Core
             factory = fac;
         }
 
-       public async void InitializeEnemies(GameTime game, ActorTypes type)
+       public void InitializeEnemies(GameTime game, ActorTypes type)
         {
             switch(type)
             {
@@ -79,7 +79,8 @@ namespace CrazyFour.Core
                         {
                             for (int i = 0; i < Config.MAXBOSS; i++)
                             {
-                                var sol = (Boss)factory.GetActor(ActorTypes.Boss);
+                                
+                                var sol = (Boss)factory.GetActor(ActorTypes.Boss, i);
                                 enemyList.Add(sol);
                             }
 
@@ -94,7 +95,7 @@ namespace CrazyFour.Core
                         {
                             for (int i = 0; i < Config.MAXCAPOS; i++)
                             {
-                                var capo = (Capo)factory.GetActor(ActorTypes.Capo);
+                                var capo = (Capo)factory.GetActor(ActorTypes.Capo, i);
                                 enemyList.Add(capo);
                             }
 
@@ -109,10 +110,8 @@ namespace CrazyFour.Core
                         {
                             for (int i = 0; i < Config.MAXSOLDIERS; i++)
                             {
-                                var sol = (Soldier)factory.GetActor(ActorTypes.Soldier);
+                                var sol = (Soldier)factory.GetActor(ActorTypes.Soldier, i);
                                 enemyList.Add(sol);
-                                // Check if it works
-                                //Thread.Sleep(1);
                             }
 
                             Config.doneConfiguringSolders = true;
@@ -126,7 +125,7 @@ namespace CrazyFour.Core
                         {
                             for (int i = 0; i < Config.MAXUNDERBOSS; i++)
                             {
-                                var sol = (Underboss)factory.GetActor(ActorTypes.Underboss);
+                                var sol = (Underboss)factory.GetActor(ActorTypes.Underboss, i);
                                 enemyList.Add(sol);
                             }
 

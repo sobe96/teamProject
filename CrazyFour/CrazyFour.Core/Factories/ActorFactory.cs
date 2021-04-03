@@ -1,4 +1,4 @@
-﻿using CrazyFour.Core.Actors;
+using CrazyFour.Core.Actors;
 using CrazyFour.Core.Actors.Enemy;
 using CrazyFour.Core.Actors.Hero;
 using CrazyFour.Core.Helpers;
@@ -24,8 +24,9 @@ namespace CrazyFour.Core.Factories
             content = c;
         }
 
-        public IActor GetActor(ActorTypes type)
+        public IActor GetActor(ActorTypes type, int i)
         {
+            
             switch(type)
             {
                 case ActorTypes.Boss:
@@ -38,7 +39,7 @@ namespace CrazyFour.Core.Factories
                     return new Player(graphics, spriteBatch, content);
 
                 case ActorTypes.Soldier:
-                    return new Soldier(graphics, spriteBatch, content);
+                    return new Soldier(graphics, spriteBatch, content, i);
 
                 case ActorTypes.Underboss:
                     return new Underboss(graphics, spriteBatch, content);
