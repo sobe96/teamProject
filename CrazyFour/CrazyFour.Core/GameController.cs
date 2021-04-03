@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace CrazyFour.Core
 {
@@ -28,6 +29,7 @@ namespace CrazyFour.Core
         public static float totalTime = 0f;
 
         private ActorFactory factory;
+        int s = 1;
 
 
         public static GameController Instance
@@ -66,7 +68,7 @@ namespace CrazyFour.Core
             factory = fac;
         }
 
-       public void InitializeEnemies(GameTime game, ActorTypes type)
+       public async void InitializeEnemies(GameTime game, ActorTypes type)
         {
             switch(type)
             {
@@ -109,6 +111,8 @@ namespace CrazyFour.Core
                             {
                                 var sol = (Soldier)factory.GetActor(ActorTypes.Soldier);
                                 enemyList.Add(sol);
+                                // Check if it works
+                                //Thread.Sleep(1);
                             }
 
                             Config.doneConfiguringSolders = true;
@@ -216,8 +220,8 @@ namespace CrazyFour.Core
                 enemyList.RemoveAll(r => r.isActive is false || r.isHit);
 
 
-                if (GameController.enemyList.Count <= 0)
-                    Config.status = GameStatus.Gameover;
+                //if (GameController.enemyList.Count <= 0)
+                    //Config.status = GameStatus.Gameover;
             }
         }
         

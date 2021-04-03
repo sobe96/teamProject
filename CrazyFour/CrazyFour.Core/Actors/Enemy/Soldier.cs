@@ -19,7 +19,17 @@ namespace CrazyFour.Core.Actors.Enemy
         private float counter = 0.5f;
         private bool returning = false;
         private Vector2 returnPosition;
+        private Vector2 positionRightBot;
+        private Vector2 positionLeftBot;
+        private Vector2 positionRightTop;
+        private Vector2 positionLeftTop;
+        private Vector2 move;
         private int hitCounter = 0;
+        private bool leftTop = false;
+        private bool rightTop = false;
+        private bool leftBot = false;
+        private bool rightBot = false;
+
 
         public Soldier(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
         {
@@ -33,11 +43,15 @@ namespace CrazyFour.Core.Actors.Enemy
             LoadSprite(LoadType.Ship, SPRITE_IMAGE);
 
             // Randomizing starting point
-            int width = Config.rand.Next(GetRadius(), graphics.PreferredBackBufferWidth - GetRadius());
-            int height = Config.rand.Next(GetRadius() * -1, 0);
+            //int width = Config.rand.Next(GetRadius(), graphics.PreferredBackBufferWidth - GetRadius());
+            //int height = Config.rand.Next(GetRadius() * -1, 0);
+
+            int width = 0;
+            int height = 0;
 
             defaultPosition = new Vector2(width, height);
             currentPosition = defaultPosition;
+            leftTop = true;
         }
 
         public Vector2 GetSoldierPosition()
@@ -74,21 +88,107 @@ namespace CrazyFour.Core.Actors.Enemy
                 if(currentPosition.Y < (GetRadius() * -1))
                     isActive = false;
 
-
-                Vector2 move = playerPosition - currentPosition;
-
+                /*Vector2 move = playerPosition - currentPosition;
                 // Checking to see if we are returning due to hitting the mid point of the screen
-                if(returning)
-                    move = returnPosition - currentPosition;
+                if (returning)
+                    if (currentPosition.Y <= 0)
+                    {
+                        returning = false;
+                    }
+                    else
+                    {
+                        move = returnPosition - currentPosition;
+                    }
+
                 else if (currentPosition.Y >= (graphics.PreferredBackBufferHeight / 2))
                 {
-                    returnPosition = Utilities.GetReturnPosition(graphics, defaultPosition, radius);
+                    //returnPosition = Utilities.GetReturnPosition(graphics, defaultPosition, radius);
+                    returnPosition = new Vector2(currentPosition.X, 0);
                     move = returnPosition - currentPosition;
                     returning = true;
+                }*/
+
+
+
+                positionRightBot = new Vector2(graphics.PreferredBackBufferWidth - GetRadius(), graphics.PreferredBackBufferHeight / 2);
+                positionLeftBot = new Vector2(0 + GetRadius(), graphics.PreferredBackBufferHeight / 2);
+                positionRightTop = new Vector2(graphics.PreferredBackBufferWidth - GetRadius(), 0);
+                positionLeftTop = new Vector2(0 + GetRadius(), 0);
+
+                //Vector2 move;// = positionRightBot - currentPosition;
+
+                if (currentPosition.X <= positionLeftTop.X && currentPosition.Y <= positionLeftTop.Y)
+                {
+                    move = positionRightBot - currentPosition;
+                }
+                if (currentPosition.X >= positionRightBot.X && currentPosition.Y >= positionRightBot.Y)
+                {
+                    move = positionRightTop - currentPosition;
+                }
+                if (currentPosition.X <= positionRightTop.X && currentPosition.Y <= positionRightTop.Y)
+                {
+                    move = positionLeftBot - currentPosition;
+                }
+                if (currentPosition.X >= positionLeftBot.X && currentPosition.Y >= positionLeftBot.Y)
+                {
+                    move = positionLeftTop - currentPosition;
                 }
 
+                /*if (Math.Round(currentPosition.X) <= Math.Round(positionLeftTop.X) && Math.Round(currentPosition.Y) <= Math.Round(positionLeftTop.Y))
+                {
+                    move = positionRightBot - currentPosition;
+                }
+                if (Math.Round(currentPosition.X) >= Math.Round(positionRightBot.X) && Math.Round(currentPosition.Y) >= Math.Round(positionRightBot.Y))
+                {
+                    move = positionRightTop - currentPosition;
+                }
+                if (Math.Round(currentPosition.X) <= Math.Round(positionRightTop.X) && Math.Round(currentPosition.Y) <= Math.Round(positionRightTop.Y))
+                {
+                    move = positionLeftBot - currentPosition;
+                }
+                if (Math.Round(currentPosition.X) >= Math.Round(positionLeftBot.X) && Math.Round(currentPosition.Y) >= Math.Round(positionLeftBot.Y))
+                {
+                    move = positionLeftTop - currentPosition;
+                }*/
+
+                /*if (returning)
+                    if (currentPosition.Y <= 0)
+                    {
+                        returning = false;
+                    }
+                    else
+                    {
+                        move = returnPosition - currentPosition;
+                    }
+
+                else if (currentPosition.Y >= (graphics.PreferredBackBufferHeight / 2))
+                {
+                    //returnPosition = Utilities.GetReturnPosition(graphics, defaultPosition, radius);
+                    returnPosition = new Vector2(currentPosition.X, 0);
+                    move = returnPosition - currentPosition;
+                    returning = true;
+                }*/
+
+                // Checking to see if we are returning due to hitting the mid point of the screen
+                /*if (returning)
+                    if (currentPosition.Y <= 0){
+                        returning = false;
+                    }
+                    else
+                    {
+                        move = returnPosition - currentPosition;
+                    }
+                    
+                else if (currentPosition.Y >= (graphics.PreferredBackBufferHeight / 2))
+                {
+                    //returnPosition = Utilities.GetReturnPosition(graphics, defaultPosition, radius);
+                    returnPosition = new Vector2(currentPosition.X, 0);
+                    move = returnPosition - currentPosition;
+                    returning = true;
+                }*/
+
                 move.Normalize();
-                currentPosition += move * speed * dt;
+                currentPosition += move * 8 * speed * dt;
 
                 /*if (currentPosition.Y >= (graphics.PreferredBackBufferHeight / 2))
                 {
