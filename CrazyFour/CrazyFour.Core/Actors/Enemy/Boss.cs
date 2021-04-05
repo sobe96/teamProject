@@ -22,7 +22,7 @@ namespace CrazyFour.Core.Actors.Enemy
         private Vector2 returnPosition;
         private int hitCounter = 0;
 
-        public Boss(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
+        public Boss(GraphicsDeviceManager g, SpriteBatch s, ContentManager c, int i)
         {
             graphics = g;
             spriteBatch = s;

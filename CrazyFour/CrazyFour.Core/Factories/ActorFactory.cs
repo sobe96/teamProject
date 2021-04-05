@@ -30,10 +30,10 @@ namespace CrazyFour.Core.Factories
             switch(type)
             {
                 case ActorTypes.Boss:
-                    return new Boss(graphics, spriteBatch, content);
+                    return new Boss(graphics, spriteBatch, content, i);
 
                 case ActorTypes.Capo:
-                    return new Capo(graphics, spriteBatch, content);
+                    return new Capo(graphics, spriteBatch, content, i);
 
                 case ActorTypes.Player:
                     return new Player(graphics, spriteBatch, content);
@@ -42,7 +42,7 @@ namespace CrazyFour.Core.Factories
                     return new Soldier(graphics, spriteBatch, content, i);
 
                 case ActorTypes.Underboss:
-                    return new Underboss(graphics, spriteBatch, content);
+                    return new Underboss(graphics, spriteBatch, content, i);
 
                 default:
                     throw new ArgumentException();

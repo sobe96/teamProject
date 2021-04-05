@@ -20,8 +20,9 @@ namespace CrazyFour.Core.Actors.Enemy
         private bool returning = false;
         private Vector2 returnPosition;
         private int hitCounter = 0;
+        private Vector2 move;
 
-        public Underboss(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
+        public Underboss(GraphicsDeviceManager g, SpriteBatch s, ContentManager c, int i)
         {
             graphics = g;
             spriteBatch = s;
@@ -66,20 +67,22 @@ namespace CrazyFour.Core.Actors.Enemy
                     speed = Utilities.ConvertToPercentage(Speed.ThreeQuarterSpeed) * GameController.hz;
 
                 // Checking to see if we are out of scope, if so, we remove from memory
-                if (currentPosition.Y < (GetRadius() * -1))
-                    isActive = false;
+                //if (currentPosition.Y < (GetRadius() * -1))
+                //    isActive = false;
 
-                Vector2 move = playerPosition - currentPosition;
+                //Vector2 move = playerPosition - currentPosition;
 
                 // Checking to see if we are returning due to hitting the mid point of the screen
-                if (returning)
+                /*if (returning)
                     move = returnPosition - currentPosition;
                 else if (currentPosition.Y >= (graphics.PreferredBackBufferHeight / 2))
                 {
                     returnPosition = Utilities.GetReturnPosition(graphics, defaultPosition, radius);
                     move = returnPosition - currentPosition;
                     returning = true;
-                }
+                }*/
+
+
 
                 move.Normalize();
                 currentPosition += move * speed * dt;

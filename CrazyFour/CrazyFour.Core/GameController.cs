@@ -30,6 +30,7 @@ namespace CrazyFour.Core
 
         private ActorFactory factory;
         int s = 1;
+        int wave = 0;
 
 
         public static GameController Instance
@@ -75,8 +76,9 @@ namespace CrazyFour.Core
                 case ActorTypes.Boss:
                     if (!Config.doneConfiguringBoss)
                     {
-                        if ((int)totalTime == 45)
+                        if ((int)totalTime == 140 || (wave == 3 && enemyList.Count == 0))
                         {
+                            wave = 4;
                             for (int i = 0; i < Config.MAXBOSS; i++)
                             {
                                 
@@ -91,8 +93,9 @@ namespace CrazyFour.Core
                 case ActorTypes.Capo:
                     if (!Config.doneConfiguringCapo)
                     {
-                        if (((int)totalTime == 15))
+                        if (((int)totalTime == 1 || (wave == 1 && enemyList.Count == 0)))
                         {
+                            wave = 2;
                             for (int i = 0; i < Config.MAXCAPOS; i++)
                             {
                                 var capo = (Capo)factory.GetActor(ActorTypes.Capo, i);
@@ -106,8 +109,9 @@ namespace CrazyFour.Core
                 case ActorTypes.Soldier:
                     if (!Config.doneConfiguringSolders)
                     {
-                        if ((int)totalTime == 1)
+                        if ((int)totalTime == 100 && wave == 0)
                         {
+                            wave = 1;
                             for (int i = 0; i < Config.MAXSOLDIERS; i++)
                             {
                                 var sol = (Soldier)factory.GetActor(ActorTypes.Soldier, i);
@@ -121,8 +125,9 @@ namespace CrazyFour.Core
                 case ActorTypes.Underboss:
                     if (!Config.doneConfiguringUnderboss)
                     {
-                        if ((int)totalTime == 30)
+                        if ((int)totalTime == 90 || (wave == 2 && enemyList.Count == 0))
                         {
+                            wave = 3;
                             for (int i = 0; i < Config.MAXUNDERBOSS; i++)
                             {
                                 var sol = (Underboss)factory.GetActor(ActorTypes.Underboss, i);
@@ -219,8 +224,11 @@ namespace CrazyFour.Core
                 enemyList.RemoveAll(r => r.isActive is false || r.isHit);
 
 
-                //if (GameController.enemyList.Count <= 0)
-                    //Config.status = GameStatus.Gameover;
+                if (enemyList.Count == 0 && wave == 4)
+                {
+                    Config.status = GameStatus.Gameover;
+                }
+                    
             }
         }
         

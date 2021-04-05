@@ -17,8 +17,8 @@ namespace CrazyFour.Core.Actors.Enemy
         private float speed;
         private float initCounter = 10f;
         private float counter = 0.5f;
-        private bool returning = false;
-        private Vector2 returnPosition;
+        //private bool returning = false;
+        //private Vector2 returnPosition;
         private Vector2 positionRightBot;
         private Vector2 positionLeftBot;
         private Vector2 positionRightTop;
@@ -109,30 +109,6 @@ namespace CrazyFour.Core.Actors.Enemy
                 positionRightTop = new Vector2(graphics.PreferredBackBufferWidth - 3 * GetRadius(), 0 + 3 * GetRadius());
                 positionLeftTop = new Vector2(0 + 3 * GetRadius(), 0 + 3 * GetRadius());*/
 
-                positionRightBot = new Vector2(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight / 2);
-                positionLeftBot = new Vector2(0 - 2 * GetRadius(), graphics.PreferredBackBufferHeight / 2);
-                positionRightTop = new Vector2(graphics.PreferredBackBufferWidth, 0);
-                positionLeftTop = new Vector2(0 - 2 * GetRadius(), 0);
-
-                //Vector2 move = positionRightBot - currentPosition;
-
-                if (Math.Round(currentPosition.X) <= positionLeftTop.X && currentPosition.Y <= positionLeftTop.Y)
-                {
-                    move = positionRightBot - currentPosition;
-                }
-                if (currentPosition.X >= positionRightBot.X && currentPosition.Y >= positionRightBot.Y)
-                {
-                    move = positionRightTop - currentPosition;
-                }
-                if (Math.Round(currentPosition.X) >= positionRightTop.X && currentPosition.Y <= positionRightTop.Y)
-                {
-                    move = positionLeftBot - currentPosition;
-                }
-                if (currentPosition.X <= positionLeftBot.X && currentPosition.Y >= positionLeftBot.Y)
-                {
-                    move = positionLeftTop - currentPosition;
-                }
-
                 /*if (Math.Round(currentPosition.X) <= Math.Round(positionLeftTop.X) && Math.Round(currentPosition.Y) <= Math.Round(positionLeftTop.Y))
                 {
                     move = positionRightBot - currentPosition;
@@ -186,15 +162,34 @@ namespace CrazyFour.Core.Actors.Enemy
                     returning = true;
                 }*/
 
+                positionRightBot = new Vector2(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight / 2);
+                positionLeftBot = new Vector2(0 - 2 * GetRadius(), graphics.PreferredBackBufferHeight / 2);
+                positionRightTop = new Vector2(graphics.PreferredBackBufferWidth, 0);
+                positionLeftTop = new Vector2(0 - 2 * GetRadius(), 0);
+
+                if (Math.Round(currentPosition.X) <= positionLeftTop.X && currentPosition.Y <= positionLeftTop.Y)
+                {
+                    move = positionRightBot - currentPosition;
+                }
+                if (currentPosition.X >= positionRightBot.X && currentPosition.Y >= positionRightBot.Y)
+                {
+                    move = positionRightTop - currentPosition;
+                }
+                if (Math.Round(currentPosition.X) >= positionRightTop.X && currentPosition.Y <= positionRightTop.Y)
+                {
+                    move = positionLeftBot - currentPosition;
+                }
+                if (currentPosition.X <= positionLeftBot.X && currentPosition.Y >= positionLeftBot.Y)
+                {
+                    move = positionLeftTop - currentPosition;
+                }
+
+                //move = Movement.CrossMovement(graphics, currentPosition, positionRightBot, positionLeftBot, positionRightTop, positionLeftTop);
+
                 move.Normalize();
                 currentPosition += move * 8 * speed * dt;
 
-                /*if (currentPosition.Y >= (graphics.PreferredBackBufferHeight / 2))
-                {
-                    currentPosition.Y -= currentPosition.Y * speed * dt;
-                }
-                currentPosition.Y -= currentPosition.Y * speed * dt;*/
-
+                //currentPosition = Movement.CrossMovement(graphics, currentPosition, positionRightBot, positionLeftBot, positionRightTop, positionLeftTop);
 
                 counter -= dt;
                 if (counter <= 0)
