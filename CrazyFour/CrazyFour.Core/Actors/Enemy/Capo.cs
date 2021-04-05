@@ -76,8 +76,6 @@ namespace CrazyFour.Core.Actors.Enemy
             KeyboardState kState = Keyboard.GetState();
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
             playerPosition = (Vector2)pp;
-            
-            float spd = MathHelper.PiOver2;
             playerPosition.X += 25;     // player's radius
 
             if (inGame)
@@ -150,7 +148,6 @@ namespace CrazyFour.Core.Actors.Enemy
                 
 
                 move.Normalize();
-                //currentPosition.Normalize();
                 currentPosition += move * 3 * speed * dt;
 
                 counter -= dt;
