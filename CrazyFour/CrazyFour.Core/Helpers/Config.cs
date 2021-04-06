@@ -23,13 +23,13 @@ namespace CrazyFour.Core.Helpers
 
         public static int MAXBOSS { get; } = 1;
 
-        public static int SOL_HP { get; } = 3;
+        public static int SOL_HP { get; } = 4;
         
-        public static int CAPO_HP { get; } = 2;
+        public static int CAPO_HP { get; } = 6;
         
-        public static int UBOSS_HP { get; } = 3;
+        public static int UBOSS_HP { get; } = 10;
         
-        public static int BOSS_HP { get; } = 4;
+        public static int BOSS_HP { get; } = 20;
 
         public static bool doneConfiguringSolders { get; set; } = false;
 

@@ -17,14 +17,10 @@ namespace CrazyFour.Core.Actors.Enemy
         private float speed;
         private float initCounter = 10f;
         private float counter = .5f;
-        private bool returning = false;
-        private Vector2 returnPosition;
         private int hitCounter = 0;
         Vector2 move;
         Vector2 leftCircleStart;
         Vector2 rightCircleStart;
-        Vector2 originLeft;
-        Vector2 originRight;
         bool startDrawLeft = false;
         bool startDrawRight = false;
         float angle = 0;

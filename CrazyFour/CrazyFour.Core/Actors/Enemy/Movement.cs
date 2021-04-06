@@ -55,7 +55,6 @@ namespace CrazyFour.Core.Actors.Enemy
 
         public static Vector2 CircleMovement(GraphicsDeviceManager g, Vector2 cp)
         {
-            float rad = 200;
 
             /*move.X = (float)(origin.X + Math.Sin(angle) * rad);
             move.Y = (float)(origin.Y + Math.Cos(angle) * rad);

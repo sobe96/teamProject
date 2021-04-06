@@ -29,7 +29,6 @@ namespace CrazyFour.Core
         public static float totalTime = 0f;
 
         private ActorFactory factory;
-        int s = 1;
         int wave = 0;
 
 
@@ -76,7 +75,7 @@ namespace CrazyFour.Core
                 case ActorTypes.Boss:
                     if (!Config.doneConfiguringBoss)
                     {
-                        if ((int)totalTime == 140 || (wave == 3 && enemyList.Count == 0))
+                        if ((int)totalTime == 135 || (wave == 3 && enemyList.Count == 0))
                         {
                             wave = 4;
                             for (int i = 0; i < Config.MAXBOSS; i++)
@@ -93,7 +92,7 @@ namespace CrazyFour.Core
                 case ActorTypes.Capo:
                     if (!Config.doneConfiguringCapo)
                     {
-                        if (((int)totalTime == 1 || (wave == 1 && enemyList.Count == 0)))
+                        if (((int)totalTime == 45 || (wave == 1 && enemyList.Count == 0)))
                         {
                             wave = 2;
                             for (int i = 0; i < Config.MAXCAPOS; i++)
@@ -109,7 +108,7 @@ namespace CrazyFour.Core
                 case ActorTypes.Soldier:
                     if (!Config.doneConfiguringSolders)
                     {
-                        if ((int)totalTime == 100 && wave == 0)
+                        if ((int)totalTime == 1 && wave == 0)
                         {
                             wave = 1;
                             for (int i = 0; i < Config.MAXSOLDIERS; i++)

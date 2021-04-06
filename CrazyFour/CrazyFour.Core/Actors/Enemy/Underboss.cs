@@ -17,10 +17,11 @@ namespace CrazyFour.Core.Actors.Enemy
         private float speed;
         private float initCounter = 10f;
         private float counter = 0.5f;
-        private bool returning = false;
-        private Vector2 returnPosition;
         private int hitCounter = 0;
         private Vector2 move;
+        private float angle = 0;
+        private bool rotateUp = false;
+        private bool rotateDown = false;
 
         public Underboss(GraphicsDeviceManager g, SpriteBatch s, ContentManager c, int i)
         {
@@ -34,8 +35,11 @@ namespace CrazyFour.Core.Actors.Enemy
             LoadSprite(LoadType.Ship, SPRITE_IMAGE);
 
             // Randomizing starting point
-            int width = Config.rand.Next(GetRadius(), graphics.PreferredBackBufferWidth - GetRadius());
-            int height = Config.rand.Next(GetRadius() * -1, 0);
+            //int width = Config.rand.Next(GetRadius(), graphics.PreferredBackBufferWidth - GetRadius());
+            //int height = Config.rand.Next(GetRadius() * -1, 0);
+
+            float width = (float)(i * graphics.PreferredBackBufferWidth - Math.Pow(-1,i) * GetRadius());
+            float height = (float)(graphics.PreferredBackBufferHeight / 3 + i * graphics.PreferredBackBufferHeight / 3) - 100;
 
             defaultPosition = new Vector2(width, height);
             currentPosition = defaultPosition;
@@ -70,10 +74,10 @@ namespace CrazyFour.Core.Actors.Enemy
                 //if (currentPosition.Y < (GetRadius() * -1))
                 //    isActive = false;
 
-                //Vector2 move = playerPosition - currentPosition;
+                /*Vector2 move = playerPosition - currentPosition;
 
                 // Checking to see if we are returning due to hitting the mid point of the screen
-                /*if (returning)
+                if (returning)
                     move = returnPosition - currentPosition;
                 else if (currentPosition.Y >= (graphics.PreferredBackBufferHeight / 2))
                 {
@@ -82,10 +86,58 @@ namespace CrazyFour.Core.Actors.Enemy
                     returning = true;
                 }*/
 
+                Vector2 centerHigh = new Vector2(graphics.PreferredBackBufferWidth / 2, (graphics.PreferredBackBufferHeight / 3) - 100);
+                Vector2 centerLow = new Vector2(graphics.PreferredBackBufferWidth / 2, (2 * graphics.PreferredBackBufferHeight / 3) - 100);
+                Vector2 origin = new Vector2(graphics.PreferredBackBufferWidth / 2, (graphics.PreferredBackBufferHeight / 2) - 100);
+                Vector2 rightUp = new Vector2(graphics.PreferredBackBufferWidth + GetRadius(), graphics.PreferredBackBufferHeight / 3);
+                Vector2 leftUp = new Vector2(0 - GetRadius(), graphics.PreferredBackBufferHeight / 3);
+                Vector2 rightDown = new Vector2(graphics.PreferredBackBufferWidth + GetRadius(), 2 * graphics.PreferredBackBufferHeight / 3);
+                Vector2 leftDown = new Vector2(0 - GetRadius(), 2 * graphics.PreferredBackBufferHeight / 3);
+                float rad = 300;
+
+                if (currentPosition.X <= 0 && currentPosition.Y == (graphics.PreferredBackBufferHeight / 3) - 100)
+                {
+                    move = centerHigh - currentPosition;
+                }
+                if (currentPosition.X >= graphics.PreferredBackBufferWidth && currentPosition.Y == (2 * graphics.PreferredBackBufferHeight / 3) - 100)
+                {
+                    move = centerLow - currentPosition;
+                }
+                if (Math.Round(currentPosition.X) == centerHigh.X && Math.Round(currentPosition.Y) == centerHigh.Y)
+                {
+                    rotateUp = true;
+                    
+                }
+                if (rotateUp)
+                {
+                    move.X = (float)(origin.X + Math.Cos(angle) * rad) - currentPosition.X;
+                    move.Y = (float)(origin.Y + Math.Sin(angle) * rad) - currentPosition.Y;
+                    angle = angle + dt;
+                    if (angle >= 360)
+                    {
+                        angle = 0;
+                    }
+                }
+                if (Math.Round(currentPosition.X) == centerLow.X && Math.Round(currentPosition.Y) == centerLow.Y)
+                {
+                    rotateDown = true;
+                }
+
+                if (rotateDown)
+                {
+                    move.X = (float)(origin.X - Math.Cos(angle) * rad) - currentPosition.X;
+                    move.Y = (float)(origin.Y - Math.Sin(angle) * rad) - currentPosition.Y;
+                    angle = angle + dt;
+                    if (angle >= 360)
+                    {
+                        angle = 0;
+                    }
+                }
+
 
 
                 move.Normalize();
-                currentPosition += move * speed * dt;
+                currentPosition += move * 3 * speed * dt;
 
                 counter -= dt;
                 if (counter <= 0)
