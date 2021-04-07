@@ -18,8 +18,6 @@ namespace CrazyFour.Core.Actors.Enemy
         private float speed;
         private float initCounter = 10f;
         private float counter = 0.5f;
-        private bool returning = false;
-        private Vector2 returnPosition;
         private int hitCounter = 0;
         private Vector2 move;
         private bool initialized = false;
@@ -29,7 +27,7 @@ namespace CrazyFour.Core.Actors.Enemy
             graphics = g;
             spriteBatch = s;
             content = c;
-            radius = 102;
+            radius = 91;
             inGame = true;
             isActive = true;
 
@@ -101,19 +99,20 @@ namespace CrazyFour.Core.Actors.Enemy
                 if (counter <= 0)
                 {
                     LaserFactory factory = new LaserFactory(graphics, spriteBatch, content);
-                    ILaser laserSol = factory.GetLazer(LaserType.Soldier, new Vector2(currentPosition.X + radius - 3, currentPosition.Y + 15), gameTime);
+                    ILaser laserSol = factory.GetLazer(LaserType.Soldier, new Vector2(currentPosition.X + radius - 3, currentPosition.Y + 2 * GetRadius()), gameTime);
 
                     GameController.AddLaser(laserSol);
                     counter = initCounter / 10;
                 }
 
-
+                //Use collision detection controller
                 // Checking for any hit from the player lasers
                 foreach (PlayerLaser laser in GameController.playerLasers)
                 {
-                    int sum = radius + PlayerLaser.radius;
+                    int sum = 2 * GetRadius() + PlayerLaser.radius;
+                    float dst = Vector2.Distance(laser.position, currentPosition);
 
-                    if (Vector2.Distance(laser.position, currentPosition) < sum)
+                    if (dst < sum)
                     {
                         hitCounter += 1;
                         laser.isHit = true;

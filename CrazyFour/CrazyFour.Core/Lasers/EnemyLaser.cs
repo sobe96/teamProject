@@ -80,6 +80,8 @@ namespace CrazyFour.Core.Lasers
                 isActive = false;
         }
 
+        // Give a notification to Main.cs (observer ptrn) event handlers
+
         public override bool CheckHit(GameTime gameTime, Player player)
         {
             int sum = radius + player.radius;

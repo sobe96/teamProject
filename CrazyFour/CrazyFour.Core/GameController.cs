@@ -14,6 +14,7 @@ using System.Threading;
 
 namespace CrazyFour.Core
 {
+    //Break the GC in microControllers
     public sealed class GameController
     {
         private static readonly object padlock = new object();
@@ -73,6 +74,7 @@ namespace CrazyFour.Core
             switch(type)
             {
                 case ActorTypes.Boss:
+                    // Flip time and Configuration of enemies
                     if (!Config.doneConfiguringBoss)
                     {
                         if ((int)totalTime == 135 || (wave == 3 && enemyList.Count == 0))

@@ -126,6 +126,8 @@ namespace CrazyFour
                     return;
                 }
 
+                //Use observer pattern
+
                 if (player.isHit)
                 {
                     TimeSpan ndt = DateTime.Now.Subtract(((Player)player).hitTime);

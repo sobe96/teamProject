@@ -15,7 +15,7 @@ namespace CrazyFour.Core.Actors.Enemy
     {
         
         public static Vector2 move;
-
+        // Bridge pattern
         public static Vector2 CrossMovement(GraphicsDeviceManager g, Vector2 cp, Vector2 positionRightBot, Vector2 positionLeftBot, Vector2 positionRightTop, Vector2 positionLeftTop)
         {
             /*private static Vector2 positionRightBot;
