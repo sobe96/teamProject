@@ -21,6 +21,8 @@ namespace CrazyFour.Core.Actors.Enemy
         private bool returning = false;
         private Vector2 returnPosition;
         private int hitCounter = 0;
+        private Vector2 move;
+        private bool initialized = false;
 
         public Boss(GraphicsDeviceManager g, SpriteBatch s, ContentManager c, int i)
         {
@@ -34,8 +36,11 @@ namespace CrazyFour.Core.Actors.Enemy
             LoadSprite(LoadType.Ship, SPRITE_IMAGE);
 
             // Randomizing starting point
-            int width = Config.rand.Next(GetRadius(), graphics.PreferredBackBufferWidth - GetRadius());
-            int height = Config.rand.Next(GetRadius() * -1,  0);
+            //int width = Config.rand.Next(GetRadius(), graphics.PreferredBackBufferWidth - GetRadius());
+            //int height = Config.rand.Next(GetRadius() * -1,  0);
+
+            float width = graphics.PreferredBackBufferWidth / 2;
+            float height = 0 - 2 * GetRadius();
 
             defaultPosition = new Vector2(width, height);
             currentPosition = defaultPosition;
@@ -66,21 +71,28 @@ namespace CrazyFour.Core.Actors.Enemy
                 else
                     speed = Utilities.ConvertToPercentage(Speed.ThreeQuarterSpeed) * GameController.hz;
 
-                // Checking to see if we are out of scope, if so, we remove from memory
-                if (currentPosition.Y < (GetRadius() * -1))
-                    isActive = false;
+                Vector2 center = new Vector2(graphics.PreferredBackBufferWidth / 2, graphics.PreferredBackBufferHeight / 5);
+                Vector2 left = new Vector2(graphics.PreferredBackBufferWidth / 5, graphics.PreferredBackBufferHeight / 5);
+                Vector2 right = new Vector2(4 * graphics.PreferredBackBufferWidth / 5, graphics.PreferredBackBufferHeight / 5);
 
-                Vector2 move = playerPosition - currentPosition;
-
-                // Checking to see if we are returning due to hitting the mid point of the screen
-                if (returning)
-                    move = returnPosition - currentPosition;
-                else if (currentPosition.Y >= (graphics.PreferredBackBufferHeight / 2))
+                if (currentPosition.X == graphics.PreferredBackBufferWidth / 2 && Math.Round(currentPosition.Y) <= 0 - 2 * GetRadius())
                 {
-                    returnPosition = Utilities.GetReturnPosition(graphics, defaultPosition, radius);
-                    move = returnPosition - currentPosition;
-                    returning = true;
+                    move = center - currentPosition;
                 }
+                if (currentPosition.X == center.X && Math.Round(currentPosition.Y) == center.Y && !initialized)
+                {
+                    move = left - currentPosition;
+                    initialized = true;
+                }
+                if (Math.Round(currentPosition.X) == left.X && Math.Round(currentPosition.Y) == left.Y)
+                {
+                    move = right - currentPosition;
+                }
+                if (Math.Round(currentPosition.X) == right.X && Math.Round(currentPosition.Y) == right.Y)
+                {
+                    move = left - currentPosition;
+                }
+
 
                 move.Normalize();
                 currentPosition += move * speed * dt;
