@@ -23,7 +23,7 @@ namespace CrazyFour.Core.Lasers
         public Vector2 position;
         private float speed;
 
-        public static int radius { get; } = 6;
+        //public static int radius { get; } = 6;
 
         public bool isActive { get; set; } = true;
 
@@ -89,7 +89,7 @@ namespace CrazyFour.Core.Lasers
 
         public override bool CheckHit(GameTime gameTime, Player player)
         {
-            int sum = radius + PlayerLaser.radius;
+            int sum = radius + player.radius;
 
             if (Vector2.Distance(position, player.currentPosition) < sum)
             {

@@ -20,7 +20,6 @@ namespace CrazyFour.Core.Actors.Enemy
         private float counter = 0.5f;
         private bool returning = false;
         private Vector2 returnPosition;
-        private int hitCounter = 0;
 
         public Boss(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
         {
@@ -91,30 +90,10 @@ namespace CrazyFour.Core.Actors.Enemy
                     LaserFactory factory = new LaserFactory(graphics, spriteBatch, content);
                     ILaser laserSol = factory.GetLazer(LaserType.Soldier, new Vector2(currentPosition.X + radius - 3, currentPosition.Y + 15), gameTime);
 
-                    GameController.AddLaser(laserSol);
+                    LaserController.AddLaser(laserSol);
                     counter = initCounter / 10;
                 }
 
-
-                // Checking for any hit from the player lasers
-                foreach (PlayerLaser laser in GameController.playerLasers)
-                {
-                    int sum = radius + PlayerLaser.radius;
-
-                    if (Vector2.Distance(laser.position, currentPosition) < sum)
-                    {
-                        hitCounter += 1;
-                        laser.isHit = true;
-
-                        if (hitCounter == Config.BOSS_HP)
-                        {
-                            isHit = true;
-                            hitCounter = 0;
-                        }
-                    }
-
-                    laser.Update(gameTime);
-                }
             }
         }
     }

@@ -29,6 +29,9 @@ namespace CrazyFour.Core.Actors
         public bool isActive = true;
         public bool isDead = false;
 
+
+        public virtual int hitCounter { get; set; } = 0;
+
         public virtual int radius { get; set; } = 0;
 
         public virtual void Initialize(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
