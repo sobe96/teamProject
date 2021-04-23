@@ -22,6 +22,8 @@ namespace CrazyFour.Core.Lasers
         public bool isActive = true;
         public bool isHit = false;
 
+        public virtual int radius { get; } = 6;
+
 
         public abstract void Initialize(ActorTypes type, Vector2 pos);
 

@@ -131,7 +131,7 @@ namespace CrazyFour.Core.Actors.Hero
                         LaserFactory factory = new LaserFactory(graphics, spriteBatch, content);
                         ILaser lasor = factory.GetLazer(LaserType.Player, new Vector2(position.X + radius, position.Y), gameTime);
 
-                        GameController.AddLaser(lasor);
+                        LaserController.AddLaser(lasor);
                     }
                 }
 
@@ -149,7 +149,7 @@ namespace CrazyFour.Core.Actors.Hero
                     LaserFactory factory = new LaserFactory(graphics, spriteBatch, content);
                     ILaser lazer = factory.GetLazer(LaserType.Player, new Vector2(position.X + radius, position.Y), gameTime);
 
-                    GameController.AddLaser(lazer);
+                    LaserController.AddLaser(lazer);
                     counter = initCounter / 10;
                 }
             }

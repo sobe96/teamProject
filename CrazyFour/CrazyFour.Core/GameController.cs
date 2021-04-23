@@ -17,12 +17,13 @@ namespace CrazyFour.Core
     {
         private static readonly object padlock = new object();
         private static GameController instance = null;
+        private static LaserController lasers = new LaserController();
 
         public List<Texture2D> soldierSprites = new List<Texture2D>();
 
-        public static List<IActor> enemyList = new List<IActor>();
-        public static List<ILaser> enemyLasers = new List<ILaser>();
-        public static List<PlayerLaser> playerLasers = new List<PlayerLaser>();
+        //public static List<IActor> enemyList = new List<IActor>();
+        //public static List<ILaser> enemyLasers = new List<ILaser>();
+        //public static List<PlayerLaser> playerLasers = new List<PlayerLaser>();
 
         public static int hz = 60;
         public static float totalTime = 0f;
@@ -51,15 +52,7 @@ namespace CrazyFour.Core
 
         private GameController() { }
 
-        public static void AddLaser(ILaser laser)
-        {
-            Type type = laser.GetType();
 
-            if (type == typeof(EnemyLaser))
-                enemyLasers.Add(laser);
-            else
-                playerLasers.Add((PlayerLaser)laser);
-        }
 
         public void LoadContent(ActorFactory fac)
         {
@@ -78,7 +71,7 @@ namespace CrazyFour.Core
                             for (int i = 0; i < Config.MAXBOSS; i++)
                             {
                                 var sol = (Boss)factory.GetActor(ActorTypes.Boss);
-                                enemyList.Add(sol);
+                                LaserController.enemyList.Add(sol);
                             }
 
                             Config.doneConfiguringBoss = true;
@@ -93,7 +86,7 @@ namespace CrazyFour.Core
                             for (int i = 0; i < Config.MAXCAPOS; i++)
                             {
                                 var capo = (Capo)factory.GetActor(ActorTypes.Capo);
-                                enemyList.Add(capo);
+                                LaserController.enemyList.Add(capo);
                             }
 
                             Config.doneConfiguringCapo = true;
@@ -108,7 +101,7 @@ namespace CrazyFour.Core
                             for (int i = 0; i < Config.MAXSOLDIERS; i++)
                             {
                                 var sol = (Soldier)factory.GetActor(ActorTypes.Soldier);
-                                enemyList.Add(sol);
+                                LaserController.enemyList.Add(sol);
                             }
 
                             Config.doneConfiguringSolders = true;
@@ -123,7 +116,7 @@ namespace CrazyFour.Core
                             for (int i = 0; i < Config.MAXUNDERBOSS; i++)
                             {
                                 var sol = (Underboss)factory.GetActor(ActorTypes.Underboss);
-                                enemyList.Add(sol);
+                                LaserController.enemyList.Add(sol);
                             }
 
                             Config.doneConfiguringUnderboss = true;
@@ -158,19 +151,19 @@ namespace CrazyFour.Core
             if (Config.status == GameStatus.Playing)
             {
                 // Updating the enemy's position
-                foreach (var sol in enemyList)
+                foreach (var sol in LaserController.enemyList)
                 {
                     sol.Draw(gameTime);
                 }
 
                 // Updating position for the enemy lasers
-                foreach (EnemyLaser enemy in GameController.enemyLasers)
+                foreach (EnemyLaser enemy in LaserController.enemyLasers)
                 {
                     enemy.Draw(gameTime);
                 }
 
                 // Updating position for the player lasers
-                foreach (PlayerLaser player in GameController.playerLasers)
+                foreach (PlayerLaser player in LaserController.playerLasers)
                 {
                     player.Draw(gameTime);
                 }
@@ -187,14 +180,14 @@ namespace CrazyFour.Core
                     return;
                 }
 
-                foreach (var sol in enemyList)
+                foreach (var sol in LaserController.enemyList)
                 {
                     sol.Update(gameTime, player.GetPlayerPosition());
                 }
 
                 bool hit = false;
 
-                foreach (EnemyLaser lasor in GameController.enemyLasers)
+                foreach (EnemyLaser lasor in LaserController.enemyLasers)
                 {
                     lasor.Update(gameTime);
                     hit = lasor.CheckHit(gameTime, player);
@@ -204,20 +197,22 @@ namespace CrazyFour.Core
                 }
 
                 if (hit)
-                    GameController.enemyLasers.Clear();
+                    LaserController.enemyLasers.Clear();
 
                 // Removing any player lasors that have gone out of window
-                GameController.playerLasers.RemoveAll(r => r.isActive is false || r.isHit);
+                LaserController.playerLasers.RemoveAll(r => r.isActive is false || r.isHit);
 
                 // Removing any enemy lasors that have done out of the window
-                GameController.enemyLasers.RemoveAll(r => r.isActive is false || r.isHit);
+                LaserController.enemyLasers.RemoveAll(r => r.isActive is false || r.isHit);
 
                 // Removing the enemies from our list
-                enemyList.RemoveAll(r => r.isActive is false || r.isHit);
+                LaserController.enemyList.RemoveAll(r => r.isActive is false || r.isHit);
 
 
-                if (GameController.enemyList.Count <= 0)
+                if (LaserController.enemyList.Count <= 0)
                     Config.status = GameStatus.Gameover;
+                else
+                    lasers.ProcessLasers(gameTime);
             }
         }
         
