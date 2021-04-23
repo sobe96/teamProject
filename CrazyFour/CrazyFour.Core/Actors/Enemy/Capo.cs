@@ -93,25 +93,6 @@ namespace CrazyFour.Core.Actors.Enemy
                     counter = initCounter / 10;
                 }
 
-                // Checking for any hit from the player lasers
-                //foreach (PlayerLaser laser in CollisionController.playerLasers)
-                //{
-                //    int sum = radius + PlayerLaser.radius;
-
-                //    if (Vector2.Distance(laser.position, currentPosition) < sum)
-                //    {
-                //        hitCounter += 1;
-                //        laser.isHit = true;
-
-                //        if (hitCounter == Config.CAPO_HP)
-                //        {
-                //            isHit = true;
-                //            hitCounter = 0;
-                //        }
-                //    }
-
-                //    laser.Update(gameTime);
-                //}
             }
         }
     }

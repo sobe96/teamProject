@@ -10,7 +10,6 @@ namespace CrazyFour.Core
 {
     public class LaserController
     {
-        public static List<IActor> enemyList = new List<IActor>();
         public static List<ILaser> enemyLasers = new List<ILaser>();
         public static List<PlayerLaser> playerLasers = new List<PlayerLaser>();
 
@@ -18,11 +17,13 @@ namespace CrazyFour.Core
         {
             foreach (PlayerLaser laser in playerLasers)
             {
-                foreach(IActor enemy in enemyList)
+                foreach(IActor enemy in GameController.enemyList)
                 {
                     CheckCollision(gameTime, laser, enemy);
                 }
             }
+
+            RemoveLasers();
         }
 
         public static void AddLaser(ILaser laser)
@@ -56,12 +57,12 @@ namespace CrazyFour.Core
 
         public void RemoveLasers()
         {
+            // Removing any player lasors that have gone out of window
+            LaserController.playerLasers.RemoveAll(r => r.isActive is false || r.isHit);
 
+            // Removing any enemy lasors that have done out of the window
+            LaserController.enemyLasers.RemoveAll(r => r.isActive is false || r.isHit);
         }
 
-        public void AddLaser()
-        {
-
-        }
     }
 }
