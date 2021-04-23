@@ -47,8 +47,8 @@ namespace CrazyFour.Core
 
                 if (actor.hitCounter == Config.BOSS_HP)
                 {
-                    actor.isHit = true;
                     actor.hitCounter = 0;
+                    actor.isHit = true;
                 }
             }
 
