@@ -31,6 +31,14 @@ namespace CrazyFour.Core.Helpers
         
         public static int BOSS_HP { get; } = 4;
 
+        public static int BOSS_TIME { get; } = 15;
+
+        public static int CAPO_TIME { get; } = 5;
+
+        public static int SOLDIER_TIME { get; } = 1;
+
+        public static int UNDERBOSS_TIME { get; } = 10;
+
         public static bool doneConfiguringSolders { get; set; } = false;
 
         public static bool doneConfiguringUnderboss { get; set; } = false;
