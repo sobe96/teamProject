@@ -22,8 +22,12 @@ namespace CrazyFour.Core.Lasers
         public bool isActive = true;
         public bool isHit = false;
 
+        public virtual int radius { get; } = 6;
+        public Vector2 direction;
 
-        public abstract void Initialize(ActorTypes type, Vector2 pos);
+
+
+        public abstract void Initialize(ActorTypes type, Vector2 pos, Vector2 dir);
 
         public virtual bool LoadSprite(LoadType type, String img)
         {

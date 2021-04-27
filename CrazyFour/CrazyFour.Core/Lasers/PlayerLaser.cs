@@ -23,7 +23,7 @@ namespace CrazyFour.Core.Lasers
         public Vector2 position;
         private float speed;
 
-        public static int radius { get; } = 6;
+        //public static int radius { get; } = 6;
 
         public bool isActive { get; set; } = true;
 
@@ -37,9 +37,10 @@ namespace CrazyFour.Core.Lasers
             content = con;
         }
 
-        public override void Initialize(ActorTypes type, Vector2 pos)
+        public override void Initialize(ActorTypes type, Vector2 pos, Vector2 dir)
         {
             position = pos;
+            direction = dir;
 
             switch (type)
             {
@@ -80,16 +81,16 @@ namespace CrazyFour.Core.Lasers
             else
                 speed = Utilities.ConvertToPercentage(Speed.Normal) * GameController.hz;
 
-            position.Y -= 3f * speed * dt;
+            position += direction* 3f * speed * dt;
 
-            if (position.Y < 0)
+            if (position.Y <= 0 || position.Y >= GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height)
                 isActive = false;
 
         }
 
         public override bool CheckHit(GameTime gameTime, Player player)
         {
-            int sum = radius + PlayerLaser.radius;
+            int sum = radius + player.radius;
 
             if (Vector2.Distance(position, player.currentPosition) < sum)
             {

@@ -74,7 +74,7 @@ namespace CrazyFour
                 {
                     Config.status = GameStatus.Died;
 
-                    GameController.enemyLasers.Clear();
+                    LaserController.enemyLasers.Clear();
                     GameController.enemyList.Clear();
 
                     String msg = "You Lost!";

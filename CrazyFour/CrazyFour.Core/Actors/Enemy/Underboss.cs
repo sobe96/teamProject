@@ -19,7 +19,6 @@ namespace CrazyFour.Core.Actors.Enemy
         private float counter = 0.5f;
         private bool returning = false;
         private Vector2 returnPosition;
-        private int hitCounter = 0;
 
         public Underboss(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
         {
@@ -29,6 +28,7 @@ namespace CrazyFour.Core.Actors.Enemy
             radius = 40;
             inGame = true;
             isActive = true;
+            hitCounter = Config.UBOSS_HP;
 
             LoadSprite(LoadType.Ship, SPRITE_IMAGE);
 
@@ -38,6 +38,8 @@ namespace CrazyFour.Core.Actors.Enemy
 
             defaultPosition = new Vector2(width, height);
             currentPosition = defaultPosition;
+            laserFireOffset = new Vector2(0, 55);
+            SetLaserMode((LaserMode)Config.UBOSS_LASERMODE);
         }
 
         public override void Draw(GameTime gameTime)
@@ -83,37 +85,22 @@ namespace CrazyFour.Core.Actors.Enemy
 
                 move.Normalize();
                 currentPosition += move * speed * dt;
+                position = currentPosition;
 
                 counter -= dt;
                 if (counter <= 0)
                 {
-                    LaserFactory factory = new LaserFactory(graphics, spriteBatch, content);
-                    ILaser laserSol = factory.GetLazer(LaserType.Soldier, new Vector2(currentPosition.X + radius - 3, currentPosition.Y + 15), gameTime);
-
-                    GameController.AddLaser(laserSol);
+                    FireLaser(gameTime);
                     counter = initCounter / 10;
                 }
 
-                // Checking for any hit from the player lasers
-                foreach (PlayerLaser laser in GameController.playerLasers)
-                {
-                    int sum = radius + PlayerLaser.radius;
-
-                    if (Vector2.Distance(laser.position, currentPosition) < sum)
-                    {
-                        hitCounter += 1;
-                        laser.isHit = true;
-
-                        if (hitCounter == Config.UBOSS_HP)
-                        {
-                            isHit = true;
-                            hitCounter = 0;
-                        }
-                    }
-
-                    laser.Update(gameTime);
-                }
             }
+        }
+        protected override void CreateLaser(Vector2 pos, Vector2 dir, GameTime gameTime)
+        {
+            LaserFactory factory = new LaserFactory(graphics, spriteBatch, content);
+            ILaser lazer = factory.GetLazer((LaserType)Config.UBOSS_LASERTYPE, pos, dir, gameTime);
+            LaserController.AddLaser(lazer);
         }
     }
 }
