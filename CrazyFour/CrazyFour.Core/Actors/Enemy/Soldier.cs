@@ -162,7 +162,7 @@ namespace CrazyFour.Core.Actors.Enemy
                     returning = true;
                 }*/
 
-                /*positionRightBot = new Vector2(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight / 2);
+                positionRightBot = new Vector2(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight / 2);
                 positionLeftBot = new Vector2(0 - 2 * GetRadius(), graphics.PreferredBackBufferHeight / 2);
                 positionRightTop = new Vector2(graphics.PreferredBackBufferWidth, 0);
                 positionLeftTop = new Vector2(0 - 2 * GetRadius(), 0);
@@ -182,9 +182,9 @@ namespace CrazyFour.Core.Actors.Enemy
                 if (currentPosition.X <= positionLeftBot.X && currentPosition.Y >= positionLeftBot.Y)
                 {
                     move = positionLeftTop - currentPosition;
-                }*/
+                }
 
-                move = Movement.CrossMovement(graphics, currentPosition, positionRightBot, positionLeftBot, positionRightTop, positionLeftTop);
+                //move = Movement.CrossMovement(graphics, currentPosition, positionRightBot, positionLeftBot, positionRightTop, positionLeftTop);
 
                 move.Normalize();
                 currentPosition += move * 8 * speed * dt;
