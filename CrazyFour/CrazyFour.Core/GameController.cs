@@ -75,9 +75,9 @@ namespace CrazyFour.Core
             {
                 case ActorTypes.Boss:
                     // Flip time and Configuration of enemies
-                    if (!Config.doneConfiguringBoss)
+                    if ((int)totalTime == 1 || (wave == 3 && enemyList.Count == 0))
                     {
-                        if ((int)totalTime == 135 || (wave == 3 && enemyList.Count == 0))
+                        if (!Config.doneConfiguringBoss)
                         {
                             wave = 4;
                             for (int i = 0; i < Config.MAXBOSS; i++)
@@ -92,9 +92,9 @@ namespace CrazyFour.Core
                     }
                     break;
                 case ActorTypes.Capo:
-                    if (!Config.doneConfiguringCapo)
+                    if (((int)totalTime == 45 || (wave == 1 && enemyList.Count == 0)))
                     {
-                        if (((int)totalTime == 45 || (wave == 1 && enemyList.Count == 0)))
+                        if (!Config.doneConfiguringCapo)
                         {
                             wave = 2;
                             for (int i = 0; i < Config.MAXCAPOS; i++)
@@ -108,9 +108,9 @@ namespace CrazyFour.Core
                     }
                     break;
                 case ActorTypes.Soldier:
-                    if (!Config.doneConfiguringSolders)
+                    if ((int)totalTime == 100 && wave == 0)
                     {
-                        if ((int)totalTime == 1 && wave == 0)
+                        if (!Config.doneConfiguringSolders)
                         {
                             wave = 1;
                             for (int i = 0; i < Config.MAXSOLDIERS; i++)
@@ -124,9 +124,9 @@ namespace CrazyFour.Core
                     }
                     break;
                 case ActorTypes.Underboss:
-                    if (!Config.doneConfiguringUnderboss)
+                    if ((int)totalTime == 90 || (wave == 2 && enemyList.Count == 0))
                     {
-                        if ((int)totalTime == 90 || (wave == 2 && enemyList.Count == 0))
+                        if (!Config.doneConfiguringUnderboss)
                         {
                             wave = 3;
                             for (int i = 0; i < Config.MAXUNDERBOSS; i++)

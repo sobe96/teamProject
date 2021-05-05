@@ -9,14 +9,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CrazyFour.Core.Actors.Enemy
+namespace CrazyFour.Core.Actors.Movements
 {
-    public class Movement
+    public class CrossMovement
     {
-        
-        public static Vector2 move;
         // Bridge pattern
-        public static Vector2 CrossMovement(GraphicsDeviceManager g, Vector2 cp, Vector2 positionRightBot, Vector2 positionLeftBot, Vector2 positionRightTop, Vector2 positionLeftTop)
+        public static Vector2 crossMovement(Vector2 cp, Vector2 positionRightBot, Vector2 positionLeftBot, Vector2 positionRightTop, Vector2 positionLeftTop, Vector2 move)
         {
             /*private static Vector2 positionRightBot;
             private static Vector2 positionLeftBot;
@@ -46,25 +44,8 @@ namespace CrazyFour.Core.Actors.Enemy
             {
                 move = positionLeftTop - cp;
             }
-            else{
-                move = move;
-            }
 
             return move; 
-        }
-
-        public static Vector2 CircleMovement(GraphicsDeviceManager g, Vector2 cp)
-        {
-
-            /*move.X = (float)(origin.X + Math.Sin(angle) * rad);
-            move.Y = (float)(origin.Y + Math.Cos(angle) * rad);
-            angle = angle + dt;
-            if (angle >= 360)
-            {
-                angle = 0;
-            }*/
-
-            return move;
         }
     }
 }

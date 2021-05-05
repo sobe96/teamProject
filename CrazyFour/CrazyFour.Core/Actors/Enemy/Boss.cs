@@ -38,7 +38,7 @@ namespace CrazyFour.Core.Actors.Enemy
             //int height = Config.rand.Next(GetRadius() * -1,  0);
 
             float width = graphics.PreferredBackBufferWidth / 2;
-            float height = 0 - 2 * GetRadius();
+            float height = 0 - 2 * radius;
 
             defaultPosition = new Vector2(width, height);
             currentPosition = defaultPosition;
@@ -73,24 +73,25 @@ namespace CrazyFour.Core.Actors.Enemy
                 Vector2 left = new Vector2(graphics.PreferredBackBufferWidth / 5, graphics.PreferredBackBufferHeight / 5);
                 Vector2 right = new Vector2(4 * graphics.PreferredBackBufferWidth / 5, graphics.PreferredBackBufferHeight / 5);
 
-                if (currentPosition.X == graphics.PreferredBackBufferWidth / 2 && Math.Round(currentPosition.Y) <= 0 - 2 * GetRadius())
+                /*if (currentPosition.X == graphics.PreferredBackBufferWidth / 2 && Math.Round(currentPosition.Y) <= 0 - 2 * GetRadius())
                 {
                     move = center - currentPosition;
-                }
+                }*/
                 if (currentPosition.X == center.X && Math.Round(currentPosition.Y) == center.Y && !initialized)
                 {
                     move = left - currentPosition;
                     initialized = true;
                 }
-                if (Math.Round(currentPosition.X) == left.X && Math.Round(currentPosition.Y) == left.Y)
+                /*if (Math.Round(currentPosition.X) == left.X && Math.Round(currentPosition.Y) == left.Y)
                 {
                     move = right - currentPosition;
                 }
                 if (Math.Round(currentPosition.X) == right.X && Math.Round(currentPosition.Y) == right.Y)
                 {
                     move = left - currentPosition;
-                }
-
+                }*/
+                //int rad = GetRadius();
+                move = Movements.BossMovement.bossMovement(graphics, currentPosition, center, left, right, move, radius, initialized);
 
                 move.Normalize();
                 currentPosition += move * speed * dt;

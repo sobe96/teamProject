@@ -1,6 +1,7 @@
 ﻿using CrazyFour.Core.Factories;
 using CrazyFour.Core.Helpers;
 using CrazyFour.Core.Lasers;
+using CrazyFour.Core.Actors.Movements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -78,96 +79,12 @@ namespace CrazyFour.Core.Actors.Enemy
                 else
                     speed = Utilities.ConvertToPercentage(Speed.HalfSpeed) * GameController.hz;
 
-                // Checking to see if we are out of scope, if so, we remove from memory
-                //if(currentPosition.Y < (GetRadius() * -1))
-                //    isActive = false;
-
-                /*Vector2 move = playerPosition - currentPosition;
-                // Checking to see if we are returning due to hitting the mid point of the screen
-                if (returning)
-                    if (currentPosition.Y <= 0)
-                    {
-                        returning = false;
-                    }
-                    else
-                    {
-                        move = returnPosition - currentPosition;
-                    }
-
-                else if (currentPosition.Y >= (graphics.PreferredBackBufferHeight / 2))
-                {
-                    //returnPosition = Utilities.GetReturnPosition(graphics, defaultPosition, radius);
-                    returnPosition = new Vector2(currentPosition.X, 0);
-                    move = returnPosition - currentPosition;
-                    returning = true;
-                }*/
-
-
-
-                /*positionRightBot = new Vector2(graphics.PreferredBackBufferWidth - 3 * GetRadius(), (graphics.PreferredBackBufferHeight / 2) - 3 * GetRadius());
-                positionLeftBot = new Vector2(0 + 3 * GetRadius(), (graphics.PreferredBackBufferHeight / 2) - 3 * GetRadius());
-                positionRightTop = new Vector2(graphics.PreferredBackBufferWidth - 3 * GetRadius(), 0 + 3 * GetRadius());
-                positionLeftTop = new Vector2(0 + 3 * GetRadius(), 0 + 3 * GetRadius());*/
-
-                /*if (Math.Round(currentPosition.X) <= Math.Round(positionLeftTop.X) && Math.Round(currentPosition.Y) <= Math.Round(positionLeftTop.Y))
-                {
-                    move = positionRightBot - currentPosition;
-                }
-                if (Math.Round(currentPosition.X) >= Math.Round(positionRightBot.X) && Math.Round(currentPosition.Y) >= Math.Round(positionRightBot.Y))
-                {
-                    move = positionRightTop - currentPosition;
-                }
-                if (Math.Round(currentPosition.X) <= Math.Round(positionRightTop.X) && Math.Round(currentPosition.Y) <= Math.Round(positionRightTop.Y))
-                {
-                    move = positionLeftBot - currentPosition;
-                }
-                if (Math.Round(currentPosition.X) >= Math.Round(positionLeftBot.X) && Math.Round(currentPosition.Y) >= Math.Round(positionLeftBot.Y))
-                {
-                    move = positionLeftTop - currentPosition;
-                }*/
-
-                /*if (returning)
-                    if (currentPosition.Y <= 0)
-                    {
-                        returning = false;
-                    }
-                    else
-                    {
-                        move = returnPosition - currentPosition;
-                    }
-
-                else if (currentPosition.Y >= (graphics.PreferredBackBufferHeight / 2))
-                {
-                    //returnPosition = Utilities.GetReturnPosition(graphics, defaultPosition, radius);
-                    returnPosition = new Vector2(currentPosition.X, 0);
-                    move = returnPosition - currentPosition;
-                    returning = true;
-                }*/
-
-                // Checking to see if we are returning due to hitting the mid point of the screen
-                /*if (returning)
-                    if (currentPosition.Y <= 0){
-                        returning = false;
-                    }
-                    else
-                    {
-                        move = returnPosition - currentPosition;
-                    }
-                    
-                else if (currentPosition.Y >= (graphics.PreferredBackBufferHeight / 2))
-                {
-                    //returnPosition = Utilities.GetReturnPosition(graphics, defaultPosition, radius);
-                    returnPosition = new Vector2(currentPosition.X, 0);
-                    move = returnPosition - currentPosition;
-                    returning = true;
-                }*/
-
                 positionRightBot = new Vector2(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight / 2);
                 positionLeftBot = new Vector2(0 - 2 * GetRadius(), graphics.PreferredBackBufferHeight / 2);
                 positionRightTop = new Vector2(graphics.PreferredBackBufferWidth, 0);
                 positionLeftTop = new Vector2(0 - 2 * GetRadius(), 0);
 
-                if (Math.Round(currentPosition.X) <= positionLeftTop.X && currentPosition.Y <= positionLeftTop.Y)
+                /*if (Math.Round(currentPosition.X) <= positionLeftTop.X && currentPosition.Y <= positionLeftTop.Y)
                 {
                     move = positionRightBot - currentPosition;
                 }
@@ -182,14 +99,12 @@ namespace CrazyFour.Core.Actors.Enemy
                 if (currentPosition.X <= positionLeftBot.X && currentPosition.Y >= positionLeftBot.Y)
                 {
                     move = positionLeftTop - currentPosition;
-                }
+                }*/
 
-                //move = Movement.CrossMovement(graphics, currentPosition, positionRightBot, positionLeftBot, positionRightTop, positionLeftTop);
+                move = CrossMovement.crossMovement(currentPosition, positionRightBot, positionLeftBot, positionRightTop, positionLeftTop, move);
 
                 move.Normalize();
                 currentPosition += move * 8 * speed * dt;
-
-                //currentPosition = Movement.CrossMovement(graphics, currentPosition, positionRightBot, positionLeftBot, positionRightTop, positionLeftTop);
 
                 counter -= dt;
                 if (counter <= 0)

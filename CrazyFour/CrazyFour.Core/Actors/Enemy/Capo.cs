@@ -23,6 +23,7 @@ namespace CrazyFour.Core.Actors.Enemy
         Vector2 rightCircleStart;
         bool startDrawLeft = false;
         bool startDrawRight = false;
+        bool movementStarted;
         float angle = 0;
         float width;
         float height;
@@ -82,21 +83,7 @@ namespace CrazyFour.Core.Actors.Enemy
                 else
                     speed = Utilities.ConvertToPercentage(Speed.ThreeQuarterSpeed) * GameController.hz;
 
-                // Checking to see if we are out of scope, if so, we remove from memory
-                //if (currentPosition.Y < (GetRadius() * -1))
-                //    isActive = false;
-
-                /*Vector2 move = playerPosition - currentPosition;
-
-                // Checking to see if we are returning due to hitting the mid point of the screen
-                if (returning)
-                    move = returnPosition - currentPosition;
-                else if (currentPosition.Y >= (graphics.PreferredBackBufferHeight / 2))
-                {
-                    returnPosition = Utilities.GetReturnPosition(graphics, defaultPosition, radius);
-                    move = returnPosition - currentPosition;
-                    returning = true;
-                }*/
+                
                 leftCircleStart = new Vector2(graphics.PreferredBackBufferWidth / 4, graphics.PreferredBackBufferHeight / 3);
                 rightCircleStart = new Vector2(3 * graphics.PreferredBackBufferWidth / 4, graphics.PreferredBackBufferHeight / 3);
                 float rad = 500;
@@ -124,6 +111,7 @@ namespace CrazyFour.Core.Actors.Enemy
                     {
                         angle = 0;
                     }
+                    //Movements.CircleMovement.circleMovementLeft(graphics, currentPosition, originLeft, move, angle, dt);
                 }
 
                 if (Math.Round(currentPosition.X) == rightCircleStart.X && Math.Round(currentPosition.Y) == rightCircleStart.Y)
@@ -139,9 +127,10 @@ namespace CrazyFour.Core.Actors.Enemy
                     {
                         angle = 0;
                     }
+                    //Movements.CircleMovement.circleMovementRight(graphics, currentPosition, originRight, move, angle, dt);
                 }
 
-                
+                //move = Movements.CircleMovement.circleMovement(graphics, currentPosition, leftCircleStart, rightCircleStart, originLeft, originRight, move, startDrawLeft, startDrawRight, angle, dt);
 
                 move.Normalize();
                 currentPosition += move * 3 * speed * dt;
