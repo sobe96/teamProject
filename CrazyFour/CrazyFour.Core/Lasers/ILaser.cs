@@ -13,35 +13,21 @@ namespace CrazyFour.Core.Lasers
     public abstract class ILaser
     {
         protected Texture2D spriteImage;
-        protected Texture2D lasorImage;
         protected SpriteBatch spriteBatch;
         protected GraphicsDeviceManager graphics;
         protected ContentManager content;
         protected bool isSpriteLoaded = false;
 
-        public bool isActive = true;
-        public bool isHit = false;
+        public bool isActive { get; set; } = true;
 
+        public bool isHit { get; set; } = false;
+
+        public float speed { get; set; }
         public virtual int radius { get; } = 6;
+        public Vector2 direction;
+        public Vector2 position;
 
-
-        public abstract void Initialize(ActorTypes type, Vector2 pos);
-
-        public virtual bool LoadSprite(LoadType type, String img)
-        {
-            switch (type)
-            {
-                case LoadType.Ship:
-                    spriteImage = content.Load<Texture2D>(img);
-                    isSpriteLoaded = true;
-                    break;
-                case LoadType.Laser:
-                    lasorImage = content.Load<Texture2D>(img);
-                    break;
-            }
-
-            return true;
-        }
+        public abstract void Initialize(string spritePath, Vector2 pos, Vector2 dir);
 
         public abstract void Draw(GameTime game);
 

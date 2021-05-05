@@ -27,15 +27,6 @@ namespace CrazyFour.Core.Helpers
         Laser
     }
 
-    public enum LaserType
-    {
-        Player,
-        Boss,
-        Underboss,
-        Capo,
-        Soldier
-    }
-
     public enum Direction
     {
         Top = -1,
@@ -52,5 +43,14 @@ namespace CrazyFour.Core.Helpers
         Died,
         Gameover,
         NotSet
+    }
+
+    public enum LaserMode
+    {
+        Single,
+        Double,
+        Triple,
+        Cricle,
+        Cone
     }
 }

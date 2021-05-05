@@ -62,7 +62,7 @@ namespace CrazyFour.Core
                     {
                         if ((int)totalTime >= Config.BOSS_TIME)
                         {
-                            for (int i = 0; i < Config.MAXBOSS; i++)
+                            for (int i = 0; i < Config.MAX_BOSS; i++)
                             {
                                 var sol = (Boss)factory.GetActor(ActorTypes.Boss);
                                 GameController.enemyList.Add(sol);
@@ -77,7 +77,7 @@ namespace CrazyFour.Core
                     {
                         if ((int)totalTime >= Config.CAPO_TIME)
                         {
-                            for (int i = 0; i < Config.MAXCAPOS; i++)
+                            for (int i = 0; i < Config.MAX_CAPOS; i++)
                             {
                                 var capo = (Capo)factory.GetActor(ActorTypes.Capo);
                                 GameController.enemyList.Add(capo);
@@ -92,7 +92,7 @@ namespace CrazyFour.Core
                     {
                         if ((int)totalTime >= Config.SOLDIER_TIME)
                         {
-                            for (int i = 0; i < Config.MAXSOLDIERS; i++)
+                            for (int i = 0; i < Config.MAX_SOLDIERS; i++)
                             {
                                 var sol = (Soldier)factory.GetActor(ActorTypes.Soldier);
                                 GameController.enemyList.Add(sol);
@@ -105,9 +105,9 @@ namespace CrazyFour.Core
                 case ActorTypes.Underboss:
                     if (!Config.doneConfiguringUnderboss)
                     {
-                        if ((int)totalTime >= Config.UNDERBOSS_TIME)
+                        if ((int)totalTime >= Config.UBOSS_TIME)
                         {
-                            for (int i = 0; i < Config.MAXUNDERBOSS; i++)
+                            for (int i = 0; i < Config.MAX_UBOSS; i++)
                             {
                                 var sol = (Underboss)factory.GetActor(ActorTypes.Underboss);
                                 GameController.enemyList.Add(sol);
@@ -181,11 +181,14 @@ namespace CrazyFour.Core
 
                 bool hit = false;
 
-                foreach (EnemyLaser lasor in LaserController.enemyLasers)
+                foreach (EnemyLaser laser in LaserController.enemyLasers)
                 {
-                    lasor.Update(gameTime);
-                    hit = lasor.CheckHit(gameTime, player);
-
+                    laser.Update(gameTime);
+                    hit = laser.CheckHit(gameTime, player);
+                    if (!hit)
+                    {
+                        laser.CheckHit(gameTime, player);
+                    }
                     if (hit)
                         break;
                 }
@@ -194,7 +197,7 @@ namespace CrazyFour.Core
                     LaserController.enemyLasers.Clear();
 
                 // Removing the enemies from our list
-                GameController.enemyList.RemoveAll(r => r.isActive is false || r.isHit);
+                GameController.enemyList.RemoveAll(r => !r.isActive || r.isHit);
 
 
                 if (GameController.enemyList.Count <= 0)

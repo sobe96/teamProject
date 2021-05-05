@@ -14,7 +14,6 @@ namespace CrazyFour.Core.Actors.Enemy
 {
     public class Boss : IActor
     {
-        private const string SPRITE_IMAGE = "Images/Players/boss";
         private float speed;
         private float initCounter = 10f;
         private float counter = 0.5f;
@@ -29,8 +28,9 @@ namespace CrazyFour.Core.Actors.Enemy
             radius = 102;
             inGame = true;
             isActive = true;
+            hitCounter = Config.BOSS_HP;
 
-            LoadSprite(LoadType.Ship, SPRITE_IMAGE);
+            LoadSprite(LoadType.Ship, Config.BOSS_SPRITE);
 
             // Randomizing starting point
             int width = Config.rand.Next(GetRadius(), graphics.PreferredBackBufferWidth - GetRadius());
@@ -38,6 +38,8 @@ namespace CrazyFour.Core.Actors.Enemy
 
             defaultPosition = new Vector2(width, height);
             currentPosition = defaultPosition;
+            laserFireOffset = new Vector2(0, 160);
+            SetLaserMode((LaserMode)Config.BOSS_LASERMODE);
         }
 
         public override void Draw(GameTime gameTime)
@@ -47,7 +49,9 @@ namespace CrazyFour.Core.Actors.Enemy
                 spriteBatch.Draw(GetSprite(), currentPosition, Color.White);
             }
             else
+            {
                 spriteBatch.Draw(GetSprite(), defaultPosition, Color.White);
+            }
         }
 
         public override void Update(GameTime gameTime, Vector2? pp)
@@ -83,18 +87,22 @@ namespace CrazyFour.Core.Actors.Enemy
 
                 move.Normalize();
                 currentPosition += move * speed * dt;
+                position = currentPosition;
 
                 counter -= dt;
                 if (counter <= 0)
                 {
-                    LaserFactory factory = new LaserFactory(graphics, spriteBatch, content);
-                    ILaser laserSol = factory.GetLazer(LaserType.Soldier, new Vector2(currentPosition.X + radius - 3, currentPosition.Y + 15), gameTime);
-
-                    LaserController.AddLaser(laserSol);
+                    FireLaser(gameTime);
                     counter = initCounter / 10;
                 }
 
             }
+        }
+        protected override void CreateLaser(Vector2 pos, Vector2 dir, GameTime gameTime)
+        {
+            LaserFactory factory = new LaserFactory(graphics, spriteBatch, content);
+            ILaser lazer = factory.GetEnemyLaser(Config.BOSS_LASER_SPRITE, pos, dir, gameTime);
+            LaserController.AddLaser(lazer);
         }
     }
 }
