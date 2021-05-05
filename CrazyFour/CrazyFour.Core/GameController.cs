@@ -75,7 +75,7 @@ namespace CrazyFour.Core
             {
                 case ActorTypes.Boss:
                     // Flip time and Configuration of enemies
-                    if ((int)totalTime == 1 || (wave == 3 && enemyList.Count == 0))
+                    if ((int)totalTime == 135 || (wave == 3 && enemyList.Count == 0))
                     {
                         if (!Config.doneConfiguringBoss)
                         {
@@ -108,7 +108,7 @@ namespace CrazyFour.Core
                     }
                     break;
                 case ActorTypes.Soldier:
-                    if ((int)totalTime == 100 && wave == 0)
+                    if ((int)totalTime == 1 && wave == 0)
                     {
                         if (!Config.doneConfiguringSolders)
                         {
