@@ -22,7 +22,7 @@ namespace CrazyFour.Core.Factories
             content = con;
         }
 
-        public ILaser GetLazer(LaserType type, Vector2 pos, GameTime game)
+        public ILaser GetLazer(LaserType type, Vector2 pos, Vector2 dir, GameTime game)
         {
             ILaser actor;
             actor = new EnemyLaser(graphics, spriteBatch, content);
@@ -30,24 +30,24 @@ namespace CrazyFour.Core.Factories
             switch (type)
             {
                 case LaserType.Boss:
-                    actor.Initialize(ActorTypes.Boss, pos);
+                    actor.Initialize(ActorTypes.Boss, pos, dir);
                     break;
 
                 case LaserType.Underboss:
-                    actor.Initialize(ActorTypes.Underboss, pos);
+                    actor.Initialize(ActorTypes.Underboss, pos, dir);
                     break;
 
                 case LaserType.Capo:
-                    actor.Initialize(ActorTypes.Capo, pos);
+                    actor.Initialize(ActorTypes.Capo, pos, dir);
                     break;
 
                 case LaserType.Soldier:
-                    actor.Initialize(ActorTypes.Soldier, pos);
+                    actor.Initialize(ActorTypes.Soldier, pos, dir);
                     break;
 
                 case LaserType.Player:
                     actor = new PlayerLaser(graphics, spriteBatch, content);
-                    actor.Initialize(ActorTypes.Player, pos);
+                    actor.Initialize(ActorTypes.Player, pos, dir);
                     break;
 
                 default:

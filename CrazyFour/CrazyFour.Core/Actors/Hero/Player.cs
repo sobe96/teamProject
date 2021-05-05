@@ -38,6 +38,7 @@ namespace CrazyFour.Core.Actors.Hero
 
             // defining the default speed
             speed = 4 * GameController.hz;
+            laserDirection = new Vector2(0, -1);
 
             LoadSprite(LoadType.Ship, SPRITE_IMAGE);
         }
@@ -84,7 +85,10 @@ namespace CrazyFour.Core.Actors.Hero
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             // use controlling the speed of the game by pressing the S key
-            speed = Utilities.ConvertToPercentage(Speed.Normal) * GameController.hz;
+            if (kState.IsKeyDown(Keys.S))
+                speed = Utilities.ConvertToPercentage(Speed.QuarterSpeed) * GameController.hz;
+            else
+                speed = Utilities.ConvertToPercentage(Speed.HalfSpeed) * GameController.hz;
 
             // Moving the player
             if (kState.IsKeyDown(Keys.Right) && position.X < graphics.PreferredBackBufferWidth + 1 - GetSprite().Width)
@@ -127,11 +131,7 @@ namespace CrazyFour.Core.Actors.Hero
                     if (kState.IsKeyDown(Keys.Space))
                     {
                         isFiring = true;
-
-                        LaserFactory factory = new LaserFactory(graphics, spriteBatch, content);
-                        ILaser lasor = factory.GetLazer(LaserType.Player, new Vector2(position.X + radius, position.Y), gameTime);
-
-                        LaserController.AddLaser(lasor);
+                        FireLaser(gameTime);
                     }
                 }
 
@@ -146,14 +146,36 @@ namespace CrazyFour.Core.Actors.Hero
                 counter -= dt;
                 if (counter <= 0)
                 {
-                    LaserFactory factory = new LaserFactory(graphics, spriteBatch, content);
-                    ILaser lazer = factory.GetLazer(LaserType.Player, new Vector2(position.X + radius, position.Y), gameTime);
-
-                    LaserController.AddLaser(lazer);
+                    FireLaser(gameTime);
                     counter = initCounter / 10;
                 }
             }
+            if (kState.IsKeyDown(Keys.D1))
+            {
+                SetLaserMode(LaserMode.Single);
+            } else if (kState.IsKeyDown(Keys.D2))
+            {
+                SetLaserMode(LaserMode.Double);
+            }
+            else if (kState.IsKeyDown(Keys.D3))
+            {
+                SetLaserMode(LaserMode.Triple);
+            }
+            else if (kState.IsKeyDown(Keys.D4))
+            {
+                SetLaserMode(LaserMode.Cricle);
+            }
+            else if (kState.IsKeyDown(Keys.D5))
+            {
+                SetLaserMode(LaserMode.Cone);
+            }
         }
 
+        protected override void CreateLaser(Vector2 pos, Vector2 dir, GameTime gameTime)
+        {
+            LaserFactory factory = new LaserFactory(graphics, spriteBatch, content);
+            ILaser lazer = factory.GetLazer(LaserType.Player, pos, dir, gameTime);
+            LaserController.AddLaser(lazer);
+        }
     }
 }

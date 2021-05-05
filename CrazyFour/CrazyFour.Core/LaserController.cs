@@ -10,16 +10,20 @@ namespace CrazyFour.Core
 {
     public class LaserController
     {
-        public static List<ILaser> enemyLasers = new List<ILaser>();
+        public static List<EnemyLaser> enemyLasers = new List<EnemyLaser>();
         public static List<PlayerLaser> playerLasers = new List<PlayerLaser>();
 
         public void ProcessLasers(GameTime gameTime)
         {
             foreach (PlayerLaser laser in playerLasers)
             {
-                foreach(IActor enemy in GameController.enemyList)
+                foreach (IActor enemy in GameController.enemyList)
                 {
                     CheckCollision(gameTime, laser, enemy);
+                }
+                foreach (EnemyLaser enemyLaser in enemyLasers)
+                {
+                    CheckLaserCollision(gameTime, laser, enemyLaser);
                 }
             }
 
@@ -28,40 +32,52 @@ namespace CrazyFour.Core
 
         public static void AddLaser(ILaser laser)
         {
-            Type type = laser.GetType();
+            EnemyLaser isEnemy = laser as EnemyLaser;
 
-            if (type == typeof(EnemyLaser))
-                LaserController.enemyLasers.Add(laser);
+            if (isEnemy == null)
+                playerLasers.Add(laser as PlayerLaser);
             else
-                LaserController.playerLasers.Add((PlayerLaser)laser);
+                enemyLasers.Add(isEnemy);
         }
 
         public void CheckCollision(GameTime gameTime, PlayerLaser laser, IActor actor)
         {
             int sum = actor.radius + laser.radius;
 
-            if (Vector2.Distance(laser.position, actor.currentPosition) < sum)
+            if (actor.hitCounter > 0 && Vector2.Distance(laser.position, actor.currentPosition) < sum)
             {
-                actor.hitCounter += 1;
+                --actor.hitCounter;
                 laser.isHit = true;
-
-                if (actor.hitCounter == Config.BOSS_HP)
+                if (actor.hitCounter <= 0)
                 {
                     actor.hitCounter = 0;
                     actor.isHit = true;
                 }
+            } else
+            {
+                laser.Update(gameTime);
             }
-
-            laser.Update(gameTime);
         }
 
+        public void CheckLaserCollision(GameTime gameTime, PlayerLaser laser, EnemyLaser enemyLaser)
+        {
+            int sum = enemyLaser.radius + laser.radius;
+
+            if (Vector2.Distance(laser.position, enemyLaser.position) < sum)
+            {
+                enemyLaser.isHit = true;
+                laser.isHit = true;
+            }
+        }
+
+        
         public void RemoveLasers()
         {
             // Removing any player lasors that have gone out of window
-            LaserController.playerLasers.RemoveAll(r => r.isActive is false || r.isHit);
+            playerLasers.RemoveAll(r => r.isActive is false || r.isHit);
 
             // Removing any enemy lasors that have done out of the window
-            LaserController.enemyLasers.RemoveAll(r => r.isActive is false || r.isHit);
+            enemyLasers.RemoveAll(r => r.isActive is false || r.isHit);
         }
 
     }

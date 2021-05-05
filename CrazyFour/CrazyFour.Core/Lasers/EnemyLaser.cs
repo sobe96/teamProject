@@ -31,9 +31,10 @@ namespace CrazyFour.Core.Lasers
             content = con;
         }
 
-        public override void Initialize(ActorTypes type, Vector2 pos)
+        public override void Initialize(ActorTypes type, Vector2 pos, Vector2 dir)
         {
             position = pos;
+            direction = dir;
 
             switch (type)
             {
@@ -73,7 +74,7 @@ namespace CrazyFour.Core.Lasers
             else
                 speed = Utilities.ConvertToPercentage(Speed.Normal) * GameController.hz;
 
-            position.Y += 2f * speed * dt;
+            position += direction * 2f * speed * dt;
 
             // preping for removal
             if (position.Y < 0)

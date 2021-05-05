@@ -60,7 +60,7 @@ namespace CrazyFour.Core
                 case ActorTypes.Boss:
                     if (!Config.doneConfiguringBoss)
                     {
-                        if ((int)totalTime >= Config.BOSS_TIME)
+                        if ((int)totalTime >= 15)
                         {
                             for (int i = 0; i < Config.MAXBOSS; i++)
                             {
@@ -75,7 +75,7 @@ namespace CrazyFour.Core
                 case ActorTypes.Capo:
                     if (!Config.doneConfiguringCapo)
                     {
-                        if ((int)totalTime >= Config.CAPO_TIME)
+                        if ((int)totalTime >= 5)
                         {
                             for (int i = 0; i < Config.MAXCAPOS; i++)
                             {
@@ -90,7 +90,7 @@ namespace CrazyFour.Core
                 case ActorTypes.Soldier:
                     if (!Config.doneConfiguringSolders)
                     {
-                        if ((int)totalTime >= Config.SOLDIER_TIME)
+                        if ((int)totalTime >= 1)
                         {
                             for (int i = 0; i < Config.MAXSOLDIERS; i++)
                             {
@@ -105,7 +105,7 @@ namespace CrazyFour.Core
                 case ActorTypes.Underboss:
                     if (!Config.doneConfiguringUnderboss)
                     {
-                        if ((int)totalTime >= Config.UNDERBOSS_TIME)
+                        if ((int)totalTime >= 10)
                         {
                             for (int i = 0; i < Config.MAXUNDERBOSS; i++)
                             {
@@ -181,11 +181,14 @@ namespace CrazyFour.Core
 
                 bool hit = false;
 
-                foreach (EnemyLaser lasor in LaserController.enemyLasers)
+                foreach (EnemyLaser laser in LaserController.enemyLasers)
                 {
-                    lasor.Update(gameTime);
-                    hit = lasor.CheckHit(gameTime, player);
-
+                    laser.Update(gameTime);
+                    hit = laser.CheckHit(gameTime, player);
+                    if (!hit)
+                    {
+                        laser.CheckHit(gameTime, player);
+                    }
                     if (hit)
                         break;
                 }
@@ -194,7 +197,7 @@ namespace CrazyFour.Core
                     LaserController.enemyLasers.Clear();
 
                 // Removing the enemies from our list
-                GameController.enemyList.RemoveAll(r => r.isActive is false || r.isHit);
+                GameController.enemyList.RemoveAll(r => !r.isActive || r.isHit);
 
 
                 if (GameController.enemyList.Count <= 0)
