@@ -25,10 +25,13 @@ namespace CrazyFour
 
         public double timer;
 
+        public ConfigReader confReader = new ConfigReader();
 
 
         public Main()
         {
+            Config config = confReader.ReadJson();
+
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;

@@ -7,14 +7,14 @@ namespace CrazyFour.Core.Helpers
 {
     public class Config
     {
-        public static int windowWidth = 1280;
-        public static int windowHeight = 720;
+        public static int windowWidth { get; set; } = 1280;
+        public static int windowHeight { get; set; } = 720;
 
         public static GameStatus status = GameStatus.Starting;
 
         public static Random rand = new Random();
 
-        public static int LIVES = 3;
+        public static int LIVES { get; set; } = 3;
         public static string PLAYER_SPRITE { get; } = "Images/Players/hero";
         public static string PLAYER_LASER_SPRITE { get; } = "Images/Lazers/AguaLazer";
         
@@ -72,5 +72,8 @@ namespace CrazyFour.Core.Helpers
         public static bool doneConfiguringCapo { get; set; } = false;
         
         public static bool doneConfiguringBoss { get; set; } = false;
+
+
+        public Config() { }
     }
 }
