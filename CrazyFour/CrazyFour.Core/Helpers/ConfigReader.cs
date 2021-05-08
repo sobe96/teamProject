@@ -9,7 +9,7 @@ namespace CrazyFour.Core.Helpers
 {
     public class ConfigReader
     {
-        private String ConfigFile = "./config.json";
+        public String ConfigFile = "./config.json";
 
         public Config conf = new Config();
 

@@ -14,9 +14,12 @@ namespace CrazyFour.Core.Factories
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         ContentManager content;
+        Config config;
+        public ConfigReader confReader = new ConfigReader();
 
         public LaserFactory(GraphicsDeviceManager gra, SpriteBatch spr, ContentManager con)
         {
+            Config config = confReader.ReadJson();
             graphics = gra;
             spriteBatch = spr;
             content = con;
@@ -24,8 +27,9 @@ namespace CrazyFour.Core.Factories
 
         public ILaser GetPlayerLaser(Vector2 pos, Vector2 dir, GameTime gameTime)
         {
+            Config config = confReader.ReadJson();
             ILaser actor = new PlayerLaser(graphics, spriteBatch, content);
-            actor.Initialize(Config.PLAYER_LASER_SPRITE, pos, dir);
+            actor.Initialize(config.PLAYER_LASER_SPRITE, pos, dir);
             actor.Update(gameTime);
             return actor;
         }

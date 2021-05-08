@@ -27,6 +27,9 @@ namespace CrazyFour.Core
 
         private ActorFactory factory;
 
+        Config config;
+        public ConfigReader confReader = new ConfigReader();
+
         public static GameController Instance
         {
             get
@@ -46,7 +49,10 @@ namespace CrazyFour.Core
             }
         }
 
-        private GameController() { }
+        private GameController() 
+        {
+            Config config = confReader.ReadJson();
+        }
 
         public void LoadContent(ActorFactory fac)
         {
@@ -55,14 +61,15 @@ namespace CrazyFour.Core
 
         public void InitializeEnemies(GameTime game, ActorTypes type)
         {
-            switch(type)
+            Config config = confReader.ReadJson();
+            switch (type)
             {
                 case ActorTypes.Boss:
                     if (!Config.doneConfiguringBoss)
                     {
-                        if ((int)totalTime >= Config.BOSS_TIME)
+                        if ((int)totalTime >= config.BOSS_TIME)
                         {
-                            for (int i = 0; i < Config.MAX_BOSS; i++)
+                            for (int i = 0; i < config.MAX_BOSS; i++)
                             {
                                 var sol = (Boss)factory.GetActor(ActorTypes.Boss);
                                 GameController.enemyList.Add(sol);
@@ -75,9 +82,9 @@ namespace CrazyFour.Core
                 case ActorTypes.Capo:
                     if (!Config.doneConfiguringCapo)
                     {
-                        if ((int)totalTime >= Config.CAPO_TIME)
+                        if ((int)totalTime >= config.CAPO_TIME)
                         {
-                            for (int i = 0; i < Config.MAX_CAPOS; i++)
+                            for (int i = 0; i < config.MAX_CAPOS; i++)
                             {
                                 var capo = (Capo)factory.GetActor(ActorTypes.Capo);
                                 GameController.enemyList.Add(capo);
@@ -90,9 +97,9 @@ namespace CrazyFour.Core
                 case ActorTypes.Soldier:
                     if (!Config.doneConfiguringSolders)
                     {
-                        if ((int)totalTime >= Config.SOLDIER_TIME)
+                        if ((int)totalTime >= config.SOLDIER_TIME)
                         {
-                            for (int i = 0; i < Config.MAX_SOLDIERS; i++)
+                            for (int i = 0; i < config.MAX_SOLDIERS; i++)
                             {
                                 var sol = (Soldier)factory.GetActor(ActorTypes.Soldier);
                                 GameController.enemyList.Add(sol);
@@ -105,9 +112,9 @@ namespace CrazyFour.Core
                 case ActorTypes.Underboss:
                     if (!Config.doneConfiguringUnderboss)
                     {
-                        if ((int)totalTime >= Config.UBOSS_TIME)
+                        if ((int)totalTime >= config.UBOSS_TIME)
                         {
-                            for (int i = 0; i < Config.MAX_UBOSS; i++)
+                            for (int i = 0; i < config.MAX_UBOSS; i++)
                             {
                                 var sol = (Underboss)factory.GetActor(ActorTypes.Underboss);
                                 GameController.enemyList.Add(sol);

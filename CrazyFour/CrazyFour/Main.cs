@@ -22,7 +22,7 @@ namespace CrazyFour
         //private IActor soldier;
         private Texture2D spaceBackground;
         private SpriteFont defaultFont;
-
+        Config config;
         public double timer;
 
         public ConfigReader confReader = new ConfigReader();
@@ -213,7 +213,7 @@ namespace CrazyFour
                     {
                         player.isDead = false;
                         Config.status = GameStatus.Playing;
-                        player.Lives = Config.LIVES;
+                        player.Lives = config.LIVES;
                         Config.doneConfiguringBoss = false;
                         Config.doneConfiguringCapo = false;
                         Config.doneConfiguringUnderboss = false;
@@ -224,7 +224,7 @@ namespace CrazyFour
                     {
                         player.isDead = false;
                         Config.status = GameStatus.Starting;
-                        player.Lives = Config.LIVES;
+                        player.Lives = config.LIVES;
                         Config.doneConfiguringBoss = false;
                         Config.doneConfiguringCapo = false;
                         Config.doneConfiguringUnderboss = false;

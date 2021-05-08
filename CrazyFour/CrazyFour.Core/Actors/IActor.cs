@@ -29,6 +29,9 @@ namespace CrazyFour.Core.Actors
         public bool isActive = true;
         public bool isDead = false;
 
+        Config config;
+        public ConfigReader confReader = new ConfigReader();
+
         //direction of laser movement
         protected Vector2 laserDirection = new Vector2(0, 1);
         //starting offset of the laser
@@ -46,6 +49,7 @@ namespace CrazyFour.Core.Actors
 
         public virtual void Initialize(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
         {
+            Config config = confReader.ReadJson();
             graphics = g;
             spriteBatch = s;
             content = c;
@@ -100,6 +104,7 @@ namespace CrazyFour.Core.Actors
 
         protected void FireLaser(GameTime gameTime)
         {
+            Config config = confReader.ReadJson();
             switch (laserMode)
             {
                 case LaserMode.Single:
@@ -112,10 +117,10 @@ namespace CrazyFour.Core.Actors
                     SeriesOfLaser(gameTime, 3);
                     break;
                 case LaserMode.Cricle:
-                    CircleLaser(gameTime, Config.CIRCLE_LASER_COUNT);
+                    CircleLaser(gameTime, config.CIRCLE_LASER_COUNT);
                     break;
                 case LaserMode.Cone:
-                    ConeLaser(gameTime, Config.CONE_LASER_COUNT);
+                    ConeLaser(gameTime, config.CONE_LASER_COUNT);
                     break;
             }
         }

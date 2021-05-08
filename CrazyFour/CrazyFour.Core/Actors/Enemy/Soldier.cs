@@ -18,18 +18,21 @@ namespace CrazyFour.Core.Actors.Enemy
         private float counter = 0.5f;
         private bool returning = false;
         private Vector2 returnPosition;
+        Config config;
+        public ConfigReader confReader = new ConfigReader();
 
         public Soldier(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
         {
+            Config config = confReader.ReadJson();
             graphics = g;
             spriteBatch = s;
             content = c;
             radius = 16;
             inGame = true;
             isActive = true;
-            hitCounter = Config.SOLDIER_HP;
+            hitCounter = config.SOLDIER_HP;
 
-            LoadSprite(LoadType.Ship, Config.SOLDIER_SPRITE);
+            LoadSprite(LoadType.Ship, config.SOLDIER_SPRITE);
 
             // Randomizing starting point
             int width = Config.rand.Next(GetRadius(), graphics.PreferredBackBufferWidth - GetRadius());
@@ -38,7 +41,7 @@ namespace CrazyFour.Core.Actors.Enemy
             defaultPosition = new Vector2(width, height);
             currentPosition = defaultPosition;
             laserFireOffset = new Vector2(0, 15);
-            SetLaserMode((LaserMode)Config.SOLDIER_LASERMODE);
+            SetLaserMode((LaserMode)config.SOLDIER_LASERMODE);
         }
 
         public Vector2 GetSoldierPosition()
@@ -103,8 +106,9 @@ namespace CrazyFour.Core.Actors.Enemy
         }
         protected override void CreateLaser(Vector2 pos, Vector2 dir, GameTime gameTime)
         {
+            Config config = confReader.ReadJson();
             LaserFactory factory = new LaserFactory(graphics, spriteBatch, content);
-            ILaser lazer = factory.GetEnemyLaser(Config.SOLDIER_LASER_SPRITE, pos, dir, gameTime);
+            ILaser lazer = factory.GetEnemyLaser(config.SOLDIER_LASER_SPRITE, pos, dir, gameTime);
             LaserController.AddLaser(lazer);
         }
     }

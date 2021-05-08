@@ -18,18 +18,21 @@ namespace CrazyFour.Core.Actors.Enemy
         private float counter = .5f;
         private bool returning = false;
         private Vector2 returnPosition;
+        Config config;
+        public ConfigReader confReader = new ConfigReader();
 
         public Capo(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
         {
+            Config config = confReader.ReadJson();
             graphics = g;
             spriteBatch = s;
             content = c;
             radius = 17;
             isActive = true;
             inGame = true;
-            hitCounter = Config.CAPO_HP;
+            hitCounter = config.CAPO_HP;
 
-            LoadSprite(LoadType.Ship, Config.CAPO_SPRITE);
+            LoadSprite(LoadType.Ship, config.CAPO_SPRITE);
 
             // Randomizing starting point
             int width = Config.rand.Next(GetRadius(), graphics.PreferredBackBufferWidth - GetRadius());
@@ -38,7 +41,7 @@ namespace CrazyFour.Core.Actors.Enemy
             defaultPosition = new Vector2(width, height);
             currentPosition = defaultPosition;
             laserFireOffset = new Vector2(0, 15);
-            SetLaserMode((LaserMode)Config.CAPO_LASERMODE);
+            SetLaserMode((LaserMode)config.CAPO_LASERMODE);
         }
 
         public override void Draw(GameTime gameTime)
@@ -53,6 +56,7 @@ namespace CrazyFour.Core.Actors.Enemy
 
         public override void Update(GameTime gameTime, Vector2? pp)
         {
+            Config config = confReader.ReadJson();
             KeyboardState kState = Keyboard.GetState();
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
             playerPosition = (Vector2)pp;
@@ -97,8 +101,9 @@ namespace CrazyFour.Core.Actors.Enemy
         }
         protected override void CreateLaser(Vector2 pos, Vector2 dir, GameTime gameTime)
         {
+            Config config = confReader.ReadJson();
             LaserFactory factory = new LaserFactory(graphics, spriteBatch, content);
-            ILaser lazer = factory.GetEnemyLaser(Config.CAPO_LASER_SPRITE, pos, dir, gameTime);
+            ILaser lazer = factory.GetEnemyLaser(config.CAPO_LASER_SPRITE, pos, dir, gameTime);
             LaserController.AddLaser(lazer);
         }
     }
