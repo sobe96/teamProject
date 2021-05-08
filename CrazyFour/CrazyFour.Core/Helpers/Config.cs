@@ -11,13 +11,15 @@ namespace CrazyFour.Core.Helpers
         public static int windowHeight = 720;
 
         public static GameStatus status = GameStatus.Starting;
-        public static int defaultNumOfLives = 3;
-        public static int numOfLivesLeft = defaultNumOfLives;
 
         public static Random rand = new Random();
+
+        public static int LIVES = 3;
         public static string PLAYER_SPRITE { get; } = "Images/Players/hero";
         public static string PLAYER_LASER_SPRITE { get; } = "Images/Lazers/AguaLazer";
-        public static int PLAYER_AVAILABLE_LASERS { get; } = 5;
+        
+        //how many lasers can player use
+        public static int PLAYER_AVAILABLE_LASERS { get; } = 2;
 
         public static int MAX_SOLDIERS { get; } = 6;
         public static int SOLDIER_TIME { get; } = 1;

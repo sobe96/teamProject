@@ -18,7 +18,7 @@ namespace CrazyFour
         private ActorFactory factory;
         private GameController controller;
         private MouseState mState;
-        private IActor player;
+        private Player player;
         //private IActor soldier;
         private Texture2D spaceBackground;
         private SpriteFont defaultFont;
@@ -53,7 +53,7 @@ namespace CrazyFour
         protected override void LoadContent()
         {
             controller.LoadContent(factory);
-            player = factory.GetActor(ActorTypes.Player);
+            player = factory.GetActor(ActorTypes.Player) as Player;
 
             spaceBackground = Content.Load<Texture2D>("Images/space");
             defaultFont = Content.Load<SpriteFont>("DefaultFont");
@@ -73,13 +73,21 @@ namespace CrazyFour
                 if (((Player)player).isDead)
                 {
                     Config.status = GameStatus.Died;
-
                     LaserController.enemyLasers.Clear();
+                    LaserController.playerLasers.Clear();
                     GameController.enemyList.Clear();
 
-                    String msg = "You Lost!";
+                    String msg = "You LOST!";
                     Vector2 sizeOfText = defaultFont.MeasureString(msg);
                     _spriteBatch.DrawString(defaultFont, msg, new Vector2(Config.windowWidth / 2 - sizeOfText.X / 2, Config.windowHeight / 2), Color.White);
+
+                    msg = "Press 'Enter' to restart";
+                    sizeOfText = defaultFont.MeasureString(msg);
+                    _spriteBatch.DrawString(defaultFont, msg, new Vector2(Config.windowWidth / 2 - sizeOfText.X / 2, Config.windowHeight / 2 + 50), Color.White);
+
+                    msg = "Press 'R' to return to menu";
+                    sizeOfText = defaultFont.MeasureString(msg);
+                    _spriteBatch.DrawString(defaultFont, msg, new Vector2(Config.windowWidth / 2 - sizeOfText.X / 2, Config.windowHeight / 2 + 100), Color.White);
 
                     _spriteBatch.End();
                     base.Draw(gameTime);
@@ -116,9 +124,17 @@ namespace CrazyFour
 
                 if (Config.status == GameStatus.Gameover)
                 {
-                    String msg = "You Won!";
+                    String msg = "You WON!";
                     Vector2 sizeOfText = defaultFont.MeasureString(msg);
                     _spriteBatch.DrawString(defaultFont, msg, new Vector2(Config.windowWidth / 2 - sizeOfText.X / 2, Config.windowHeight / 2), Color.White);
+                    
+                    msg = "Press 'Enter' to restart";
+                    sizeOfText = defaultFont.MeasureString(msg);
+                    _spriteBatch.DrawString(defaultFont, msg, new Vector2(Config.windowWidth / 2 - sizeOfText.X / 2, Config.windowHeight / 2 + 50), Color.White);
+
+                    msg = "Press 'R' to return to menu";
+                    sizeOfText = defaultFont.MeasureString(msg);
+                    _spriteBatch.DrawString(defaultFont, msg, new Vector2(Config.windowWidth / 2 - sizeOfText.X / 2, Config.windowHeight / 2 + 100), Color.White);
 
                     _spriteBatch.End();
                     base.Draw(gameTime);
@@ -166,12 +182,13 @@ namespace CrazyFour
 
                 // Making sure we start the game when the enter button is pressed
                 KeyboardState kState = Keyboard.GetState();
-                if (kState.IsKeyDown(Keys.Enter))
+                if (Config.status == GameStatus.Starting)
                 {
-                    Config.status = GameStatus.Playing;
-                }
-
-                if (Config.status == GameStatus.Playing)
+                    if (kState.IsKeyDown(Keys.Enter))
+                    {
+                        Config.status = GameStatus.Playing;
+                    }
+                } else if (Config.status == GameStatus.Playing)
                 {
                     if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                         Exit();
@@ -187,6 +204,30 @@ namespace CrazyFour
 
                     base.Update(gameTime);
 
+                } else if (Config.status == GameStatus.Died || Config.status == GameStatus.Gameover)
+                {
+                    if (kState.IsKeyDown(Keys.Enter))
+                    {
+                        player.isDead = false;
+                        Config.status = GameStatus.Playing;
+                        player.Lives = Config.LIVES;
+                        Config.doneConfiguringBoss = false;
+                        Config.doneConfiguringCapo = false;
+                        Config.doneConfiguringUnderboss = false;
+                        Config.doneConfiguringSolders = false;
+                        timer = 0;
+                    }
+                    else if (kState.IsKeyDown(Keys.R))
+                    {
+                        player.isDead = false;
+                        Config.status = GameStatus.Starting;
+                        player.Lives = Config.LIVES;
+                        Config.doneConfiguringBoss = false;
+                        Config.doneConfiguringCapo = false;
+                        Config.doneConfiguringUnderboss = false;
+                        Config.doneConfiguringSolders = false;
+                        timer = 0;
+                    }
                 }
             }
             catch (Exception ex) {

@@ -201,9 +201,14 @@ namespace CrazyFour.Core
 
 
                 if (GameController.enemyList.Count <= 0)
+                {
+                    LaserController.enemyLasers.Clear();
+                    LaserController.playerLasers.Clear();
                     Config.status = GameStatus.Gameover;
-                else
+                } else
+                {
                     lasers.ProcessLasers(gameTime);
+                }
             }
         }
         

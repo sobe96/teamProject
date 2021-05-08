@@ -22,12 +22,13 @@ namespace CrazyFour.Core.Actors.Hero
         private bool autoFire = true;
         private bool toggler = false;
 
-        public int Lives { get; set; } = Config.defaultNumOfLives;
+        public int Lives { get; set; }
 
         public DateTime hitTime { get; set; }
 
         public Player(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
         {
+            Lives = Config.LIVES;
             graphics = g;
             spriteBatch = s;
             content = c;
