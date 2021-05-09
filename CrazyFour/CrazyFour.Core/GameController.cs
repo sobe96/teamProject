@@ -82,7 +82,7 @@ namespace CrazyFour.Core
 
                             Config.doneConfiguringBoss = true;
                         }
-                    }}
+                    }
                     break;
                 case ActorTypes.Capo:
                     //if (((int)totalTime == 45 || (wave == 1 && enemyList.Count == 0)))
