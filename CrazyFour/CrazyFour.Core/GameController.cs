@@ -76,7 +76,7 @@ namespace CrazyFour.Core
                         {
                             for (int i = 0; i < config.MAX_BOSS; i++)
                             {
-                                var sol = (Boss)factory.GetActor(ActorTypes.Boss);
+                                var sol = (Boss)factory.GetActor(ActorTypes.Boss, i);
                                 GameController.enemyList.Add(sol);
                             }
 
@@ -92,7 +92,7 @@ namespace CrazyFour.Core
                         {
                             for (int i = 0; i < config.MAX_CAPOS; i++)
                             {
-                                var capo = (Capo)factory.GetActor(ActorTypes.Capo);
+                                var capo = (Capo)factory.GetActor(ActorTypes.Capo, i);
                                 GameController.enemyList.Add(capo);
                             }
 
@@ -108,7 +108,7 @@ namespace CrazyFour.Core
                         {
                             for (int i = 0; i < config.MAX_SOLDIERS; i++)
                             {
-                                var sol = (Soldier)factory.GetActor(ActorTypes.Soldier);
+                                var sol = (Soldier)factory.GetActor(ActorTypes.Soldier, i);
                                 GameController.enemyList.Add(sol);
                             }
 
@@ -124,7 +124,7 @@ namespace CrazyFour.Core
                         {
                             for (int i = 0; i < config.MAX_UBOSS; i++)
                             {
-                                var sol = (Underboss)factory.GetActor(ActorTypes.Underboss);
+                                var sol = (Underboss)factory.GetActor(ActorTypes.Underboss, i);
                                 GameController.enemyList.Add(sol);
                             }
 
