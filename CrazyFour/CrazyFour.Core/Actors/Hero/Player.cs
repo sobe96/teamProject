@@ -13,22 +13,24 @@ namespace CrazyFour.Core.Actors.Hero
 {
     public class Player : IActor
     {
-        private const string SPRITE_IMAGE = "Images/Players/hero";
-        private const int SOL_HP = 3;
         private float speed;
         private float initCounter = 5f;
         private float counter = 0.5f;
         
+        public ConfigReader confReader = new ConfigReader();
+       
         private bool isFiring = true;
         private bool autoFire = true;
         private bool toggler = false;
 
-        public int Lives { get; set; } = Config.defaultNumOfLives;
+        public int Lives { get; set; }
 
         public DateTime hitTime { get; set; }
 
         public Player(GraphicsDeviceManager g, SpriteBatch s, ContentManager c)
         {
+            Config config = confReader.ReadJson();
+            Lives = config.LIVES;
             graphics = g;
             spriteBatch = s;
             content = c;
@@ -37,8 +39,9 @@ namespace CrazyFour.Core.Actors.Hero
 
             // defining the default speed
             speed = 4 * GameController.hz;
+            laserDirection = new Vector2(0, -1);
 
-            LoadSprite(LoadType.Ship, SPRITE_IMAGE);
+            LoadSprite(LoadType.Ship, config.PLAYER_SPRITE);
         }
 
         public Vector2 GetPlayerPosition()
@@ -83,11 +86,10 @@ namespace CrazyFour.Core.Actors.Hero
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             // use controlling the speed of the game by pressing the S key
-            //speed = Utilities.ConvertToPercentage(Speed.Normal) * GameController.hz;
             if (kState.IsKeyDown(Keys.S))
-                speed = Utilities.ConvertToPercentage(Speed.HalfSpeed) * GameController.hz;
+                speed = Utilities.ConvertToPercentage(Speed.QuarterSpeed) * GameController.hz;
             else
-                speed = Utilities.ConvertToPercentage(Speed.Normal) * GameController.hz;
+                speed = Utilities.ConvertToPercentage(Speed.HalfSpeed) * GameController.hz;
 
             // Moving the player
             if (kState.IsKeyDown(Keys.Right) && position.X < graphics.PreferredBackBufferWidth + 1 - GetSprite().Width)
@@ -130,11 +132,7 @@ namespace CrazyFour.Core.Actors.Hero
                     if (kState.IsKeyDown(Keys.Space))
                     {
                         isFiring = true;
-
-                        LaserFactory factory = new LaserFactory(graphics, spriteBatch, content);
-                        ILaser lasor = factory.GetLazer(LaserType.Player, new Vector2(position.X + radius, position.Y), gameTime);
-
-                        GameController.AddLaser(lasor);
+                        FireLaser(gameTime);
                     }
                 }
 
@@ -149,14 +147,38 @@ namespace CrazyFour.Core.Actors.Hero
                 counter -= dt;
                 if (counter <= 0)
                 {
-                    LaserFactory factory = new LaserFactory(graphics, spriteBatch, content);
-                    ILaser lazer = factory.GetLazer(LaserType.Player, new Vector2(position.X + radius, position.Y), gameTime);
-
-                    GameController.AddLaser(lazer);
+                    FireLaser(gameTime);
                     counter = initCounter / 10;
                 }
             }
+
+            //detecting pressing 1-5 keys to switch laser type
+            if (kState.IsKeyDown(Keys.D1))
+            {
+                SetLaserMode(LaserMode.Single);
+            } else if (kState.IsKeyDown(Keys.D2) && Config.PLAYER_AVAILABLE_LASERS >= 2)
+            {
+                SetLaserMode(LaserMode.Double);
+            }
+            else if (kState.IsKeyDown(Keys.D3) && Config.PLAYER_AVAILABLE_LASERS >= 3)
+            {
+                SetLaserMode(LaserMode.Triple);
+            }
+            else if (kState.IsKeyDown(Keys.D4) && Config.PLAYER_AVAILABLE_LASERS >= 4)
+            {
+                SetLaserMode(LaserMode.Cricle);
+            }
+            else if (kState.IsKeyDown(Keys.D5) && Config.PLAYER_AVAILABLE_LASERS >= 5)
+            {
+                SetLaserMode(LaserMode.Cone);
+            }
         }
 
+        protected override void CreateLaser(Vector2 pos, Vector2 dir, GameTime gameTime)
+        {
+            LaserFactory factory = new LaserFactory(graphics, spriteBatch, content);
+            ILaser lazer = factory.GetPlayerLaser(pos, dir, gameTime);
+            LaserController.AddLaser(lazer);
+        }
     }
 }

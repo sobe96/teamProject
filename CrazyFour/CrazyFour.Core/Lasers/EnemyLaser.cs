@@ -14,15 +14,6 @@ namespace CrazyFour.Core.Lasers
 {
     public class EnemyLaser : ILaser
     {
-        private Texture2D projectile;
-        public Vector2 position;
-
-        public float speed { get; set; }
-
-        public int radius { get; } = 6;
-
-        public bool isActive { get; set; } = true;
-
 
         public EnemyLaser(GraphicsDeviceManager gra, SpriteBatch spr, ContentManager con)
         {
@@ -31,35 +22,16 @@ namespace CrazyFour.Core.Lasers
             content = con;
         }
 
-        public override void Initialize(ActorTypes type, Vector2 pos)
+        public override void Initialize(string spritePath, Vector2 pos, Vector2 dir)
         {
             position = pos;
-
-            switch (type)
-            {
-                case ActorTypes.Player:
-                    projectile = content.Load<Texture2D>("Images/Lazers/AguaLazer");
-                    break;
-                case ActorTypes.Boss:
-                    projectile = content.Load<Texture2D>("Images/Lazers/RedLazer");
-                    break;
-                case ActorTypes.Underboss:
-                    projectile = content.Load<Texture2D>("Images/Lazers/YellowLazer");
-                    break;
-                case ActorTypes.Capo:
-                    projectile = content.Load<Texture2D>("Images/Lazers/GreenLazer");
-                    break;
-                case ActorTypes.Soldier:
-                    projectile = content.Load<Texture2D>("Images/Lazers/BlueLazer");
-                    break;
-                default:
-                    throw new NotImplementedException();
-            }
+            direction = dir;
+            spriteImage = content.Load<Texture2D>(spritePath);
         }
 
         public override void Draw(GameTime game)
         {
-            spriteBatch.Draw(projectile, position, Color.White);
+            spriteBatch.Draw(spriteImage, position, Color.White);
         }
 
         public override void Update(GameTime game)
@@ -73,7 +45,7 @@ namespace CrazyFour.Core.Lasers
             else
                 speed = Utilities.ConvertToPercentage(Speed.Normal) * GameController.hz;
 
-            position.Y += 2f * speed * dt;
+            position += direction * 2f * speed * dt;
 
             // preping for removal
             if (position.Y < 0)

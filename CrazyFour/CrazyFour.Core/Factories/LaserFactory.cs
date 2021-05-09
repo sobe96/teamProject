@@ -14,47 +14,30 @@ namespace CrazyFour.Core.Factories
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         ContentManager content;
+        Config config;
+        public ConfigReader confReader = new ConfigReader();
 
         public LaserFactory(GraphicsDeviceManager gra, SpriteBatch spr, ContentManager con)
         {
+            Config config = confReader.ReadJson();
             graphics = gra;
             spriteBatch = spr;
             content = con;
         }
 
-        public ILaser GetLazer(LaserType type, Vector2 pos, GameTime game)
+        public ILaser GetPlayerLaser(Vector2 pos, Vector2 dir, GameTime gameTime)
         {
-            ILaser actor;
-            actor = new EnemyLaser(graphics, spriteBatch, content);
-
-            switch (type)
-            {
-                case LaserType.Boss:
-                    actor.Initialize(ActorTypes.Boss, pos);
-                    break;
-
-                case LaserType.Underboss:
-                    actor.Initialize(ActorTypes.Underboss, pos);
-                    break;
-
-                case LaserType.Capo:
-                    actor.Initialize(ActorTypes.Capo, pos);
-                    break;
-
-                case LaserType.Soldier:
-                    actor.Initialize(ActorTypes.Soldier, pos);
-                    break;
-
-                case LaserType.Player:
-                    actor = new PlayerLaser(graphics, spriteBatch, content);
-                    actor.Initialize(ActorTypes.Player, pos);
-                    break;
-
-                default:
-                    throw new ArgumentException();
-            }
-
-            actor.Update(game);
+            Config config = confReader.ReadJson();
+            ILaser actor = new PlayerLaser(graphics, spriteBatch, content);
+            actor.Initialize(config.PLAYER_LASER_SPRITE, pos, dir);
+            actor.Update(gameTime);
+            return actor;
+        }
+        public ILaser GetEnemyLaser(string spritePath, Vector2 pos, Vector2 dir, GameTime gameTime)
+        {
+            ILaser actor = new EnemyLaser(graphics, spriteBatch, content);
+            actor.Initialize(spritePath, pos, dir);
+            actor.Update(gameTime);
             return actor;
         }
     }

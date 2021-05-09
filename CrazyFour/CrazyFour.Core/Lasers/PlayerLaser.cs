@@ -14,22 +14,6 @@ namespace CrazyFour.Core.Lasers
 {
     public class PlayerLaser : ILaser
     {
-        public GraphicsDeviceManager graphics;
-        public ContentManager content;
-        public SpriteBatch spriteBatch;
-
-        private const string LAZER_IMAGE = "Images/Lazers/AguaLazer";
-        private Texture2D projectile;
-        public Vector2 position;
-        private float speed;
-
-        public static int radius { get; } = 6;
-
-        public bool isActive { get; set; } = true;
-
-        public bool isHit { get; set; } = false;
-
-
         public PlayerLaser(GraphicsDeviceManager gra, SpriteBatch spr, ContentManager con)
         {
             graphics = gra;
@@ -37,36 +21,16 @@ namespace CrazyFour.Core.Lasers
             content = con;
         }
 
-        public override void Initialize(ActorTypes type, Vector2 pos)
+        public override void Initialize(string spritePath, Vector2 pos, Vector2 dir)
         {
             position = pos;
-
-            switch (type)
-            {
-                case ActorTypes.Player:
-                    projectile = content.Load<Texture2D>("Images/Lazers/AguaLazer");
-                    break;
-                case ActorTypes.Boss:
-                    projectile = content.Load<Texture2D>("Images/Lazers/RedLazer");
-                    break;
-                case ActorTypes.Underboss:
-                    projectile = content.Load<Texture2D>("Images/Lazers/YellowLazer");
-                    break;
-                case ActorTypes.Capo:
-                    projectile = content.Load<Texture2D>("Images/Lazers/GreenLazer");
-                    break;
-                case ActorTypes.Soldier:
-                    projectile = content.Load<Texture2D>("Images/Lazers/BlueLazer");
-                    break;
-                default:
-                    throw new NotImplementedException();
-            }
-
+            direction = dir;
+            spriteImage = content.Load<Texture2D>(spritePath);
         }
 
         public override void Draw(GameTime game)
         {
-            spriteBatch.Draw(projectile, position, Color.White);
+            spriteBatch.Draw(spriteImage, position, Color.White);
         }
 
         public override void Update(GameTime game)
@@ -80,16 +44,16 @@ namespace CrazyFour.Core.Lasers
             else
                 speed = Utilities.ConvertToPercentage(Speed.Normal) * GameController.hz;
 
-            position.Y -= 3f * speed * dt;
+            position += direction* 3f * speed * dt;
 
-            if (position.Y < 0)
+            if (position.Y <= 0 || position.Y >= GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height)
                 isActive = false;
 
         }
 
         public override bool CheckHit(GameTime gameTime, Player player)
         {
-            int sum = radius + PlayerLaser.radius;
+            int sum = radius + player.radius;
 
             if (Vector2.Distance(position, player.currentPosition) < sum)
             {

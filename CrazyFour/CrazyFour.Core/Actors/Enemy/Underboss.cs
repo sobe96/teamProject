@@ -13,10 +13,11 @@ namespace CrazyFour.Core.Actors.Enemy
 {
     public class Underboss : IActor
     {
-        private const string SPRITE_IMAGE = "Images/Players/underboss";
         private float speed;
         private float initCounter = 10f;
         private float counter = 0.5f;
+        Config config;
+        public ConfigReader confReader = new ConfigReader();
         private int hitCounter = 0;
         private Vector2 move;
         private float angle = 0;
@@ -25,14 +26,16 @@ namespace CrazyFour.Core.Actors.Enemy
 
         public Underboss(GraphicsDeviceManager g, SpriteBatch s, ContentManager c, int i)
         {
+            Config config = confReader.ReadJson();
             graphics = g;
             spriteBatch = s;
             content = c;
             radius = 40;
             inGame = true;
             isActive = true;
+            hitCounter = config.UBOSS_HP;
 
-            LoadSprite(LoadType.Ship, SPRITE_IMAGE);
+            LoadSprite(LoadType.Ship, config.UBOSS_SPRITE);
 
             // Randomizing starting point
             //int width = Config.rand.Next(GetRadius(), graphics.PreferredBackBufferWidth - GetRadius());
@@ -43,6 +46,8 @@ namespace CrazyFour.Core.Actors.Enemy
 
             defaultPosition = new Vector2(width, height);
             currentPosition = defaultPosition;
+            laserFireOffset = new Vector2(0, 55);
+            SetLaserMode((LaserMode)config.UBOSS_LASERMODE);
         }
 
         public override void Draw(GameTime gameTime)
@@ -142,33 +147,18 @@ namespace CrazyFour.Core.Actors.Enemy
                 counter -= dt;
                 if (counter <= 0)
                 {
-                    LaserFactory factory = new LaserFactory(graphics, spriteBatch, content);
-                    ILaser laserSol = factory.GetLazer(LaserType.Soldier, new Vector2(currentPosition.X + radius - 3, currentPosition.Y + 15), gameTime);
-
-                    GameController.AddLaser(laserSol);
+                    FireLaser(gameTime);
                     counter = initCounter / 10;
                 }
 
-                // Checking for any hit from the player lasers
-                foreach (PlayerLaser laser in GameController.playerLasers)
-                {
-                    int sum = radius + PlayerLaser.radius;
-
-                    if (Vector2.Distance(laser.position, currentPosition) < sum)
-                    {
-                        hitCounter += 1;
-                        laser.isHit = true;
-
-                        if (hitCounter == Config.UBOSS_HP)
-                        {
-                            isHit = true;
-                            hitCounter = 0;
-                        }
-                    }
-
-                    laser.Update(gameTime);
-                }
             }
+        }
+        protected override void CreateLaser(Vector2 pos, Vector2 dir, GameTime gameTime)
+        {
+            Config config = confReader.ReadJson();
+            LaserFactory factory = new LaserFactory(graphics, spriteBatch, content);
+            ILaser lazer = factory.GetEnemyLaser(config.UBOSS_LASER_SPRITE, pos, dir, gameTime);
+            LaserController.AddLaser(lazer);
         }
     }
 }

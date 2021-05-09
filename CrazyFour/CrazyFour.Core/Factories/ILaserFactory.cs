@@ -9,6 +9,7 @@ namespace CrazyFour.Core.Factories
 {
     interface ILaserFactory
     {
-        ILaser GetLazer(LaserType type, Vector2 pos, GameTime game);
+        ILaser GetPlayerLaser(Vector2 pos, Vector2 dir, GameTime gameTime);
+        ILaser GetEnemyLaser(string spritePath, Vector2 pos, Vector2 dir, GameTime gameTime);
     }
 }

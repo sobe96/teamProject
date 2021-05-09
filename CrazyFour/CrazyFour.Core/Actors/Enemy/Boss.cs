@@ -14,24 +14,27 @@ namespace CrazyFour.Core.Actors.Enemy
 {
     public class Boss : IActor
     {
-        private const string SPRITE_IMAGE = "Images/Players/boss";
         private float speed;
         private float initCounter = 10f;
         private float counter = 0.5f;
-        private int hitCounter = 0;
-        private Vector2 move;
         private bool initialized = false;
+        private Vector2 move;
+        Config config;
+        public ConfigReader confReader = new ConfigReader();
+        private int hitCounter = 0;
 
         public Boss(GraphicsDeviceManager g, SpriteBatch s, ContentManager c, int i)
         {
+            Config config = confReader.ReadJson();
             graphics = g;
             spriteBatch = s;
             content = c;
             radius = 91;
             inGame = true;
             isActive = true;
+            hitCounter = config.BOSS_HP;
 
-            LoadSprite(LoadType.Ship, SPRITE_IMAGE);
+            LoadSprite(LoadType.Ship, config.BOSS_SPRITE);
 
             // Randomizing starting point
             //int width = Config.rand.Next(GetRadius(), graphics.PreferredBackBufferWidth - GetRadius());
@@ -42,6 +45,8 @@ namespace CrazyFour.Core.Actors.Enemy
 
             defaultPosition = new Vector2(width, height);
             currentPosition = defaultPosition;
+            laserFireOffset = new Vector2(0, 160);
+            SetLaserMode((LaserMode)config.BOSS_LASERMODE);
         }
 
         public override void Draw(GameTime gameTime)
@@ -51,7 +56,9 @@ namespace CrazyFour.Core.Actors.Enemy
                 spriteBatch.Draw(GetSprite(), currentPosition, Color.White);
             }
             else
+            {
                 spriteBatch.Draw(GetSprite(), defaultPosition, Color.White);
+            }
         }
 
         public override void Update(GameTime gameTime, Vector2? pp)
@@ -95,39 +102,23 @@ namespace CrazyFour.Core.Actors.Enemy
 
                 move.Normalize();
                 currentPosition += move * speed * dt;
+                position = currentPosition;
 
                 counter -= dt;
                 if (counter <= 0)
                 {
-                    LaserFactory factory = new LaserFactory(graphics, spriteBatch, content);
-                    ILaser laserSol = factory.GetLazer(LaserType.Soldier, new Vector2(currentPosition.X + radius - 3, currentPosition.Y + 2 * GetRadius()), gameTime);
-
-                    GameController.AddLaser(laserSol);
+                    FireLaser(gameTime);
                     counter = initCounter / 10;
                 }
 
-                //Use collision detection controller
-                // Checking for any hit from the player lasers
-                foreach (PlayerLaser laser in GameController.playerLasers)
-                {
-                    int sum = 2 * GetRadius() + PlayerLaser.radius;
-                    float dst = Vector2.Distance(laser.position, currentPosition);
-
-                    if (dst < sum)
-                    {
-                        hitCounter += 1;
-                        laser.isHit = true;
-
-                        if (hitCounter == Config.BOSS_HP)
-                        {
-                            isHit = true;
-                            hitCounter = 0;
-                        }
-                    }
-
-                    laser.Update(gameTime);
-                }
             }
+        }
+        protected override void CreateLaser(Vector2 pos, Vector2 dir, GameTime gameTime)
+        {
+            Config config = confReader.ReadJson();
+            LaserFactory factory = new LaserFactory(graphics, spriteBatch, content);
+            ILaser lazer = factory.GetEnemyLaser(config.BOSS_LASER_SPRITE, pos, dir, gameTime);
+            LaserController.AddLaser(lazer);
         }
     }
 }
