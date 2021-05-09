@@ -140,6 +140,7 @@ namespace CrazyFour.Core.Actors.Enemy
 
                 move.Normalize();
                 currentPosition += move * 3 * speed * dt;
+                position = currentPosition;
 
                 counter -= dt;
                 if (counter <= 0)
