@@ -61,7 +61,7 @@ namespace CrazyFour.Core.Lasers
 
             if (dis <= sum)
             {
-                player.isHit = true;
+                //player.isHit = true;
                 player.Lives -= 1;
                 player.hitTime = DateTime.Now;
 

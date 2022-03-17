@@ -66,7 +66,7 @@ namespace CrazyFour.Core
         {
             int sum = actor.radius + laser.radius;
 
-            if (actor.hitCounter > 0 && Vector2.Distance(laser.position, actor.currentPosition) < sum)
+            if (actor.hitCounter >= 0 && Vector2.Distance(laser.position, actor.currentPosition) < sum)
             {
                 --actor.hitCounter;
                 laser.isHit = true;

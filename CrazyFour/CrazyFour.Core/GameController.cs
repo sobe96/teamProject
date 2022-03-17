@@ -72,8 +72,10 @@ namespace CrazyFour.Core
                     if (!Config.doneConfiguringBoss)
                     {
                         //if ((int)totalTime == 135 || (wave == 3 && enemyList.Count == 0))
-                        if ((int)totalTime >= config.BOSS_TIME)
+                        
+                        if (((int)totalTime >= config.BOSS_TIME || (wave == 3 && enemyList.Count == 0)))
                         {
+                            wave = 4;
                             for (int i = 0; i < config.MAX_BOSS; i++)
                             {
                                 var sol = (Boss)factory.GetActor(ActorTypes.Boss, i);
@@ -88,8 +90,10 @@ namespace CrazyFour.Core
                     //if (((int)totalTime == 45 || (wave == 1 && enemyList.Count == 0)))
                     if (!Config.doneConfiguringCapo)
                     {
-                        if ((int)totalTime >= config.CAPO_TIME)
+                        
+                        if (((int)totalTime >= config.CAPO_TIME || (wave == 1 && enemyList.Count == 0)))
                         {
+                            wave = 2;
                             for (int i = 0; i < config.MAX_CAPOS; i++)
                             {
                                 var capo = (Capo)factory.GetActor(ActorTypes.Capo, i);
@@ -104,8 +108,10 @@ namespace CrazyFour.Core
                     //if ((int)totalTime == 1 && wave == 0)
                     if (!Config.doneConfiguringSolders)
                     {
-                        if ((int)totalTime >= config.SOLDIER_TIME)
+                        
+                        if ((int)totalTime >= config.SOLDIER_TIME && wave == 0)
                         {
+                            wave = 1;
                             for (int i = 0; i < config.MAX_SOLDIERS; i++)
                             {
                                 var sol = (Soldier)factory.GetActor(ActorTypes.Soldier, i);
@@ -120,8 +126,10 @@ namespace CrazyFour.Core
                     //if ((int)totalTime == 90 || (wave == 2 && enemyList.Count == 0))
                     if (!Config.doneConfiguringUnderboss)
                     {
-                        if ((int)totalTime >= config.UBOSS_TIME)
+                        
+                        if ((int)totalTime >= config.UBOSS_TIME || (wave == 2 && enemyList.Count == 0))
                         {
+                            wave = 3;
                             for (int i = 0; i < config.MAX_UBOSS; i++)
                             {
                                 var sol = (Underboss)factory.GetActor(ActorTypes.Underboss, i);
